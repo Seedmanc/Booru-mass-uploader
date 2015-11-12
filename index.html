@@ -24,7 +24,7 @@
         #log .error { color: maroon; }
     </style>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script type="text/javascript" src="uploader.js"></script>
+    <script type="text/javascript" src="http://seedmanc.github.io/Booru-mass-uploader/js/uploader.js"></script>
   </head>
   <body>
     <h1>Booru Mass-Uploader</h1>
@@ -33,7 +33,7 @@
     <fieldset style="padding: 2px 1em">
       <legend>
         For correct upload all files must be named according to the format
-        <span onclick="$('#fileNamesTip').toggle()">
+        <span id="toggleFormat">
           [+/-]
         </span>
       </legend>
@@ -151,7 +151,7 @@
     <div id="log" style="display: none"></div>
 
     <script type="text/javascript">
-      if (typeof FileReader == 'function') { $hide('ff36_Warning'); }
+       $('#toggleFormat').on('click', function(){$('#fileNamesTip').toggle();});
 
       var uploadURL = location.search.substr(1);
         if (uploadURL) {
