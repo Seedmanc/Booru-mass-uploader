@@ -151,8 +151,9 @@
     <div id="log" style="display: none"></div>
 
     <script type="text/javascript">
+    alert('inline');
        $('#toggleFormat').on('click', function(){$('#fileNamesTip').toggle();});
-
+    
       var uploadURL = location.search.substr(1);
         if (uploadURL) {
           uploadURL = decodeURIComponent(uploadURL);
