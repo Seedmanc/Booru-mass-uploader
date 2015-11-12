@@ -1,20 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <title>Booru Mass-Uploader script</title>
-
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-    <link rel="shortcut icon" href="/favicon.ico" />
-
-    <meta name="description" content="It allows you to mass-upload images to imageboard sites running Gelbooru (perhaps Danbooru as well). You select a number of files and they're sent to the website along with the info which is retrieved from their file names." />
-    <meta name="keywords" content="mass upload, mass-upload, upload, script, booru, gelbooru, danbooru, imageboard, image, picture" />
-
     <style type="text/css">
-      body { width: 700px; margin: 0 auto; }
+      body { width: 66%; margin: 0 auto; }
       h1 { text-align: center; }
-        p.intro { font-style: italic; }
-      noscript, .unsupp h3 { color: maroon; font-size: 2em; }
-        .unsupp h3 { font-weight: normal; margin: 0; }
+      p.intro { font-style: italic; }
       q { font-style: italic; }
       fieldset { margin: 1em; margin-bottom: 1.5em; padding: 1em; }
         legend { font-weight: bold; }
@@ -33,52 +24,30 @@
         #log .error { color: maroon; }
     </style>
 
-    <script type="text/javascript" src="common-min.js"></script>
     <script type="text/javascript" src="uploader.js"></script>
   </head>
   <body>
     <h1>Booru Mass-Uploader</h1>
-    <p class="intro">This script allows you to mass-upload images to imageboard sites running Gelbooru (perhaps Danbooru as well). You select a number of files and they're sent to the website along with the info which is retrieved from their file names.</p>
-
-    <p class="intro" style="text-align: right; margin-top: -0.5em">
-      <a href="screenshot_1.png">A screenshot</a>,
-      <a href="screenshot_2.png">another one</a> &raquo;
-    </p>
-
-    <ul>
-      <li> At <a rel="bookmark" href="https://ibsear.ch">IbSear.ch</a>/<a rel="bookmark" href="https://ibsearch.xxx">IbSearch.xxx</a> you can search most of existing imageboards at once. </li>
-      <li> And at the <a rel="bookmark" href="http://booru.org/">Free Booru Project</a> you can create your own booru for free. </li>
-      <li>You can discuss/report problems/suggest features <a rel="subsection" href="http://forum.booru.org/index.php?action=vthread&amp;forum=1&amp;topic=20">here</a>.</li>
-    </ul>
-
-    <div class="unsupp" id="ff36_Warning">
-      <h3>This script will only work in Firefox 3.6 and up.</h3>
-      <ul>
-        <li>You can download it from <a rel="bookmark" href="http://getfirefox.com">here</a> - of course it's free.</li>
-        <li>Well, it <em>might</em> work in latest builds of <strong>Chrome</strong> and other browsers but I can't guarantee that.</li>
-      </ul>
-    </div>
-
-    <noscript>It only works with JavaScript! (so it won't work for you cause you've got it off.)</noscript>
+    <p class="intro">This script allows you to mass-upload images to imageboard sites running *booru engine. You select a number of files and they're sent to the website along with the info which is retrieved from their file names.</p>
 
     <fieldset style="padding: 2px 1em">
       <legend>
         For correct upload all files must be named according to the format
-        <span onclick="var el = 'fileNamesTip'; $style(el, 'display') == 'block' ? $hide(el) : $show(el);">
+        <span onclick="$('#fileNamesTip').toggle()">
           [+/-]
         </span>
       </legend>
 
       <div id="fileNamesTip" style="display: none; margin: 1em">
         <p>
-          Example file name: <q>q nagisa floor tagme.jpg</q>, where:
+          Example file name: <q>q nagisa floor tagme Filename.jpg</q>, where:
         </p>
-
           <ul>
             <li> <q>q</q> is the image's rating (Safe, Questionable, Explicit), </li>
             <li> then space - don't forget about it! </li>
             <li> then go all tags for this image. Here they are 3:
                  <q>nagisa</q>, <q>floor</q> &amp; <q>tagme</q>. </li>
+            <li> finally, goes the original filename, which is ignored, but can be used to avoid filename collisions when having identical tag sets.</li>
           </ul>
 
         <p>The behaviour of the uploader when no rating character was found or was wrong is defined by the options below.</p>
@@ -90,16 +59,16 @@
       <legend>Image ratings</legend>
 
       <div class="para">
-        <input type="radio" name="rating-when" id="forceRating" />
+        <input type="radio" name="rating-when" id="forceRating" checked="checked"/>
           <label for="forceRating"><strong>Force</strong> all ratings regardless of file name.</label>
-        <input type="radio" name="rating-when" id="ratingAsDefault" checked="checked" />
+        <input type="radio" name="rating-when" id="ratingAsDefault"/>
           <label for="ratingAsDefault">Only set rating if failed to determine it from the file name.</label>
       </div>
 
       <div class="para">
-        <input type="radio" name="rating" id="setSafe" />
+        <input type="radio" name="rating" id="setSafe" checked="checked" />
           <label for="setSafe">Safe</label>
-        <input type="radio" name="rating" id="setQuest" checked="checked" />
+        <input type="radio" name="rating" id="setQuest"/>
           <label for="setQuest">Questionable</label>
         <input type="radio" name="rating" id="setExplicit" />
           <label for="setExplicit">Explicit</label>
@@ -109,14 +78,14 @@
     <fieldset>
       <legend>Tagging</legend>
 
-      <input type="radio" name="tag-when" id="tagsFromNames" checked="checked" />
+      <input type="radio" name="tag-when" id="tagsFromNames"/>
         <label for="tagsFromNames">Set tags based on image file names alone.</label>
       <input type="radio" name="tag-when" id="forceTags" />
         <label for="forceTags">Ignore file names, <strong>force</strong> tags of all images.</label>
 
       <br />
 
-      <input type="radio" name="tag-when" id="addTags" />
+      <input type="radio" name="tag-when" id="addTags"  checked="checked" />
         <label for="addTags">In addition to tags from image file names also add these tags to each of them.</label>
 
       <br />
@@ -127,7 +96,6 @@
       </div>
 
       <p class="tip">Tags will be auto- cleaned from spaces, have duplicates removed and sorted.</p>
-      <p class="tip">If you select <q>Force</q> and at the same time enter no tags then images will be sent <strong>with no tags at all</strong>.</p>
     </fieldset>
 
     <fieldset>
@@ -139,28 +107,26 @@
       <p class="tip">
         This info can be retrieved from your cookies. How?
         <a rel="subsection" href="howto-auth.html" target="_blank">Here's the guide</a>.
-        And no, we don't collect your info.
+        And no, I don't collect your info.
       </p>
     </fieldset>
 
     <fieldset style="padding: 2px 1em">
       <legend>
         Other settings
-        <span onclick="var el = 'otherSettings'; $style(el, 'display') == 'block' ? $hide(el) : $show(el);">
+        <span onclick="$('#otherSettings').toggle();">
           [+/-]
         </span>
       </legend>
 
       <div id="otherSettings" style="display: none; margin: 1em">
         <div class="para">
-          Add <q>tagme</q> tag when an image has less than (<strong>ex</strong>clusive)
-            <input type="text" id="tagmeStart" value="4" />
-            tags.
+          Set Title field of each image to its original filename (if present)
+            <input type="checkbox" id="title"/>
         </div>
-
         <div class="para">
-          Set Title field of each image to this:
-            <input type="text" id="title" value="Booru mass uploader" />
+          Set Source field of each image to this:
+             <input type="text" id="source" value="Booru mass uploader" />
         </div>
       </div>
     </fieldset>
@@ -209,3 +175,4 @@
     </script>
   </body>
 </html>
+        
