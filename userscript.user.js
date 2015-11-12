@@ -15,7 +15,7 @@ function loadAndExecute(url, callback){
 	document.head.appendChild(scriptNode);
 };
 
-document.addEventListener('DOMContentLoaded', function(){
+(function(){
 	if (window.top != window.self)  											
 		return;
 	//loadAndExecute("https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js", main);
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	};
 	xhr.send();
 	
-}, false);
+})();
 
 function main(){
 	
