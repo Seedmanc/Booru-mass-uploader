@@ -1,4 +1,3 @@
-alert('src');
 if (!XMLHttpRequest.prototype.sendAsBinary) {
   XMLHttpRequest.prototype.sendAsBinary = function (sData) {
     var nBytes = sData.length, ui8Data = new Uint8Array(nBytes);
@@ -11,6 +10,27 @@ if (!XMLHttpRequest.prototype.sendAsBinary) {
   };
 }
 
+   $('#toggleFormat').on('click', function(){$('#fileNamesTip').toggle();});
+
+ /* var uploadURL = location.search.substr(1);
+	if (uploadURL) {
+	  uploadURL = decodeURIComponent(uploadURL);
+	  if (uploadURL.indexOf('http://') == -1) { uploadURL = decodeURIComponent(uploadURL); }
+	  $set('uploadURL', uploadURL);
+	  $('otherSettings').appendChild( $('uploadUrlWr') );
+	}
+
+  RestoreLastSettingsFor( $get('uploadURL') );
+
+  if (!GetCookie('fileNamesTipShown')) {
+	$show('fileNamesTip');
+	SetCookie('fileNamesTipShown', true, 48);
+  }
+
+  setInterval(function () {
+	$('submit').disabled = $('files').files.length == 0 || upOptions.running;
+	$style( 'tagsWr', 'display', $('tagsFromNames').checked ? 'none' : 'block' );
+  }, 200);/*
 
 var upOptions = {running: false};
 
