@@ -26,6 +26,14 @@ function loadAndExecute(url, callback){
 		if (this.readyState != 4) return;
 		if (this.status != 200) return; // or whatever error handling you want
 		document.getElementsByTagName('body')[0].innerHTML = this.responseText;
+		var s = document.getElementsByTagName('script');
+for (var i = 0; i < s.length ; i++) {
+  var node=s[i], parent=node.parentElement, d = document.createElement('script');
+  d.async=node.async;
+  d.src=node.src;
+  parent.insertBefore(d,node);
+  parent.removeChild(node);
+}
 	};
 	xhr.send();
 	
