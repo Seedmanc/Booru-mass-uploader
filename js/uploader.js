@@ -327,8 +327,8 @@ function RestoreLastSettingsFor(uploadURL) {
       SetCookie( cookieBaseName + setting, $get(setting), 7 * 24 * 3600 );
     });
 
-    $each(checkboxesToSave, function (setting) {
+    /*$each(checkboxesToSave, function (setting) {
       SetCookie( cookieBaseName + setting, $(setting).checked ? '1' : '0', 7 * 24 * 3600 );
-    });
+    });*/
 	debugger;
   }
