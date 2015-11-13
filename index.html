@@ -90,7 +90,7 @@
 
       <div id="tagsWr">
         Tag list (separate with spaces):
-        <input type="text" id="tags" style="width: 70%" />
+        <input type="text" id="tags" style="width: 75%" />
       </div>
 
       <p class="tip">Tags will be auto- cleaned from spaces, have duplicates removed and sorted.</p>
@@ -104,21 +104,21 @@
         </span>
       </legend>
 
-      <div id="otherSettings" style="display: none; margin: 1em">
-        <div class="para">
+      <div id="otherSettings" style="display: none;">
+        <div style="float:left;" class="para">
           <input type="checkbox" id="title"/>
           <label for="title">Set Title field of each image to its original filename</label>
         </div>
-        <div class="para">
+        <div style="float:right;" class="para">
           Set Source field of each image to this:
              <input type="text" id="source" value="Booru mass uploader" />
         </div>
       </div>
     </fieldset>
 
-    <div class="para">
+    <div class="para" style="padding:2px 1em;">
       Images:
-        <input type="file" id="files" multiple="true" style="width:100%;"/><br>
+        <input type="file" id="files" multiple="true" style="width:95%;"/><br>
         (all files with MIME other than <tt>image/*</tt> or extension other than <tt>jpe?g/gif/png/bmp</tt> will be skipped).
     </div>
 
