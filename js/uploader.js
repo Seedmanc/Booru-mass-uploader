@@ -98,7 +98,7 @@ function UploadOptions() {
     var rating = {
 		when:$('forceRating').checked ? 'always' : 'default',
         set: $('setSafe').checked ? 's' :
-			$('setQuest').checked ? 'q' : 'e'
+			 $('setQuest').checked ? 'q' : 'e'
 	};
 
     var tagging = {
