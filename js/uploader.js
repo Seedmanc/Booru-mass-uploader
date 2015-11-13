@@ -10,7 +10,7 @@ if (!XMLHttpRequest.prototype.sendAsBinary) {
   };
 }
 
-   $('#toggleFormat').on('click', function(){$('#fileNamesTip').toggle();});
+   //$('#toggleFormat').on('click', function(){$('#fileNamesTip').toggle();});
 
  /* var uploadURL = location.search.substr(1);
 	if (uploadURL) {
@@ -51,7 +51,6 @@ function FilesSelected(selFiles) {
 
   try {
     var files = [];
-
       $each(selFiles, function (file) {
         if (IsUploadable(file)) { files.push(file); }
       });
@@ -60,8 +59,6 @@ function FilesSelected(selFiles) {
   } catch (e) {
     if (typeof e == 'string') {
       alert('Couldn\'t upload - ' + e);
-    } else {
-      alert("Exception has occured during files submission. Like it\'s said, this script works only with Firefox 3.6+.\n" + e.message);
     }
   }
 }
