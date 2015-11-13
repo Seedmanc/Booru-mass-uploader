@@ -3,7 +3,7 @@
   <head>
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
     <style type="text/css">
-      body { width: 66%; margin: 0 auto; }
+      body { width: 66%; margin: 0 auto; min-width:650px;}
       h1 { text-align: center; }
       p.intro { font-style: italic; }
       q { font-style: italic; }
@@ -67,19 +67,17 @@
 
       <div class="para">
         <input type="radio" name="rating" id="setSafe" checked="checked" />
-          <label for="setSafe">Safe</label>
+          <label for="setSafe"><b>Safe</b></label>
         <input type="radio" name="rating" id="setQuest"/>
           <label for="setQuest">Questionable</label>
         <input type="radio" name="rating" id="setExplicit" />
-          <label for="setExplicit">Explicit</label>
+          <label for="setExplicit"><i>Explicit</i></label>
       </div>
     </fieldset>
 
     <fieldset>
       <legend>Tagging</legend>
 
-      <input type="radio" name="tag-when" id="tagsFromNames"/>
-        <label for="tagsFromNames">Set tags based on image file names alone.</label>
       <input type="radio" name="tag-when" id="forceTags" />
         <label for="forceTags">Ignore file names, <strong>force</strong> tags of all images.</label>
 
@@ -90,25 +88,12 @@
 
       <br />
 
-      <div id="tagsWr" style="display: none; margin-top: 1em">
+      <div id="tagsWr">
         Tag list (separate with spaces):
         <input type="text" id="tags" style="width: 70%" />
       </div>
 
       <p class="tip">Tags will be auto- cleaned from spaces, have duplicates removed and sorted.</p>
-    </fieldset>
-
-    <fieldset>
-      <legend>If the booru forbids anonymous uploading or you want to upload to your account</legend>
-
-      Enter your user ID: <input type="text" id="userID" />,
-      and the ticket: <input type="text" id="ticket" style="width: 23em" />
-
-      <p class="tip">
-        This info can be retrieved from your cookies. How?
-        <a rel="subsection" href="howto-auth.html" target="_blank">Here's the guide</a>.
-        And no, I don't collect your info.
-      </p>
     </fieldset>
 
     <fieldset style="padding: 2px 1em">
@@ -121,8 +106,8 @@
 
       <div id="otherSettings" style="display: none; margin: 1em">
         <div class="para">
-          Set Title field of each image to its original filename (if present)
-            <input type="checkbox" id="title"/>
+          <input type="checkbox" id="title"/>
+          <label for="title">Set Title field of each image to its original filename</label>
         </div>
         <div class="para">
           Set Source field of each image to this:
@@ -133,15 +118,8 @@
 
     <div class="para">
       Images:
-        <input type="file" id="files" multiple="true" />
+        <input type="file" id="files" multiple="true" style="width:100%;"/><br>
         (all files with MIME other than <tt>image/*</tt> or extension other than <tt>jpe?g/gif/png/bmp</tt> will be skipped).
-    </div>
-
-    <div class="para" id="uploadUrlWr">
-      Posting form URL:
-        <input type="text" id="uploadURL" style="width: 25em"
-               value="http://your-booru/index.php?page=post&amp;s=add" />
-        (usually it looks <acronym title="http://your-booru/index.php?page=post&amp;s=add">like this</acronym>).
     </div>
 
     <button id="submit" onclick="FilesSelected( $('files').files );">Upload!</button>
