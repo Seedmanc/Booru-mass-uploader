@@ -115,7 +115,7 @@ function UploadOptions() {
 	var uploadURL = document.location.href.split('.')[0]+'.booru.org/index.php?page=post&s=add';
 	
     return {delay: 1000, uploadURL: uploadURL, title: document.getElementById('title').checked,
-            rating: rating, tagging: tagging,
+            rating: rating, tagging: tagging, source: $get('source'),
             stats: {total: 0, success: 0, failed: 0}, auth: auth};
   }
 
