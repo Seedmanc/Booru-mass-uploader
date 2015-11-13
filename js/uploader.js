@@ -92,6 +92,8 @@ function FilesSelected(selFiles) {
         var image = new Image();
             image.src = baseCtrUpdURL + ourBooru[1] + '&rand=' + Math.random();
       }
+	$('files').files = [];
+	$('files').value = '';
   }
 
 function UploadOptions() {
