@@ -30,7 +30,7 @@ if (!XMLHttpRequest.prototype.sendAsBinary) {
   setInterval(function () {
 	$('submit').disabled = $('files').files.length == 0 || upOptions.running;
 	$style( 'tagsWr', 'display', $('tagsFromNames').checked ? 'none' : 'block' );
-  }, 200);/*
+  }, 200);*/
 
 var upOptions = {running: false};
 
