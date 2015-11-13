@@ -9,8 +9,7 @@ if (!XMLHttpRequest.prototype.sendAsBinary) {
     /* ...or as ArrayBuffer (legacy)...: this.send(ui8Data.buffer); */
   };
 }
-
-   //$('#toggleFormat').on('click', function(){$('#fileNamesTip').toggle();});
+ 
 
  /* var uploadURL = location.search.substr(1);
 	if (uploadURL) {
@@ -115,7 +114,7 @@ function UploadOptions() {
 
 	var uploadURL = document.location.href.split('.')[0]+'.booru.org/index.php?page=post&s=add';
 	
-    return {delay: 1000, uploadURL: uploadURL, title: $get('title'),
+    return {delay: 1000, uploadURL: uploadURL, title: document.getElementById('title').checked,
             rating: rating, tagging: tagging,
             stats: {total: 0, success: 0, failed: 0}, auth: auth};
   }
@@ -163,9 +162,8 @@ function SendFiles(files, index) {
 			upOptions.stats.total = files.length;
 			OnFirstUpload(files);
 		}
-
-	SendFile( files[index], function () { SendFiles(files, index + 1); } );
-	$set('status', 'Uploading #' + (index + 1) + ' image out of ' + files.length + '...');
+		SendFile( files[index], function () { SendFiles(files, index + 1); } );
+		$set('status', 'Uploading #' + (index + 1) + ' image out of ' + files.length + '...');
     } else 
 		OnAllUploaded();    
 }
@@ -332,4 +330,5 @@ function RestoreLastSettingsFor(uploadURL) {
     $each(checkboxesToSave, function (setting) {
       SetCookie( cookieBaseName + setting, $(setting).checked ? '1' : '0', 7 * 24 * 3600 );
     });
+	debugger;
   }
