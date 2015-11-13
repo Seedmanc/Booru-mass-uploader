@@ -95,23 +95,28 @@ function FilesSelected(selFiles) {
       }
   }
 
-  function UploadOptions() {
-      var rating = {when: $('forceRating').checked ? 'always' : 'default',
-                    set:  $('setSafe').checked  ? 's' :
-                            $('setQuest').checked ? 'q' : 'e'};
+function UploadOptions() {
+    var rating = {
+		when:$('forceRating').checked ? 'always' : 'default',
+        set: $('setSafe').checked ? 's' :
+			$('setQuest').checked ? 'q' : 'e'
+	};
 
-      var tagging = {when: $('tagsFromNames').checked ? 'name' :
-                           $('forceTags').checked ? 'always' : 'add',
-                     set: $get('tags').toLowerCase().split(/\s+/)};
+    var tagging = {
+		when:$('forceTags').checked ? 'always' : 'add',
+        set: $get('tags').toLowerCase().split(/\s+/)
+	};
 
-      var auth = {userID: $get('userID'), ticket: $get('ticket')};
-          auth.use = auth.userID != '' || auth.ticket != '';
+    var auth = {
+		userID: GetCookie('user_id'),
+		ticket: GetCookie('pass_hash')
+	};
+    auth.use = auth.userID != '' && auth.ticket != '';
 
-      var tagmeStart = $get('tagmeStart');
-          tagmeStart = IsNum(tagmeStart) ? tagmeStart : 4;
-
-    return {delay: 1000, uploadURL: $get('uploadURL'), title: $get('title'),
-            tagmeStart: tagmeStart, rating: rating, tagging: tagging,
+	var uploadURL = document.location.href.split('.')[0]+'.booru.org/index.php?page=post&s=add';
+	
+    return {delay: 1000, uploadURL: uploadURL, title: $get('title'),
+            rating: rating, tagging: tagging,
             stats: {total: 0, success: 0, failed: 0}, auth: auth};
   }
 
@@ -150,176 +155,146 @@ function FilesSelected(selFiles) {
       upOptions.stats.failed++;
     }
 
-  function SendFiles(files, index) {
-      index = index || 0;
+function SendFiles(files, index) {
+    index = index || 0;
 
     if (index < files.length) {
-      if (index == 0) {
-        upOptions.stats.total = files.length;
-        OnFirstUpload(files);
-      }
+		if (index == 0) {
+			upOptions.stats.total = files.length;
+			OnFirstUpload(files);
+		}
 
-      SendFile( files[index], function () { SendFiles(files, index + 1); } );
-      $set('status', 'Uploading #' + (index + 1) + ' image out of ' + files.length + '...');
-    } else {
-      OnAllUploaded();
-    }
-  }
+	SendFile( files[index], function () { SendFiles(files, index + 1); } );
+	$set('status', 'Uploading #' + (index + 1) + ' image out of ' + files.length + '...');
+    } else 
+		OnAllUploaded();    
+}
 
-    function SendFile(file, callback) {
-      var reqVars = {title: upOptions.title, tags: TagsFor(file),
-                     rating: RatingFor(file), submit: 'Upload'};
-      if (upOptions.auth.use) {
-        reqVars.cookies = 'user_id=' +   upOptions.auth.userID + '; ' +
-                          'pass_hash=' + upOptions.auth.ticket;
-      }
+function SendFile(file, callback) {
+	var reqVars = {
+		title:  TitleFor(file), tags: TagsFor(file),
+		rating: RatingFor(file), submit: 'Upload',
+		source: upOptions.source
+	};
+	if (upOptions.auth.use) 
+		reqVars.cookies = 'user_id=' +   upOptions.auth.userID + '; ' + 'pass_hash=' + upOptions.auth.ticket;
 
-      var xhr = CreateXHRequest();
+	var xhr = CreateXHRequest();
+	xhr.onreadystatechange = function () {
+		if (this.readyState == 4 && (this.status == 200 || this.status == 304 /*not modified*/)) {
+			// "mage" instead of "image" because first "I" might be capitalized.
+			if (this.responseText.indexOf('mage added') != -1) 
+				LogSuccess(file)
+			else if (this.responseText.indexOf('already exists') != -1) 
+				LogFailure(file, 'this image already exists')
+			else if (this.responseText.indexOf('permission') != -1) {
+				LogFailure(file, 'no permissions');
+				var msg = 'Could not upload this image - the board says we\'ve got no permissions.\nCheck if you are logged in. Stopped.';
+				alert(msg);
+				OnAllUploaded();
+				throw msg;
+			} else 
+				LogFailure(file, 'wrong response, check your posting form URL');
 
-      xhr.onreadystatechange = function () {
-        if (this.readyState == 4 && (this.status == 200 || this.status == 304 /*not modified*/)) {
-          // "mage" instead of "image" because first "I" might be capitalized.
-          if (this.responseText.indexOf('mage added') != -1) {
-            LogSuccess(file);
-          } else if (this.responseText.indexOf('already exists') != -1) {
-            LogFailure(file, 'this image already exists');
-          } else if (this.responseText.indexOf('permission') != -1) {
-            LogFailure(file, 'no permissions');
+			UpdateUpProgress( (upOptions.stats.success + upOptions.stats.failed) / upOptions.stats.total );
+			setTimeout(callback, upOptions.delay);
+		}
+	}
 
-              var msg = 'Could not upload this image - the board says we\'ve got no permissions.\nMaybe wrong ticket? Stopped.';
-            alert(msg);
-            OnAllUploaded();
+	var boundary = '--bOh3aYae';
+	var EOLN = "\r\n";
 
-            throw msg;
-          } else {
-            LogFailure(file, 'wrong response, check your posting form URL');
-          }
+	var postVars = '';
 
-          UpdateUpProgress( (upOptions.stats.success + upOptions.stats.failed) / upOptions.stats.total );
-          setTimeout(callback, upOptions.delay);
-        }
-      }
+	for (var name in reqVars) {
+		postVars += boundary + EOLN +
+				  'Content-Disposition: form-data; name="' + name + '"' + EOLN +
+				  EOLN + reqVars[name] + EOLN;
+	}
 
-      var boundary = '--bOh3aYae';
-      var EOLN = "\r\n";
+	var reader = new FileReader;
+	reader.onloadend = function () {
+		var data = boundary + EOLN +
+				   'Content-Disposition: form-data; name="upload";' +
+					  ' filename="' + file.name + '"' + EOLN +
+				   'Content-Type: application/octet-stream' + EOLN +
+				   'Content-Transfer-Encoding: binary' + EOLN +
+				   EOLN +
+					 reader.result + EOLN +
+					 postVars +
+				   boundary + '--';
 
-      var postVars = '';
-
-        for (var name in reqVars) {
-          postVars += boundary + EOLN +
-                      'Content-Disposition: form-data; name="' + name + '"' + EOLN +
-                      EOLN + reqVars[name] + EOLN;
-        }
-
-      var reader = new FileReader;
-
-          reader.onloadend = function () {
-            var data = boundary + EOLN +
-                       'Content-Disposition: form-data; name="upload";' +
-                          ' filename="' + file.name + '"' + EOLN +
-                       'Content-Type: application/octet-stream' + EOLN +
-                       'Content-Transfer-Encoding: binary' + EOLN +
-                       EOLN +
-                         reader.result + EOLN +
-                         postVars +
-                       boundary + '--';
-
-            xhr.open('POST', ProxyUrlFor(upOptions.uploadURL));
-              xhr.setRequestHeader('Content-Type', 'multipart/form-data; boundary=' + boundary.substr(2));
-              xhr.setRequestHeader('Content-Length', data.length);
-            xhr.sendAsBinary(data);
-          }
-
-      reader.readAsBinaryString(file);
-    }
+		xhr.open('POST', upOptions.uploadURL);
+		xhr.setRequestHeader('Content-Type', 'multipart/form-data; boundary=' + boundary.substr(2));
+		xhr.setRequestHeader('Content-Length', data.length);
+		xhr.sendAsBinary(data);
+	  }
+	reader.readAsBinaryString(file);
+}
 
     function UpdateUpProgress(percent) {
       WidthOf('progress', WidthOf('progressWr') * percent);
     }
 
-      function RatingFor(file) { return InfoAbout(file)[0]; }
-      function TagsFor(file) { return NormTags( InfoAbout(file)[1] ); }
+    function RatingFor(file){ return InfoAbout(file)[0]; }
+    function TagsFor(file) 	{ return NormTags( InfoAbout(file)[1] ); }
+	function TitleFor(file) { return InfoAbout(file)[2];}
 
-        function InfoAbout(file) {
-            var fileName = file.name.toLowerCase();
+function InfoAbout(file) {
+	var fileName = file.name.toLowerCase();
 
-          var ext = fileName.match(/ *\.(\w{2,4})$/i);
-          if (ext) { fileName = fileName.replace(ext[0], ''); }
+	var ext = fileName.match(/ *\.(\w{2,4})$/i);
+	if (ext)
+		fileName = fileName.replace(ext[0], '');
 
-            if (!ext) {
-              throw 'File ' + file.name + ' have no extension.';
-            } else {
-              ext = ext[1];
-            }
+	if (!ext)
+		throw 'File ' + file.name + ' have no extension.'
+	else
+		ext = ext[1];
 
-          var rating = fileName.match(/^([sqe])( +|$)/i);
-          if (rating) { fileName = fileName.replace(rating[0], ''); }
+	var rating = fileName.match(/^([sqe])( +|$)/i);
+	if (rating)
+		fileName = fileName.replace(rating[0], '');
 
-            if (upOptions.rating.when == 'always' || !rating) {
-              rating = upOptions.rating.set;
-            } else {
-              rating = rating[1];
-            }
+	if (upOptions.rating.when == 'always' || !rating) 
+		rating = upOptions.rating.set 
+	else 
+		rating = rating[1];
 
-          var tags = fileName;
+	var tags = fileName;
+	var title = upOptions.title?tags.split(/\s+/)[tags.split(/\s+/).length-1]:'';
+	return [rating, tags, title];
+}
 
-          return [rating, tags, ext];
-        }
+function NormTags(tags) {
+	tags = tags.toLowerCase().split(/\s+/);
+	tags.pop();
+	tags = mkUniq(tags);
+	if (tags[0] == '')
+		tags.shift(); 
 
-        function NormTags(tags) {
-          tags = tags.toLowerCase().split(/\s+/);
+	switch (upOptions.tagging.when) {
+		case 'always':
+			tags = [];
+		case 'add':
+			tags = tags.concat(upOptions.tagging.set);
+			tags = mkUniq(tags);
+	}
+	return tags.join(' ');
+}
 
-            tags = ArrayUnique( tags.sort() );
-            if (tags[0] == '') { tags.shift(); }
+function mkUniq(arr) {
+	var to = {};
+	for (var v in arr){
+		to[arr[v].toLowerCase()] = true;
+	};
+	arr2 = Object.keys(to);
+	return arr2.sort();	
+}
 
-          if (tags.length < upOptions.tagmeStart) {
-            tags.push('tagme');
-            tags = tags.sort();
-          }
+var settingsToSave = ['tags'];
 
-            switch (upOptions.tagging.when) {
-            case 'name':
-              break;
-            case 'always':
-              tags = [];
-            case 'add':
-              tags = tags.concat(upOptions.tagging.set);
-              tags = ArrayUnique( tags.sort() );
-            }
-
-          return tags.join(' ');
-        }
-
-          function ArrayUnique(src) {
-            var unique = [];
-
-              $each(src, function (item, index) {
-                var dup = false;
-
-                  $each(unique, function (item2, index2) {
-                    if (index != index2 && item == item2) {
-                      dup = true;
-                      return true;
-                    }
-                  });
-
-                if (!dup) { unique.push(item); }
-              });
-
-            return unique;
-          }
-
-      // XHR doesn't allow cross-domains requests.
-      function ProxyUrlFor(url) {
-        return url;
-      }
-
-
-  var settingsToSave = ['userID', 'ticket', 'tags', 'tagmeStart'];
-
-  var checkboxesToSave = ['forceRating', 'ratingAsDefault',
-                            'setSafe', 'setQuest', 'setExplicit',
-                          'tagsFromNames', 'forceTags', 'addTags'];
+var checkboxesToSave = ['forceRating', 'ratingAsDefault', 'setSafe', 'setQuest', 'setExplicit', 'forceTags', 'addTags', 'setTitle'];
 
 function RestoreLastSettingsFor(uploadURL) {
   var cookieBaseName = CookieSettingsBaseNameFor(uploadURL);
@@ -327,7 +302,7 @@ function RestoreLastSettingsFor(uploadURL) {
   $each(settingsToSave, function (setting) {
     var lastValue = GetCookie(cookieBaseName + setting);
     if (lastValue) {
-      if (!$get(setting) || (setting == 'tagmeStart' && $get(setting) == 4)) {
+      if (!$get(setting)) {
         $set(setting, lastValue);
       }
     }
