@@ -10,27 +10,6 @@ if (!XMLHttpRequest.prototype.sendAsBinary) {
   };
 }
  
-
- /* var uploadURL = location.search.substr(1);
-	if (uploadURL) {
-	  uploadURL = decodeURIComponent(uploadURL);
-	  if (uploadURL.indexOf('http://') == -1) { uploadURL = decodeURIComponent(uploadURL); }
-	  $set('uploadURL', uploadURL);
-	  $('otherSettings').appendChild( $('uploadUrlWr') );
-	}
-
-  RestoreLastSettingsFor( $get('uploadURL') );
-
-  if (!GetCookie('fileNamesTipShown')) {
-	$show('fileNamesTip');
-	SetCookie('fileNamesTipShown', true, 48);
-  }
-
-  setInterval(function () {
-	$('submit').disabled = $('files').files.length == 0 || upOptions.running;
-	$style( 'tagsWr', 'display', $('tagsFromNames').checked ? 'none' : 'block' );
-  }, 200);*/
-
 var upOptions = {running: false};
 
 function FilesSelected(selFiles) {
@@ -328,9 +307,4 @@ function RestoreLastSettingsFor(uploadURL) {
     $each(settingsToSave, function (setting) {
       SetCookie( cookieBaseName + setting, $get(setting), 7 * 24 * 3600 );
     });
-
-    /*$each(checkboxesToSave, function (setting) {
-      SetCookie( cookieBaseName + setting, $(setting).checked ? '1' : '0', 7 * 24 * 3600 );
-    });*/
-	debugger;
   }
