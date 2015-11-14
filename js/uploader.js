@@ -9,7 +9,9 @@ if (!XMLHttpRequest.prototype.sendAsBinary) {
     /* ...or as ArrayBuffer (legacy)...: this.send(ui8Data.buffer); */
   };
 }
- 
+
+RestoreLastSettings();
+
 var upOptions = {running: false};
 
 function FilesSelected(selFiles) {
@@ -268,7 +270,7 @@ function mkUniq(arr) {
 var settingsToSave = ['tags', 'source'];
 var checkboxesToSave = ['forceRating', 'ratingAsDefault', 'setSafe', 'setQuest', 'setExplicit', 'forceTags', 'addTags', 'title'];
 
-function RestoreLastSettingsFor() {
+function RestoreLastSettings() {
 	var cookieBaseName = 'last@BMU:';
 
 	$each(settingsToSave, function (setting) {
