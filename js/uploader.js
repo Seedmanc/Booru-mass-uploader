@@ -10,6 +10,9 @@ if (!XMLHttpRequest.prototype.sendAsBinary) {
   };
 }
 
+var settingsToSave = ['tags', 'source'];
+var checkboxesToSave = ['forceRating', 'ratingAsDefault', 'setSafe', 'setQuest', 'setExplicit', 'forceTags', 'addTags', 'title'];
+
 RestoreLastSettings();
 
 var upOptions = {running: false};
@@ -266,9 +269,6 @@ function mkUniq(arr) {
 	arr2 = Object.keys(to);
 	return arr2.sort();	
 }
-
-var settingsToSave = ['tags', 'source'];
-var checkboxesToSave = ['forceRating', 'ratingAsDefault', 'setSafe', 'setQuest', 'setExplicit', 'forceTags', 'addTags', 'title'];
 
 function RestoreLastSettings() {
 	var cookieBaseName = 'last@BMU:';
