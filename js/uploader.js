@@ -13,50 +13,48 @@ if (!XMLHttpRequest.prototype.sendAsBinary) {
 var upOptions = {running: false};
 
 function FilesSelected(selFiles) {
-    if (upOptions.running) { return; }
-
-  upOptions = UploadOptions();
+	if (upOptions.running) 
+		return;
+	upOptions = UploadOptions();
     if (upOptions.auth.use && !IsNum(upOptions.auth.userID)) {
-      alert('Wrong user ID - it must be a number.');
-      return;
+		alert('Wrong user ID - it must be a number.');
+		return;
     }
     if (upOptions.auth.use && upOptions.auth.ticket.length != 40) {
-      alert('Wrong ticket - it must be 40 characters long.');
-      return;
-    }
+		alert('Wrong ticket - it must be 40 characters long.');
+		return;
+	}
 
   upOptions.running = true;
 
   try {
     var files = [];
-      $each(selFiles, function (file) {
-        if (IsUploadable(file)) { files.push(file); }
-      });
-
-    SendFiles(files);
+    $each(selFiles, function (file) {
+		if (IsUploadable(file))
+			files.push(file);
+	});
+	SendFiles(files);
   } catch (e) {
-    if (typeof e == 'string') {
-      alert('Couldn\'t upload - ' + e);
-    }
+    if (typeof e == 'string') 
+		alert('Couldn\'t upload - ' + e);
   }
 }
 
-  function IsUploadable(file) {
-    return (typeof file.type == 'string' ? file.type.substr(0, 6) == 'image/' : true)
-           && /(jpe?g|gif|png|bmp)$/i.test(file.name);
-  }
+function IsUploadable(file) {
+	return (typeof file.type == 'string' ? file.type.substr(0, 6) == 'image/' : true)
+		&& /(jpe?g|gif|png|bmp)$/i.test(file.name);
+}
 
-  function OnFirstUpload(files) {
+function OnFirstUpload(files) {
     SaveLastSettings();
-
     Log('info', 'Started uploading ' + upOptions.stats.total + ' files.');
     UpdateUpProgress(0);
-  }
+}
 
-  function OnAllUploaded() {
+function OnAllUploaded() {
     upOptions.running = false;
 
-      var msg = 'Finished uploading; ' + upOptions.stats.success + ' uploaded ok + ' +
+    var msg = 'Finished uploading; ' + upOptions.stats.success + ' uploaded ok + ' +
                 upOptions.stats.failed + ' failed = ' +
                 upOptions.stats.total + ' images total.';
     Log('info end', msg);
@@ -65,15 +63,14 @@ function FilesSelected(selFiles) {
     UpdateUpProgress(0);
 
     var ourBooru = upOptions.uploadURL.match(/^http:\/\/([\w\d-]+)\.booru\.org\//i);
-      if (ourBooru) {
-          var baseCtrUpdURL = 'http://booru.org/?action=updateimagecount&updateimagecount[booru]=';
-
+    if (ourBooru) {
+		var baseCtrUpdURL = 'http://booru.org/?action=updateimagecount&updateimagecount[booru]=';
         var image = new Image();
-            image.src = baseCtrUpdURL + ourBooru[1] + '&rand=' + Math.random();
-      }
+        image.src = baseCtrUpdURL + ourBooru[1] + '&rand=' + Math.random();
+    }
 	$('files').files = [];
 	$('files').value = '';
-  }
+}
 
 function UploadOptions() {
     var rating = {
@@ -91,7 +88,7 @@ function UploadOptions() {
 		userID: GetCookie('user_id'),
 		ticket: GetCookie('pass_hash')
 	};
-    auth.use = auth.userID != '' && auth.ticket != '';
+    auth.use = auth.userID && auth.ticket;
 
 	var uploadURL = document.location.href.split('.')[0]+'.booru.org/index.php?page=post&s=add';
 	
@@ -100,16 +97,16 @@ function UploadOptions() {
             stats: {total: 0, success: 0, failed: 0}, auth: auth};
   }
 
-  function Log(className, msg) {
-      var now = new Date;
-      msg = '[' + now.getHours() + ':' + now.getMinutes() + '] ' + msg;
+function Log(className, msg) {
+	var now = new Date;
+	msg = '[' + now.getHours() + ':' + now.getMinutes() + '] ' + msg;
 
     $show('log');
 
-      if ($('log').childNodes.length > 200) {
-        var log = $('log');
-        while (child = log.firstChild) { log.removeChild(child); }
-      }
+	if ($('log').childNodes.length > 200) {
+		var log = $('log');
+		while (child = log.firstChild) { log.removeChild(child); }
+	}
 
     var line = document.createElement('div');
         line.className = className;
@@ -118,22 +115,22 @@ function UploadOptions() {
     $('log').appendChild(line);
   }
 
-    function EscapeHTML(str) {
-        var entity = {'&': '&amp;', '<': '&lt;', '>': '&gt;'};
-      return str.replace(/&|<|>/g, function (ch) {
-        return entity[ ch[0] ];
-      });
-    }
+function EscapeHTML(str) {
+	var entity = {'&': '&amp;', '<': '&lt;', '>': '&gt;'};
+	return str.replace(/&|<|>/g, function (ch) {
+		return entity[ ch[0] ];
+	});
+}
 
-    function LogSuccess(file) {
-      Log('success', 'Image ' + file.name + ' was successfully uploaded.');
-      upOptions.stats.success++;
-    }
+function LogSuccess(file) {
+	Log('success', 'Image ' + file.name + ' was successfully uploaded.');
+	upOptions.stats.success++;
+}
 
-    function LogFailure(file, reason) {
-      Log('error', 'Couldn\'t upload ' + file.name + ': ' + reason + '.');
-      upOptions.stats.failed++;
-    }
+function LogFailure(file, reason) {
+	Log('error', 'Couldn\'t upload ' + file.name + ': ' + reason + '.');
+	upOptions.stats.failed++;
+}
 
 function SendFiles(files, index) {
     index = index || 0;
@@ -187,37 +184,34 @@ function SendFile(file, callback) {
 
 	for (var name in reqVars) {
 		postVars += boundary + EOLN +
-				  'Content-Disposition: form-data; name="' + name + '"' + EOLN +
-				  EOLN + reqVars[name] + EOLN;
+			'Content-Disposition: form-data; name="' + name + '"' + EOLN + EOLN + 
+			reqVars[name] + EOLN;
 	}
 
 	var reader = new FileReader;
 	reader.onloadend = function () {
 		var data = boundary + EOLN +
-				   'Content-Disposition: form-data; name="upload";' +
-					  ' filename="' + file.name + '"' + EOLN +
-				   'Content-Type: application/octet-stream' + EOLN +
-				   'Content-Transfer-Encoding: binary' + EOLN +
-				   EOLN +
-					 reader.result + EOLN +
-					 postVars +
-				   boundary + '--';
+			'Content-Disposition: form-data; name="upload";' + ' filename="' + file.name + '"' + EOLN +
+			'Content-Type: application/octet-stream' + EOLN +
+			'Content-Transfer-Encoding: binary' + EOLN + EOLN +
+			reader.result + EOLN +
+			postVars + boundary + '--';
 
 		xhr.open('POST', upOptions.uploadURL);
 		xhr.setRequestHeader('Content-Type', 'multipart/form-data; boundary=' + boundary.substr(2));
 		xhr.setRequestHeader('Content-Length', data.length);
 		xhr.sendAsBinary(data);
-	  }
+	}
 	reader.readAsBinaryString(file);
 }
 
-    function UpdateUpProgress(percent) {
-      WidthOf('progress', WidthOf('progressWr') * percent);
-    }
+function UpdateUpProgress(percent) {
+	WidthOf('progress', WidthOf('progressWr') * percent);
+}
 
-    function RatingFor(file){ return InfoAbout(file)[0]; }
-    function TagsFor(file) 	{ return NormTags( InfoAbout(file)[1] ); }
-	function TitleFor(file) { return InfoAbout(file)[2];}
+function RatingFor(file){ return InfoAbout(file)[0];}
+function TagsFor(file) 	{ return NormTags (InfoAbout(file)[1] );}
+function TitleFor(file) { return InfoAbout(file)[2];}
 
 function InfoAbout(file) {
 	var fileName = file.name.toLowerCase();
@@ -240,7 +234,7 @@ function InfoAbout(file) {
 	else 
 		rating = rating[1];
 
-	var tags = fileName;
+	var tags  = fileName;
 	var title = upOptions.title?tags.split(/\s+/)[tags.split(/\s+/).length-1]:'';
 	return [rating, tags, title];
 }
@@ -271,40 +265,33 @@ function mkUniq(arr) {
 	return arr2.sort();	
 }
 
-var settingsToSave = ['tags'];
+var settingsToSave = ['tags', 'source'];
+var checkboxesToSave = ['forceRating', 'ratingAsDefault', 'setSafe', 'setQuest', 'setExplicit', 'forceTags', 'addTags', 'title'];
 
-var checkboxesToSave = ['forceRating', 'ratingAsDefault', 'setSafe', 'setQuest', 'setExplicit', 'forceTags', 'addTags', 'setTitle'];
+function RestoreLastSettingsFor() {
+	var cookieBaseName = 'last@BMU:';
 
-function RestoreLastSettingsFor(uploadURL) {
-  var cookieBaseName = CookieSettingsBaseNameFor(uploadURL);
+	$each(settingsToSave, function (setting) {
+		var lastValue = GetCookie(cookieBaseName + setting);
+		if (lastValue && !$get(setting)) 
+			$set(setting, lastValue);
+	});
 
-  $each(settingsToSave, function (setting) {
-    var lastValue = GetCookie(cookieBaseName + setting);
-    if (lastValue) {
-      if (!$get(setting)) {
-        $set(setting, lastValue);
-      }
-    }
-  });
-
-  $each(checkboxesToSave, function (setting) {
-    var lastValue = GetCookie(cookieBaseName + setting);
-    if (IsNum(lastValue)) { $(setting).checked = lastValue == '1'; }
-  });
+	$each(checkboxesToSave, function (setting) {
+		var lastValue = GetCookie(cookieBaseName + setting);
+		if (IsNum(lastValue))
+			$(setting).checked = lastValue == '1'; 
+	});
 }
 
-  function CookieSettingsBaseNameFor(uploadURL) {
-    var domain = '';
-      var matches = uploadURL.match(/^(http:\/\/)?(www\.)?([^\/]+)/i);
-      if (matches) { domain = matches[3].replace(/\W/g, '-'); }
-
-    return 'last@' + domain + ':';
-  }
-
-  function SaveLastSettings() {
-    var cookieBaseName = CookieSettingsBaseNameFor(upOptions.uploadURL);
+function SaveLastSettings() {
+    var cookieBaseName = 'last@BMU:';
 
     $each(settingsToSave, function (setting) {
-      SetCookie( cookieBaseName + setting, $get(setting), 7 * 24 * 3600 );
+		SetCookie( cookieBaseName + setting, $get(setting), 7 * 24 * 3600 );
     });
-  }
+	
+	$each(checkboxesToSave, function (setting) {
+		SetCookie( cookieBaseName + setting, $(setting).checked ? '1' : '0', 7 * 24 * 3600 );
+    });
+}

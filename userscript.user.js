@@ -4,6 +4,8 @@
 // @version	1.0
 // @author		Seedmanc
 // @include	http://*.booru.org/index.php*
+// @grant 		none 
+// @noframes
 // ==/UserScript==
 
 if (window.top != window.self)  											
@@ -29,9 +31,9 @@ if (~document.location.href.indexOf('s=mass_upload')) {
 } else if (~document.location.href.indexOf('?page=')) {
   try {
 	var notice = document.getElementById('notice').previous() ;
-	notice.parentNode.removeChild(notice);
+	if (notice) notice.parentNode.removeChild(notice);
 	var longnotice = document.getElementById('long-notice');
-	longnotice.parentNode.removeChild(longnotice);
+	if (longnotice) longnotice.parentNode.removeChild(longnotice);
 	var ad = document.querySelectorAll('center div[id*="adbox"]')[0].parentNode;
 	ad.parentNode.removeChild(ad);
   } catch(any){};
