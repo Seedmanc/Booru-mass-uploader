@@ -275,7 +275,7 @@ function RestoreLastSettings() {
 
 	$each(settingsToSave, function (setting) {
 		var lastValue = GetCookie(cookieBaseName + setting);
-		if (lastValue && !$get(setting)) 
+		if (lastValue && (!$get(setting) || setting == 'source')) 
 			$set(setting, lastValue);
 	});
 
