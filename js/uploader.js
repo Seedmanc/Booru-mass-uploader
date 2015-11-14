@@ -14,6 +14,7 @@ var settingsToSave = ['tags', 'source'];
 var checkboxesToSave = ['forceRating', 'ratingAsDefault', 'setSafe', 'setQuest', 'setExplicit', 'forceTags', 'addTags', 'title'];
 
 RestoreLastSettings();
+UploadOptions();
 
 var upOptions = {running: false};
 
