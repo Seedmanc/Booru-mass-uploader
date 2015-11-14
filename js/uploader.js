@@ -94,6 +94,12 @@ function UploadOptions() {
 		ticket: GetCookie('pass_hash')
 	};
     auth.use = auth.userID && auth.ticket;
+	
+	$show('loggedIn');
+	if (auth.use)
+		$set('loggedIn', 'You are logged in')
+	else
+		$set('loggedIn', 'You are anonymous');
 
 	var uploadURL = document.location.href.split('.')[0]+'.booru.org/index.php?page=post&s=add';
 	
