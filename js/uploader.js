@@ -15,14 +15,31 @@ var checkboxesToSave = ['forceRating', 'ratingAsDefault', 'setSafe', 'setQuest',
 
 var myTags = (GetCookie('tags')||[]).split(' ');
 if (myTags.length) {
+	$show('my-tags');
 	var tagsArea = '';
 	$each(myTags, function(tag){
 		tagsArea += '<a href="#" id="t_'+tag+'"' + "onclick=\"javascript:toggleTags('"+tag+"','tags','t_"+tag+"');" + 'return false;">'+tag+'</a> ';
 	});
 	$('my-tags').innerHTML = tagsArea;
-}
+}; 
 
-
+function toggleTags(tag, id, lid)
+	{
+		temp = new Array(1);
+		temp[0] = tag;
+			tags = $('tags').value.split(" ");
+		if(tags.include(tag))
+		{
+				$('tags').value=tags.without(tag).join(" ");
+			$(lid).innerHTML=tag+" ";
+		}
+		else
+		{
+				$('tags').value=tags.concat(temp).join(" ");
+			$(lid).innerHTML="<b>"+tag+"</b> ";
+		}
+		return false;
+	}
 
 RestoreLastSettings();
 UploadOptions();
