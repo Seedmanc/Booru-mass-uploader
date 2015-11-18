@@ -109,7 +109,7 @@ function UploadOptions() {
 	
 	document.getElementById('loggedIn').textContent = auth.use ? 'You are logged in' : 'You are posting anonymously';
 
-	var uploadURL = document.location.protocol+'//'+document.location.hostname'/index.php?page=post&s=add';
+	var uploadURL = document.location.protocol+'//'+document.location.hostname+'/index.php?page=post&s=add';
 	
     return {delay: 1000, uploadURL: uploadURL, title: document.getElementById('title').checked,
             rating: rating, tagging: tagging, source: $get('source'),
