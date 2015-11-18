@@ -13,7 +13,7 @@ if (!XMLHttpRequest.prototype.sendAsBinary) {
 var settingsToSave = ['tags', 'source'];
 var checkboxesToSave = ['forceRating', 'ratingAsDefault', 'setSafe', 'setQuest', 'setExplicit', 'forceTags', 'addTags', 'title'];
 
-var myTags = (GetCookie('tags')||[]).split(' ');
+var myTags = (GetCookie('tags')||'').replace(/%2520/gi,' ').replace(/%20/gi,' ').split(/\s+/);
 if (myTags.length) {
 	$show('mytags');
 	var tagsArea = '';
