@@ -4,6 +4,8 @@
 // @version	1.0
 // @author		Seedmanc
 // @include	http://*.booru.org/index.php*
+// @include 	http://gelbooru.com/index.php*
+// @include	http://safebooru.org/index.php*
 // @grant 		none 
 // @noframes
 // ==/UserScript==
@@ -38,12 +40,12 @@ if (~document.location.href.indexOf('s=mass_upload')) {
 	ad.parentNode.removeChild(ad);
   } catch(any){};
 	
-	var navbar = document.getElementById('navbar');			
+	var navbar = document.getElementById('navbar')|| document.getElementsByClassName('flat-list2')[0];			
 	var li = document.createElement("li");
 	var a  = document.createElement("a");
 	a.style= "font-weight:bold;";
 	a.appendChild(document.createTextNode('Mass Upload'));
-	a.href = document.location.href.split('.')[0]+'.booru.org/index.php?page=post&s=mass_upload';
+	a.href = document.location.protocol+'//'+document.location.hostname+'/index.php?page=post&s=mass_upload';
 	li.appendChild(a);
 	navbar.appendChild(li);
 } 	
