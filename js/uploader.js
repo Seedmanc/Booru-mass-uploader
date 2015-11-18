@@ -297,7 +297,7 @@ function NormTags(tags) {
 
 function mkUniq(arr) {
 	var to = {};
-	for (var v in arr){
+	for (var v = 0; v< arr.length; v++){
 		to[arr[v].toLowerCase()] = true;
 	};
 	arr2 = Object.keys(to);
