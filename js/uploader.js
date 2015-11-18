@@ -18,7 +18,7 @@ if (myTags.length) {
 	$show('mytags');
 	var tagsArea = '';
 	$each(myTags, function(tag){
-		tagsArea += '&nbsp;<a href="#" id="t_'+tag+'"' + "onclick=\"javascript:toggleTags('"+tag+"','tags','t_"+tag+"');" + 'return false;">'+tag+'</a> ';
+		tagsArea += '&nbsp;<a style="text-decoration:none;" href="#'+tag+'" id="t_'+tag+'"' + "onclick=\"javascript:toggleTags('"+tag+"','tags','t_"+tag+"');" + 'return false;">'+tag+'</a> ';
 	});
 	$('my-tags').innerHTML = tagsArea;
 }; 
