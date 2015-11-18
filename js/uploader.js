@@ -15,7 +15,7 @@ var checkboxesToSave = ['forceRating', 'ratingAsDefault', 'setSafe', 'setQuest',
 
 var myTags = (GetCookie('tags')||[]).split(' ');
 if (myTags.length) {
-	$show('my-tags');
+	$show('mytags');
 	var tagsArea = '';
 	$each(myTags, function(tag){
 		tagsArea += '<a href="#" id="t_'+tag+'"' + "onclick=\"javascript:toggleTags('"+tag+"','tags','t_"+tag+"');" + 'return false;"> '+tag+' </a> ';
