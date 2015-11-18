@@ -40,7 +40,7 @@ if (~document.location.href.indexOf('s=mass_upload')) {
 	ad.parentNode.removeChild(ad);
   } catch(any){};
 	
-	var navbar = document.getElementById('navbar')|| document.getElementsByClassName('flat-list2')[0];			
+	var navbar = document.getElementById('navbar') || document.getElementsByClassName('flat-list2')[0];			
 	var li = document.createElement("li");
 	var a  = document.createElement("a");
 	a.style= "font-weight:bold;";

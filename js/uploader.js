@@ -13,6 +13,17 @@ if (!XMLHttpRequest.prototype.sendAsBinary) {
 var settingsToSave = ['tags', 'source'];
 var checkboxesToSave = ['forceRating', 'ratingAsDefault', 'setSafe', 'setQuest', 'setExplicit', 'forceTags', 'addTags', 'title'];
 
+var myTags = (GetCookie('tags')||[]).split(' ');
+if (myTags.length) {
+	var tagsArea = '';
+	$each(myTags, function(tag){
+		tagsArea += '<a href="#" id="t_'+tag+'"' + "onclick=\"javascript:toggleTags('"+tag+"','tags','t_"+tag+"');" + 'return false;">'+tag+'</a> ';
+	});
+	$('my-tags').innerHTML = tagsArea;
+}
+
+
+
 RestoreLastSettings();
 UploadOptions();
 
