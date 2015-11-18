@@ -30,12 +30,12 @@ function toggleTags(tag, id, lid)
 			tags = $('tags').value.split(" ");
 		if(tags.include(tag))
 		{
-				$('tags').value=tags.without(tag).join(" ");
+				$('tags').value=tags.without(tag).join(" ").trim()+' ';
 			$(lid).innerHTML=tag+" ";
 		}
 		else
 		{
-				$('tags').value=tags.concat(temp).join(" ");
+				$('tags').value=tags.concat(temp).join(" ").trim()+' ';
 			$(lid).innerHTML="<b>"+tag+"</b> ";
 		}
 		return false;
@@ -278,6 +278,8 @@ function InfoAbout(file) {
 function NormTags(tags) {
 	tags = tags.toLowerCase().split(/\s+/);
 	tags.pop();
+	if (tags.length < 2)
+		return tags.join(' ');
 	tags = mkUniq(tags);
 	if (tags[0] == '')
 		tags.shift(); 
