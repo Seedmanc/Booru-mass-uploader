@@ -278,12 +278,13 @@ function InfoAbout(file) {
 function NormTags(tags) {
 	tags = tags.toLowerCase().split(/\s+/);
 	tags.pop();
-	if (tags.length < 2)
-		return tags.join(' ');
-	tags = mkUniq(tags);
-	if (tags[0] == '')
-		tags.shift(); 
-
+	
+	if (tags.length >= 2)	 {	
+		tags = mkUniq(tags);
+		if (tags[0] == '')
+			tags.shift(); 
+	}
+	
 	switch (upOptions.tagging.when) {
 		case 'always':
 			tags = [];
