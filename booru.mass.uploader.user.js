@@ -34,10 +34,6 @@ if (~document.location.href.indexOf('s=mass_upload')) {
   try {
 	var notice = document.getElementById('notice').previous() ;
 	if (notice) notice.parentNode.removeChild(notice);
-	var ad = document.querySelectorAll('center div[id*="adbox"]')[0].parentNode;
-	ad.parentNode.removeChild(ad);
-	var ad = document.querySelectorAll('#right-col div[id*="adbox"]')[0].parentNode;
-	ad.parentNode.removeChild(ad);
   } catch(any){} 
 	
 	var navbar = document.getElementById('navbar') || document.getElementsByClassName('flat-list2')[0];			
