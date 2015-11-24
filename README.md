@@ -3,7 +3,7 @@ This userscript allows you to mass-upload images to imageboard sites running *bo
 
 With the [public Mass Uploader](https://unblock.ibsearch.xxx/mass-upload/) gone, a need arose for replacement. While many tried to mindlessly replicate the PHP-requiring setup of the old one, I took another approach and simply integrated the uploader into the Booru page itself, eliminating the need to bypass CORS.
 
-After installing, the userscript adds a link to mass uploader in the booru's menu.
+After installing, the [userscript](https://github.com/Seedmanc/Booru-mass-uploader/raw/gh-pages/booru.mass.uploader.user.js) adds a link to mass uploader in the booru's menu.
 
 ![booru menu](http://puu.sh/lk53S/ad48c303c0.png)
 
