@@ -19,3 +19,5 @@ Interface was somewhat optimized, removing the redundant `Set tags based on imag
   Additonally, you can now set Title field of an image to its original filename as well as provide a custom Source field, which previously was hard-coded into PHP to advertise the uploader.
 
 Note that so far I have tested it with only a few boorus hosted on the http://booru.org site. I don't own other boorus to test it more and even though I tried adding support for Gelbooru and Safebooru, I haven't tested it there or on other custom-domain boorus. Your feedback is required, with enough of it I might add more support later.
+
+Be sure to check out my other Booru-related userscript: The [Booru Augmentation Project](https://github.com/Seedmanc/Booru-Augmentation-Project)
