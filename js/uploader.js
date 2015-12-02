@@ -293,7 +293,10 @@ function NormTags(tags) {
 function mkUniq(arr) {
 	var to = {};
 	for (var v = 0; v < arr.length; v++) {
-		to[arr[v].toLowerCase()] = true;
+		if (isANSI(arr[v])
+			to[arr[v].toLowerCase()] = true
+		else
+			to[encodeURI(arr[v].toLowerCase())] = true;
 	};
 	arr2 = Object.keys(to);
 	return arr2.sort();
@@ -322,3 +325,11 @@ function SaveLastSettings() {
 		SetCookie(cookieBaseName + setting, $(setting).checked ? '1' : '0', 7 * 24 * 3600);
 	});
 }
+
+function isANSI(s) {
+	var is=true;
+	s=s.split('');
+	s.each(function(v){
+		is=is&&(/[\u0000-\u00ff]/.test(v));});
+    return is;
+};
