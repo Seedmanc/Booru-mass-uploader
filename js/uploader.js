@@ -293,10 +293,10 @@ function NormTags(tags) {
 function mkUniq(arr) {
 	var to = {};
 	for (var v = 0; v < arr.length; v++) {
-		if (true)//isANSI(arr[v]))
+		if (isANSI(arr[v]))
 			to[arr[v].toLowerCase()] = true
-		//else
-			//to[encodeURI(arr[v].toLowerCase())] = true;
+		else
+			to[encodeURI(arr[v].toLowerCase())] = true;
 	};
 	arr2 = Object.keys(to);
 	return arr2.sort();
