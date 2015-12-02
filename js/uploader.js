@@ -132,12 +132,12 @@ function Log(className, msg) {
 	var now = new Date;
 	msg = '[' + now.getHours() + ':' + now.getMinutes() + '] ' + msg;
 	$show('log');
-	if ($('log').childNodes.length > 200) {
+	/* ($('log').childNodes.length > 200) {
 		var log = $('log');
 		while (child = log.firstChild) {
 			log.removeChild(child);
 		}
-	}
+	}*/
 	var line = document.createElement('div');
 	line.className = className;
 	line.innerHTML = EscapeHTML(msg);
