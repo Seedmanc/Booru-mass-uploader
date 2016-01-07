@@ -323,7 +323,8 @@ function RestoreLastSettings() {
 		var lastValue = GetCookie(cookieBaseName + setting);
 		if (IsNum(lastValue)) {
 			$(setting).checked = lastValue == '1';
-			$(setting).onchange();
+			if ($(setting).onchange)
+				$(setting).onchange();
 		}
 	});
 }
