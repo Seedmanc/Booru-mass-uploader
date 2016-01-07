@@ -25,8 +25,8 @@ if (myTags.length) {
 };
 
 $$('#asFiles,#asFolder').each(function(el){
-	el.onchange = function(evt){
-		if (evt.target.id == 'asFolder' && evt.target.checked) {
+	el.onchange = function(){
+		if (this.id == 'asFolder' && this.checked) {
 			$('files').setAttribute('directory','');
 			$('files').setAttribute('mozdirectory','');
 			$('files').setAttribute('webkitdirectory','');
