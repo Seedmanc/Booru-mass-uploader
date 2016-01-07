@@ -11,7 +11,8 @@ if (!XMLHttpRequest.prototype.sendAsBinary) {
 	};
 }
 var settingsToSave = ['tags', 'source'];
-var checkboxesToSave = ['forceRating', 'ratingAsDefault', 'setSafe', 'setQuest', 'setExplicit', 'forceTags', 'addTags',	'title'];
+var checkboxesToSave = ['forceRating', 'ratingAsDefault', 'setSafe', 'setQuest', 'setExplicit', 'forceTags', 'addTags',	'title', 'asFiles', 'asFolder'];
+
 var myTags = (GetCookie('tags') || '').replace(/%2520/gi, ' ').replace(/%20/gi, ' ').split(/\s+/);
 if (myTags.length) {
 	$show('mytags');
@@ -25,7 +26,7 @@ if (myTags.length) {
 
 $$('#asFiles,#asFolder').each(function(el){
 	el.onchange = function(evt){
-		if (evt.target.id == 'asFolder') {
+		if (evt.target.id == 'asFolder' && evt.target.checked) {
 			$('files').setAttribute('directory','');
 			$('files').setAttribute('mozdirectory','');
 			$('files').setAttribute('webkitdirectory','');
@@ -319,8 +320,10 @@ function RestoreLastSettings() {
 	});
 	$each(checkboxesToSave, function (setting) {
 		var lastValue = GetCookie(cookieBaseName + setting);
-		if (IsNum(lastValue))
+		if (IsNum(lastValue)) {
 			$(setting).checked = lastValue == '1';
+			$(setting).change();
+		}
 	});
 }
 

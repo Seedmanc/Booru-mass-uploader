@@ -116,7 +116,7 @@
         </div>
       </div>
     </fieldset>
-   <div class="para">Selection mode: 
+   <div class="para" style="text-align:center;">Selection mode: 
         <input type="radio" name="selection" id="asFiles" checked="checked">
           <label for="asFiles">files</label>
         <input type="radio" name="selection" id="asFolder">
@@ -126,7 +126,7 @@
       Images:
         <input type="file" id="files" multiple="true" accept="image/*" style="width:90%;"/><br>
         (all files with MIME other than <tt>image/*</tt> or extension other than <tt>jpe?g/gif/png/bmp</tt> will be skipped).
-    </div>
+    </div><br>
     <p style="text-align:center;margin-top:-1em;margin-bottom:-0.33em;" id="loggedIn"></p> 
     <button id="submit" onclick="FilesSelected( $('files').files );">Upload!</button>
 
