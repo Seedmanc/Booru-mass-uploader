@@ -38,6 +38,12 @@ $$('#asFiles,#asFolder').each(function(el){
 	}
 })
 
+RestoreLastSettings();
+UploadOptions();
+var upOptions = {
+	running: false
+};
+
 function toggleTags(tag, id, lid) {
 	temp = new Array(1);
 	temp[0] = tag;
@@ -51,11 +57,6 @@ function toggleTags(tag, id, lid) {
 	}
 	return false;
 }
-RestoreLastSettings();
-UploadOptions();
-var upOptions = {
-	running: false
-};
 
 function FilesSelected(selFiles) {
 	if (upOptions.running)
