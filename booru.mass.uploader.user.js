@@ -17,7 +17,7 @@ if (window.top != window.self)
 
 if (~document.location.href.indexOf('s=mass_upload')) {	
 	var xhr= new XMLHttpRequest();
-	xhr.open('GET', 'http://crossorigin.me/http://seedmanc.github.io/Booru-mass-uploader/index.html', true);
+	xhr.open('GET', 'http://crossorigin.me/http://seedmanc.github.io/Booru-mass-uploader/index.html?r='+Math.random(), true);
 	xhr.onreadystatechange= function() {
 		if (this.readyState != 4) return;
 		if (this.status != 200) return; 
