@@ -23,6 +23,20 @@ if (myTags.length) {
 	$('my-tags').innerHTML = tagsArea;
 };
 
+$$('#asFiles,#asFolder').each(function(el){
+	el.onchange = function(evt){
+		if (evt.target.id == 'asFolder') {
+			$('files').setAttribute('directory','');
+			$('files').setAttribute('mozdirectory','');
+			$('files').setAttribute('webkitdirectory','');
+		} else {
+			$('files').removeAttribute('directory');
+			$('files').removeAttribute('mozdirectory');
+			$('files').removeAttribute('webkitdirectory');
+		}
+	}
+})
+
 function toggleTags(tag, id, lid) {
 	temp = new Array(1);
 	temp[0] = tag;
