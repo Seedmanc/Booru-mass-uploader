@@ -204,7 +204,7 @@ function SendFile(file, callback) {
 	xhr.onreadystatechange = function () {
 		if (this.readyState == 4 && (this.status == 200 || this.status == 304 /*not modified*/ )) {
 			if (~this.responseText.indexOf('generation failed'))
-				LogFailure(file, 'Thumbnail generation failed, image might be corrupted even if added.');
+				LogFailure(file, 'thumbnail generation failed, image might be corrupted even if added.');
 			// "mage" instead of "image" because first "I" might be capitalized.
 			if (~this.responseText.indexOf('mage added'))
 				LogSuccess(file)
@@ -214,9 +214,9 @@ function SendFile(file, callback) {
 					existId = this.responseText.split('can find it ')[1].split('here')[0].split('&id=')[1];
 				} catch(any){};
 				if (!!Number(existId))
-					LogFailure(file, 'this image already exists <a href="index.php?page=post&s=view&id='+existId+'" target="_blank">here</a>')
+					LogFailure(file, 'image already exists <a href="index.php?page=post&s=view&id='+existId+'" target="_blank">here</a>')
 				else	
-					LogFailure(file, 'this image probably does not already exist, but the booru says so')
+					LogFailure(file, 'image probably doesn't already exist, but the booru says so')
 			}
 			else if (~this.responseText.indexOf('permission')) {
 				LogFailure(file, 'no permissions');
@@ -226,7 +226,7 @@ function SendFile(file, callback) {
 				OnAllUploaded();
 				throw msg;
 			} else if (~this.responseText.indexOf('n error occured'))
-				LogFailure(file, 'The image could not be added because it already exists or it is corrupted.')
+				LogFailure(file, 'image either already exists or is corrupted.')
 			else
 				LogFailure(file, 'wrong response, check your posting form URL');
 			UpdateUpProgress((upOptions.stats.success + upOptions.stats.failed) / upOptions.stats.total);
