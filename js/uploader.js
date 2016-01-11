@@ -216,7 +216,7 @@ function SendFile(file, callback) {
 				if (!!Number(existId))
 					LogFailure(file, 'image already exists <a href="index.php?page=post&s=view&id='+existId+'" target="_blank">here</a>')
 				else	
-					LogFailure(file, 'image probably doesn't already exist, but the booru says so')
+					LogFailure(file, 'image probably doesn\'t already exist, but the booru says so')
 			}
 			else if (~this.responseText.indexOf('permission')) {
 				LogFailure(file, 'no permissions');
