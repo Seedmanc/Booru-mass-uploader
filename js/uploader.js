@@ -150,7 +150,7 @@ function Log(className, msg) {
 	$show('log');
 	var line = document.createElement('div');
 	line.className = className;
-	line.innerHTML = EscapeHTML(msg);
+	line.innerHTML = msg;
 	$('log').appendChild(line);
 }
 
@@ -203,19 +203,31 @@ function SendFile(file, callback) {
 	var xhr = CreateXHRequest();
 	xhr.onreadystatechange = function () {
 		if (this.readyState == 4 && (this.status == 200 || this.status == 304 /*not modified*/ )) {
+			if (~this.responseText.indexOf('generation failed'))
+				LogFailure(file, 'Thumbnail generation failed, image might be corrupted even if added.');
 			// "mage" instead of "image" because first "I" might be capitalized.
-			if (this.responseText.indexOf('mage added') != -1)
+			if (~this.responseText.indexOf('mage added'))
 				LogSuccess(file)
-			else if (this.responseText.indexOf('already exists') != -1)
-				LogFailure(file, 'this image already exists')
-			else if (this.responseText.indexOf('permission') != -1) {
+			else if (~this.responseText.indexOf('already exists.')) {
+				var existId;
+				try {
+					existId = this.responseText.split('can find it ')[1].split('here')[0].split('&id=')[1];
+				} catch(any){};
+				if (!!Number(existId))
+					LogFailure(file, 'this image already exists <a href="index.php?page=post&s=view&id='+existId+'" target="_blank">here</a>')
+				else	
+					LogFailure(file, 'this image probably does not already exist, but the booru says so')
+			}
+			else if (~this.responseText.indexOf('permission')) {
 				LogFailure(file, 'no permissions');
 				var msg =
 					'Could not upload this image - the board says that we have no permissions.\nCheck if you are logged in. Stopped.';
 				alert(msg);
 				OnAllUploaded();
 				throw msg;
-			} else
+			} else if (~this.responseText.indexOf('n error occured'))
+				LogFailure(file, 'The image could not be added because it already exists or it is corrupted.')
+			else
 				LogFailure(file, 'wrong response, check your posting form URL');
 			UpdateUpProgress((upOptions.stats.success + upOptions.stats.failed) / upOptions.stats.total);
 			setTimeout(callback, upOptions.delay);
