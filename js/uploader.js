@@ -216,7 +216,7 @@ function SendFile(file, callback) {
 				if (!!Number(existId))
 					LogFailure(file, 'image already exists <a href="index.php?page=post&s=view&id='+existId+'" target="_blank">here</a>')
 				else	
-					LogFailure(file, 'image probably doesn\'t already exist, but the booru says so')
+					LogFailure(file, 'image has been deleted')
 			}
 			else if (~this.responseText.indexOf('permission')) {
 				LogFailure(file, 'no permissions');
@@ -226,7 +226,7 @@ function SendFile(file, callback) {
 				OnAllUploaded();
 				throw msg;
 			} else if (~this.responseText.indexOf('n error occured'))
-				LogFailure(file, 'image either already exists or is corrupted')
+				LogFailure(file, 'image too big? too small? corrupted?')
 			else
 				LogFailure(file, 'wrong response, check your posting form URL');
 			UpdateUpProgress((upOptions.stats.success + upOptions.stats.failed) / upOptions.stats.total);
