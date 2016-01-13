@@ -1,6 +1,6 @@
 if (!XMLHttpRequest.prototype.sendAsBinary) {
 	XMLHttpRequest.prototype.sendAsBinary = function (sData) {
-		var nBytes = sData.length,
+		var nBytes  = sData.length,
 			ui8Data = new Uint8Array(nBytes);
 		for (var nIdx = 0; nIdx < nBytes; nIdx++) {
 			ui8Data[nIdx] = sData.charCodeAt(nIdx) & 0xff;
@@ -11,7 +11,7 @@ if (!XMLHttpRequest.prototype.sendAsBinary) {
 	};
 }
 var settingsToSave = ['tags', 'source'];
-var checkboxesToSave = ['forceRating', 'ratingAsDefault', 'setSafe', 'setQuest', 'setExplicit', 'forceTags', 'addTags',	'title', 'asFiles', 'asFolder'];
+var checkboxesToSave = ['forceRating', 'ratingAsDefault', 'setSafe', 'setQuest', 'setExplicit', 'forceTags', 'addTags', 'title', 'asFiles', 'asFolder'];
 
 var myTags = (GetCookie('tags') || '').replace(/%2520/gi, ' ').replace(/%20/gi, ' ').split(/\s+/);
 if (myTags.length) {
@@ -22,21 +22,19 @@ if (myTags.length) {
 			"onclick=\"javascript:toggleTags('" + tag + "','tags','t_" + tag + "');" + 'return false;">' + tag + '</a> ';
 	});
 	$('my-tags').innerHTML = tagsArea;
-};
+}
 
-$$('#asFiles,#asFolder').each(function(el){
-	el.onchange = function(){
+
+$$('#asFiles,#asFolder').each(function (el) {
+	var files = $('files');
+	el.onchange = function () {
 		if (this.id == 'asFolder' && this.checked) {
-			$('files').setAttribute('directory','');
-			$('files').setAttribute('mozdirectory','');
-			$('files').setAttribute('webkitdirectory','');
+			files.writeAttribute({directory: '', mozdirectory: '', webkitdirectory: ''});
 		} else {
-			$('files').removeAttribute('directory');
-			$('files').removeAttribute('mozdirectory');
-			$('files').removeAttribute('webkitdirectory');
+			files.writeAttribute({directory: false, mozdirectory: false, webkitdirectory: false});
 		}
 	}
-})
+});
 
 RestoreLastSettings();
 UploadOptions();
@@ -45,22 +43,25 @@ var upOptions = {
 };
 
 function toggleTags(tag, id, lid) {
-	temp = new Array(1);
+	var temp = new Array(1);
+	var tagBox = $('tags');
+
 	temp[0] = tag;
-	tags = $('tags').value.split(" ");
+	tags = tagBox.value.split(" ");
 	if (tags.include(tag)) {
-		$('tags').value = tags.without(tag).join(" ").trim() + ' ';
+		tagBox.value = tags.without(tag).join(" ").trim() + ' ';
 		$(lid).innerHTML = tag + " ";
 	} else {
-		$('tags').value = tags.concat(temp).join(" ").trim() + ' ';
+		tagBox.value = tags.concat(temp).join(" ").trim() + ' ';
 		$(lid).innerHTML = "<b>" + tag + "</b> ";
 	}
 	return false;
 }
 
 function FilesSelected(selFiles) {
-	if (upOptions.running)
+	if (upOptions.running) {
 		return;
+	}
 	upOptions = UploadOptions();
 	if (upOptions.auth.use && isNaN(upOptions.auth.userID)) {
 		alert('Wrong user ID - it must be a number.');
@@ -74,13 +75,15 @@ function FilesSelected(selFiles) {
 	try {
 		var files = [];
 		$each(selFiles, function (file) {
-			if (IsUploadable(file))
+			if (IsUploadable(file)) {
 				files.push(file);
+			}
 		});
 		SendFiles(files);
 	} catch (e) {
-		if (typeof e == 'string')
+		if (typeof e == 'string') {
 			alert('Couldn\'t upload - ' + e);
+		}
 	}
 }
 
@@ -115,11 +118,11 @@ function OnAllUploaded() {
 function UploadOptions() {
 	var rating = {
 		when: $('forceRating').checked ? 'always' : 'default',
-		set: $('setSafe').checked ? 's' : $('setQuest').checked ? 'q' : 'e'
+		set:  $('setSafe').checked ? 's' : $('setQuest').checked ? 'q' : 'e'
 	};
 	var tagging = {
 		when: $('forceTags').checked ? 'always' : 'add',
-		set: $get('tags').toLowerCase().split(/\s+/)
+		set:  $get('tags').toLowerCase().split(/\s+/)
 	};
 	var auth = {
 		userID: GetCookie('user_id'),
@@ -129,18 +132,18 @@ function UploadOptions() {
 	document.getElementById('loggedIn').textContent = auth.use ? 'You are logged in' : 'You are posting anonymously';
 	var uploadURL = document.location.protocol + '//' + document.location.hostname + '/index.php?page=post&s=add';
 	return {
-		delay: 1000,
+		delay:     1000,
 		uploadURL: uploadURL,
-		title: document.getElementById('title').checked,
-		rating: rating,
-		tagging: tagging,
-		source: $get('source'),
-		stats: {
-			total: 0,
+		title:     document.getElementById('title').checked,
+		rating:    rating,
+		tagging:   tagging,
+		source:    $get('source'),
+		stats:     {
+			total:   0,
 			success: 0,
-			failed: 0
+			failed:  0
 		},
-		auth: auth
+		auth:      auth
 	};
 }
 
@@ -154,7 +157,7 @@ function Log(className, msg) {
 	$('log').appendChild(line);
 }
 
-function EscapeHTML(str) {
+function EscapeHTML(str) {  //unused so far
 	var entity = {
 		'&': '&amp;',
 		'<': '&lt;',
@@ -186,53 +189,58 @@ function SendFiles(files, index) {
 			SendFiles(files, index + 1);
 		});
 		$set('status', 'Uploading #' + (index + 1) + ' image out of ' + files.length + '...');
-	} else
+	} else {
 		OnAllUploaded();
+	}
 }
 
 function SendFile(file, callback) {
 	var reqVars = {
-		title: TitleFor(file),
-		tags: TagsFor(file),
+		title:  TitleFor(file),
+		tags:   TagsFor(file),
 		rating: RatingFor(file),
 		submit: 'Upload',
 		source: upOptions.source
 	};
-	if (upOptions.auth.use)
+	if (upOptions.auth.use) {
 		reqVars.cookies = 'user_id=' + upOptions.auth.userID + '; ' + 'pass_hash=' + upOptions.auth.ticket;
+	}
 	var xhr = CreateXHRequest();
 	xhr.onreadystatechange = function () {
 		if (this.readyState == 4 && (this.status == 200 || this.status == 304 /*not modified*/ )) {
-			if (~this.responseText.indexOf('generation failed'))
+			if (~this.responseText.indexOf('generation failed')) {
 				LogFailure(file, 'thumbnail generation failed, image might be corrupted even if added');
+			}
 			// "mage" instead of "image" because first "I" might be capitalized.
-			if (~this.responseText.indexOf('mage added'))
-				LogSuccess(file)
-			else if (~this.responseText.indexOf('already exists.')) {
+			if (~this.responseText.indexOf('mage added')) {
+				LogSuccess(file);
+			} else if (~this.responseText.indexOf('already exists.')) {
 				var existId;
 				try {
-					existId = this.responseText.split('can find it ')[1].split('here')[0].split('&id=')[1].replace('">','');
-				} catch(any){};
-				if (!!Number(existId))
-					LogFailure(file, 'image already exists <a href="index.php?page=post&s=view&id='+existId+'" target="_blank">here</a>')
-				else	
-					LogFailure(file, 'image probably doesn\'t already exist, but the booru says so')
+					existId = this.responseText.split('can find it ')[1].split('here')[0].split('&id=')[1].replace('">', '');
+				} catch (any) {}
+
+				if (!!Number(existId)) {
+					LogFailure(file, 'image already exists <a href="index.php?page=post&s=view&id=' + existId + '" target="_blank">here</a>')
+				} else
+					LogFailure(file, 'image has been deleted')
 			}
 			else if (~this.responseText.indexOf('permission')) {
 				LogFailure(file, 'no permissions');
 				var msg =
-					'Could not upload this image - the board says that we have no permissions.\nCheck if you are logged in. Stopped.';
+						'Could not upload this image - the board says that we have no permissions.\nCheck if you are logged in. Stopped.';
 				alert(msg);
 				OnAllUploaded();
 				throw msg;
-			} else if (~this.responseText.indexOf('n error occured'))
-				LogFailure(file, 'image either already exists or is corrupted')
-			else
+			} else if (~this.responseText.indexOf('n error occured')) {
+				LogFailure(file, 'image too big? too small? corrupted?');
+			} else
 				LogFailure(file, 'wrong response, check your posting form URL');
+
 			UpdateUpProgress((upOptions.stats.success + upOptions.stats.failed) / upOptions.stats.total);
 			setTimeout(callback, upOptions.delay);
 		}
-	}
+	};
 	var boundary = '--bOh3aYae';
 	var EOLN = "\r\n";
 	var postVars = '';
@@ -253,7 +261,7 @@ function SendFile(file, callback) {
 		xhr.setRequestHeader('Content-Type', 'multipart/form-data; boundary=' + boundary.substr(2));
 		xhr.setRequestHeader('Content-Length', data.length);
 		xhr.sendAsBinary(data);
-	}
+	};
 	reader.readAsBinaryString(file);
 }
 
@@ -278,17 +286,20 @@ function InfoAbout(file) {
 	var ext = fileName.match(/ *\.(\w{2,4})$/i);
 	if (ext)
 		fileName = fileName.replace(ext[0], '');
-	if (!ext)
-		throw 'File ' + file.name + ' have no extension.'
-	else
+	if (!ext) {
+		throw 'File ' + file.name + ' have no extension.';
+	} else {
 		ext = ext[1];
+	}
 	var rating = fileName.match(/^([sqe])( +|$)/i);
 	if (rating)
 		fileName = fileName.replace(rating[0], '');
-	if (upOptions.rating.when == 'always' || !rating)
-		rating = upOptions.rating.set
-	else
+	if (upOptions.rating.when == 'always' || !rating) {
+		rating = upOptions.rating.set;
+	}
+	else {
 		rating = rating[1];
+	}
 	var tags = fileName;
 	var title = upOptions.title ? tags.split(/\s+/)[tags.split(/\s+/).length - 1] : '';
 	return [rating, tags, title];
@@ -303,11 +314,11 @@ function NormTags(tags) {
 			tags.shift();
 	}
 	switch (upOptions.tagging.when) {
-	case 'always':
-		tags = [];
-	case 'add':
-		tags = tags.concat(upOptions.tagging.set);
-		tags = mkUniq(tags);
+		case 'always':
+			tags = [];
+		case 'add':
+			tags = tags.concat(upOptions.tagging.set);
+			tags = mkUniq(tags);
 	}
 	return tags.join(' ');
 }
@@ -315,11 +326,14 @@ function NormTags(tags) {
 function mkUniq(arr) {
 	var to = {};
 	for (var v = 0; v < arr.length; v++) {
-		if (isANSI(arr[v]))
+		if (isANSI(arr[v])) {
 			to[arr[v].toLowerCase()] = true
-		else
+		}
+		else {
 			to[encodeURI(arr[v].toLowerCase())] = true;
-	};
+		}
+	}
+
 	arr2 = Object.keys(to);
 	return arr2.sort();
 }
@@ -352,9 +366,10 @@ function SaveLastSettings() {
 }
 
 function isANSI(s) {
-	var is=true;
-	s=s.split('');
-	s.each(function(v){
-		is=is&&(/[\u0000-\u007e]/.test(v));});
-    return is;
-};
+	var is = true;
+	s = s.split('');
+	s.each(function (v) {
+		is = is && (/[\u0000-\u007e]/.test(v));
+	});
+	return is;
+}
