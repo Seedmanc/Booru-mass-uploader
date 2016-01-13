@@ -12,11 +12,15 @@ if (!XMLHttpRequest.prototype.sendAsBinary) {
 }
 var settingsToSave = ['tags', 'source'];
 var checkboxesToSave = ['forceRating', 'ratingAsDefault', 'setSafe', 'setQuest', 'setExplicit', 'forceTags', 'addTags', 'title', 'asFiles', 'asFolder'];
-
 var myTags = (GetCookie('tags') || '').replace(/%2520/gi, ' ').replace(/%20/gi, ' ').split(/\s+/);
+var upOptions = {
+	running: false
+};
+
 if (myTags.length) {
-	$show('mytags');
 	var tagsArea = '';
+
+	$show('mytags');
 	$each(myTags, function (tag) {
 		tagsArea += '&nbsp;<a style="text-decoration:none;" href="#' + tag + '" id="t_' + tag + '"' +
 			"onclick=\"javascript:toggleTags('" + tag + "','tags','t_" + tag + "');" + 'return false;">' + tag + '</a> ';
@@ -24,9 +28,9 @@ if (myTags.length) {
 	$('my-tags').innerHTML = tagsArea;
 }
 
-
 $$('#asFiles,#asFolder').each(function (el) {
 	var files = $('files');
+
 	el.onchange = function () {
 		if (this.id == 'asFolder' && this.checked) {
 			files.writeAttribute({directory: '', mozdirectory: '', webkitdirectory: ''});
@@ -38,16 +42,14 @@ $$('#asFiles,#asFolder').each(function (el) {
 
 RestoreLastSettings();
 UploadOptions();
-var upOptions = {
-	running: false
-};
+
 
 function toggleTags(tag, id, lid) {
 	var temp = new Array(1);
 	var tagBox = $('tags');
+	var tags = tagBox.value.split(" ");
 
 	temp[0] = tag;
-	tags = tagBox.value.split(" ");
 	if (tags.include(tag)) {
 		tagBox.value = tags.without(tag).join(" ").trim() + ' ';
 		$(lid).innerHTML = tag + " ";
@@ -98,14 +100,15 @@ function OnFirstUpload(files) {
 }
 
 function OnAllUploaded() {
-	upOptions.running = false;
 	var msg = 'Finished uploading; ' + upOptions.stats.success + ' uploaded ok + ' +
 		upOptions.stats.failed + ' failed = ' +
 		upOptions.stats.total + ' images total.';
+	var ourBooru = upOptions.uploadURL.match(/^http:\/\/([\w\d-]+)\.booru\.org\//i);
+
+	upOptions.running = false;
 	Log('info end', msg);
 	$set('status', '');
 	UpdateUpProgress(0);
-	var ourBooru = upOptions.uploadURL.match(/^http:\/\/([\w\d-]+)\.booru\.org\//i);
 	if (ourBooru) {
 		var baseCtrUpdURL = 'http://booru.org/?action=updateimagecount&updateimagecount[booru]=';
 		var image = new Image();
@@ -129,8 +132,9 @@ function UploadOptions() {
 		ticket: GetCookie('pass_hash')
 	};
 	auth.use = auth.userID && auth.ticket;
-	document.getElementById('loggedIn').textContent = auth.use ? 'You are logged in' : 'You are posting anonymously';
 	var uploadURL = document.location.protocol + '//' + document.location.hostname + '/index.php?page=post&s=add';
+
+	document.getElementById('loggedIn').textContent = auth.use ? 'You are logged in' : 'You are posting anonymously';
 	return {
 		delay:     1000,
 		uploadURL: uploadURL,
@@ -149,9 +153,10 @@ function UploadOptions() {
 
 function Log(className, msg) {
 	var now = new Date;
+	var line = document.createElement('div');
+
 	msg = '[' + now.getHours() + ':' + now.getMinutes() + '] ' + msg;
 	$show('log');
-	var line = document.createElement('div');
 	line.className = className;
 	line.innerHTML = msg;
 	$('log').appendChild(line);
@@ -228,7 +233,7 @@ function SendFile(file, callback) {
 			else if (~this.responseText.indexOf('permission')) {
 				LogFailure(file, 'no permissions');
 				var msg =
-						'Could not upload this image - the board says that we have no permissions.\nCheck if you are logged in. Stopped.';
+						'Could not upload this image - the board says that you have no permissions.\nCheck if you are logged in. Stopped.';
 				alert(msg);
 				OnAllUploaded();
 				throw msg;
@@ -244,12 +249,15 @@ function SendFile(file, callback) {
 	var boundary = '--bOh3aYae';
 	var EOLN = "\r\n";
 	var postVars = '';
+
 	for (var name in reqVars) {
 		postVars += boundary + EOLN +
 			'Content-Disposition: form-data; name="' + name + '"' + EOLN + EOLN +
 			reqVars[name] + EOLN;
 	}
+
 	var reader = new FileReader;
+
 	reader.onloadend = function () {
 		var data = boundary + EOLN +
 			'Content-Disposition: form-data; name="upload";' + ' filename="' + file.name + '"' + EOLN +
@@ -284,24 +292,27 @@ function TitleFor(file) {
 function InfoAbout(file) {
 	var fileName = file.name.toLowerCase();
 	var ext = fileName.match(/ *\.(\w{2,4})$/i);
-	if (ext)
+	var rating, tags, title;
+
+	if (ext) {
 		fileName = fileName.replace(ext[0], '');
+	}
 	if (!ext) {
 		throw 'File ' + file.name + ' have no extension.';
 	} else {
 		ext = ext[1];
 	}
-	var rating = fileName.match(/^([sqe])( +|$)/i);
-	if (rating)
+	rating = fileName.match(/^([sqe])( +|$)/i);
+	if (rating) {
 		fileName = fileName.replace(rating[0], '');
+	}
 	if (upOptions.rating.when == 'always' || !rating) {
 		rating = upOptions.rating.set;
-	}
-	else {
+	} else {
 		rating = rating[1];
 	}
-	var tags = fileName;
-	var title = upOptions.title ? tags.split(/\s+/)[tags.split(/\s+/).length - 1] : '';
+	tags = fileName;
+	title = upOptions.title ? tags.split(/\s+/)[tags.split(/\s+/).length - 1] : '';
 	return [rating, tags, title];
 }
 
@@ -310,8 +321,9 @@ function NormTags(tags) {
 	tags.pop();
 	if (tags.length >= 2) {
 		tags = mkUniq(tags);
-		if (tags[0] == '')
+		if (tags[0] == '') {
 			tags.shift();
+		}
 	}
 	switch (upOptions.tagging.when) {
 		case 'always':
@@ -325,6 +337,7 @@ function NormTags(tags) {
 
 function mkUniq(arr) {
 	var to = {};
+
 	for (var v = 0; v < arr.length; v++) {
 		if (isANSI(arr[v])) {
 			to[arr[v].toLowerCase()] = true
@@ -334,19 +347,21 @@ function mkUniq(arr) {
 		}
 	}
 
-	arr2 = Object.keys(to);
-	return arr2.sort();
+	return Object.keys(to).sort();
 }
 
 function RestoreLastSettings() {
 	var cookieBaseName = 'last@BMU:';
+
 	$each(settingsToSave, function (setting) {
 		var lastValue = GetCookie(cookieBaseName + setting);
+
 		if (lastValue && (!$get(setting) || setting == 'source'))
 			$set(setting, lastValue);
 	});
 	$each(checkboxesToSave, function (setting) {
 		var lastValue = GetCookie(cookieBaseName + setting);
+
 		if (IsNum(lastValue)) {
 			$(setting).checked = lastValue == '1';
 			if ($(setting).onchange)
@@ -357,6 +372,7 @@ function RestoreLastSettings() {
 
 function SaveLastSettings() {
 	var cookieBaseName = 'last@BMU:';
+
 	$each(settingsToSave, function (setting) {
 		SetCookie(cookieBaseName + setting, $get(setting), 7 * 24 * 3600);
 	});
@@ -367,6 +383,7 @@ function SaveLastSettings() {
 
 function isANSI(s) {
 	var is = true;
+
 	s = s.split('');
 	s.each(function (v) {
 		is = is && (/[\u0000-\u007e]/.test(v));

@@ -8,6 +8,9 @@
 // @include     http://safebooru.org/index.php*
 // @include     http://rule34.xxx/index.php*
 // @include     http://xbooru.com/index.php*
+// @include     http://pbooru.com/index.php*
+// @include     http://safeponi.com/index.php*
+// you can add any boorus of your choice by following the pattern
 // @grant 		none
 // @noframes
 // ==/UserScript==
@@ -29,6 +32,7 @@ if (~document.location.href.indexOf('s=mass_upload')) {
 		document.getElementsByTagName('body')[0].innerHTML = this.responseText;
 		for (var i = 0; i < s.length; i++) {
 			var node = s[i], parent = node.parentElement, d = document.createElement('script');
+
 			d.async = node.async;
 			d.src = node.src;
 			parent.insertBefore(d, node);
