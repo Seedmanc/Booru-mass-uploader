@@ -1,229 +1,138 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-	<title>Booru mass uploader</title>
-	<meta content="text/html" charset="utf-8" http-equiv="Content-Type"/>
-	<style type="text/css">
-		body {
-			width: 66%;
-			margin: 0 auto;
-			min-width: 650px;
-		}
-
-		h1 {
-			text-align: center;
-		}
-
-		p.intro {
-			font-style: italic;
-		}
-
-		q {
-			font-style: italic;
-		}
-
-		fieldset {
-			margin: 1em;
-			margin-bottom: 1.5em;
-			padding: 1em;
-		}
-
-		legend {
-			font-weight: bold;
-		}
-
-		legend span {
-			cursor: pointer;
-			color: blue;
-		}
-
-		fieldset p {
-			margin: 0;
-		}
-
-		fieldset p.tip {
-			font-style: italic;
-			margin-top: 0.5em;
-		}
-
-		div.para {
-			margin: 0.3em 0;
-		}
-
-		button {
-			font-size: 1.5em;
-			font-weight: bold;
-			padding: 5px 1em;
-			display: block;
-			margin: 1em auto;
-			cursor: pointer;
-		}
-
-		#status {
-			margin: 0;
-			text-align: center;
-			color: blue;
-		}
-
-		#progressWr {
-			margin-top: 5px;
-		}
-
-		#progress {
-			background: blue;
-			height: 4px;
-		}
-
-		#log {
-			margin: 1em;
-			padding: 5px 1em;
-			border-left: 3px solid silver;
-			overflow: auto;
-			height: 15em;
-		}
-
-		#log .info {
-			color: blue;
-		}
-
-		#log .end {
-			border-bottom: 1px solid silver;
-			padding-bottom: 2px;
-			margin-bottom: 5px;
-		}
-
-		#log .success {
-			color: green;
-		}
-
-		#log .error {
-			color: maroon;
-		}
-	</style>
-	<script type="text/javascript" src="http://seedmanc.github.io/Booru-mass-uploader/js/common-min.js"></script>
+  <head>
+  <title>Booru mass uploader</title>
+    <meta content="text/html" charset="utf-8" http-equiv="Content-Type" />
+    <style type="text/css">
+      body { width: 66%; margin: 0 auto; min-width:650px;}
+      h1 { text-align: center; }
+      p.intro { font-style: italic; }
+      q { font-style: italic; }
+      fieldset { margin: 1em; margin-bottom: 1.5em; padding: 1em; }
+        legend { font-weight: bold; }
+          legend span { cursor: pointer; color: blue; }
+        fieldset p { margin: 0; }
+          fieldset p.tip { font-style: italic; margin-top: 0.5em; }
+      div.para { margin: 0.3em 0; }
+      button { font-size: 1.5em; font-weight: bold; padding: 5px 1em; display: block; margin: 1em auto; cursor: pointer; }
+      #status { margin: 0; text-align: center; color: blue; }
+      #progressWr { margin-top: 5px; }
+        #progress { background: blue; height: 4px; }
+      #log { margin: 1em; padding: 5px 1em; border-left: 3px solid silver; overflow: auto; height: 15em; }
+        #log .info { color: blue; }
+        #log .end { border-bottom: 1px solid silver; padding-bottom: 2px; margin-bottom: 5px; }
+        #log .success { color: green; }
+        #log .error { color: maroon; }
+    </style>
+    <script type="text/javascript" src="http://seedmanc.github.io/Booru-mass-uploader/js/common-min.js"></script>	
 	<script src="http://ajax.googleapis.com/ajax/libs/prototype/1.7.3.0/prototype.js" type="text/javascript"></script>
-	<script type="text/javascript" src="http://seedmanc.github.io/Booru-mass-uploader/js/uploader.js?v=7"></script>
-</head>
-<body>
-<h1>Booru Mass-Uploader</h1>
-<p class="intro">This script allows you to mass-upload images to imageboard sites running *booru engine. You select a
-	number of files and they're sent to the website along with the info which is retrieved from their file names.</p>
+    <script type="text/javascript" src="http://seedmanc.github.io/Booru-mass-uploader/js/uploader.js?v=7"></script>
+  </head>
+  <body>
+    <h1>Booru Mass-Uploader</h1> 
+     <p class="intro">This script allows you to mass-upload images to imageboard sites running *booru engine. You select a number of files and they're sent to the website along with the info which is retrieved from their file names.</p>
 
-<fieldset style="padding: 2px 1em">
-	<legend>
-		For correct upload all files must be named according to the format
-		<span onclick="var el = 'fileNamesTip'; $style(el, 'display') == 'block' ? $hide(el) : $show(el);">
-		  [+/-]
-		</span>
-	</legend>
+    <fieldset style="padding: 2px 1em">
+      <legend>
+        For correct upload all files must be named according to the format
+        <span onclick="var el = 'fileNamesTip'; $style(el, 'display') == 'block' ? $hide(el) : $show(el);">
+          [+/-]
+        </span>
+      </legend>
 
-	<div id="fileNamesTip" style="display: none; margin: 1em">
-		<p>
-			Example file name: <q>q nagisa floor tagme Filename.jpg</q>, where:
-		</p>
-		<ul>
-			<li><q>q</q> is the image's rating (Safe, Questionable, Explicit),</li>
-			<li> then space - don't forget about it!</li>
-			<li> then go all tags for this image. Here they are 3:
-				<q>nagisa</q>, <q>floor</q> &amp; <q>tagme</q>.
-			</li>
-			<li> finally, goes the original filename, which is ignored, but can be used to avoid filename collisions
-				when having identical tag sets.
-			</li>
-		</ul>
+      <div id="fileNamesTip" style="display: none; margin: 1em">
+        <p>
+          Example file name: <q>q nagisa floor tagme Filename.jpg</q>, where:
+        </p>
+          <ul>
+            <li> <q>q</q> is the image's rating (Safe, Questionable, Explicit), </li>
+            <li> then space - don't forget about it! </li>
+            <li> then go all tags for this image. Here they are 3:
+                 <q>nagisa</q>, <q>floor</q> &amp; <q>tagme</q>. </li>
+            <li> finally, goes the original filename, which is ignored, but can be used to avoid filename collisions when having identical tag sets.</li>
+          </ul>
 
-		<p>The behaviour of the uploader when no rating character was found or was wrong is defined by the options
-			below.</p>
-		<p>According to those options some parts of file name pattern can be ignored, e.g. if rating is selected as <q>Force
-			Safe</q> then rating letter won't be used (i.e. ignored even if present). If you have both Rating &amp; Tags
-			options set to <q>Force</q> then names are not used at all and pictures can have any file names.</p>
-	</div>
-</fieldset>
+        <p>The behaviour of the uploader when no rating character was found or was wrong is defined by the options below.</p>
+        <p>According to those options some parts of file name pattern can be ignored, e.g. if rating is selected as <q>Force Safe</q> then rating letter won't be used (i.e. ignored even if present). If you have both Rating &amp; Tags options set to <q>Force</q> then names are not used at all and pictures can have any file names.</p>
+      </div>
+    </fieldset>
 
-<fieldset>
-	<legend>Image ratings</legend>
+    <fieldset>
+      <legend>Image ratings</legend>
 
-	<div class="para">
-		<input type="radio" name="rating-when" id="forceRating" checked="checked"/>
-		<label for="forceRating"><strong>Force</strong> all ratings regardless of file name.</label>
-		<input type="radio" name="rating-when" id="ratingAsDefault"/>
-		<label for="ratingAsDefault">Only set rating if failed to determine it from the file name.</label>
-	</div>
+      <div class="para">
+        <input type="radio" name="rating-when" id="forceRating" checked="checked"/>
+          <label for="forceRating"><strong>Force</strong> all ratings regardless of file name.</label>
+        <input type="radio" name="rating-when" id="ratingAsDefault"/>
+          <label for="ratingAsDefault">Only set rating if failed to determine it from the file name.</label>
+      </div>
 
-	<div class="para">
-		<input type="radio" name="rating" id="setSafe" checked="checked"/>
-		<label for="setSafe"><b>Safe</b></label>
-		<input type="radio" name="rating" id="setQuest"/>
-		<label for="setQuest">Questionable</label>
-		<input type="radio" name="rating" id="setExplicit"/>
-		<label for="setExplicit"><i>Explicit</i></label>
-	</div>
-</fieldset>
+      <div class="para">
+        <input type="radio" name="rating" id="setSafe" checked="checked" />
+          <label for="setSafe"><b>Safe</b></label>
+        <input type="radio" name="rating" id="setQuest"/>
+          <label for="setQuest">Questionable</label>
+        <input type="radio" name="rating" id="setExplicit" />
+          <label for="setExplicit"><i>Explicit</i></label>
+      </div>
+    </fieldset>
 
-<fieldset>
-	<legend>Tagging</legend>
+    <fieldset>
+      <legend>Tagging</legend>
 
-	<input type="radio" name="tag-when" id="forceTags"/>
-	<label for="forceTags">Ignore file names, <strong>force</strong> tags of all images.</label>
-	<br/>
+      <input type="radio" name="tag-when" id="forceTags" />
+        <label for="forceTags">Ignore file names, <strong>force</strong> tags of all images.</label>
+      <br />
 
-	<input type="radio" name="tag-when" id="addTags" checked="checked"/>
-	<label for="addTags">In addition to tags from image file names also add these tags to each of them.</label>
-	<br/>
+      <input type="radio" name="tag-when" id="addTags"  checked="checked" />
+        <label for="addTags">In addition to tags from image file names also add these tags to each of them.</label>
+      <br />
 
-	<div id="tagsWr">
-		Tag list (separate with spaces):
-		<input type="text" id="tags" style="width: 77%"/>
-	</div>
-	<div id="mytags" style="display:none;">
-		<div style="float:left; ">Your tags:</div>
-		<div style="text-align:center;" id="my-tags"></div>
-	</div>
+      <div id="tagsWr">
+        Tag list (separate with spaces):
+        <input type="text" id="tags" style="width: 77%" />
+      </div><div id="mytags"style="display:none;">
+	  <div style="float:left; " >Your tags:</div><div style="text-align:center;" id="my-tags"> </div></div>
+	  
+      <p class="tip">Tags will be cleaned from spaces, have duplicates removed and sorted.</p>
+    </fieldset>
 
-	<p class="tip">Tags will be cleaned from spaces, have duplicates removed and sorted.</p>
-</fieldset>
+    <fieldset style="padding: 2px 1em">
+      <legend>
+        Other settings
+        <span onclick="var el = 'otherSettings'; $style(el, 'display') == 'block' ? $hide(el) : $show(el);">
+          [+/-]
+        </span>
+      </legend>
 
-<fieldset style="padding: 2px 1em">
-	<legend>
-		Other settings
-		<span onclick="var el = 'otherSettings'; $style(el, 'display') == 'block' ? $hide(el) : $show(el);">
-		  [+/-]
-		</span>
-	</legend>
+      <div id="otherSettings" style="display: none;">
+        <div style="float:left;" class="para">
+          <input type="checkbox" id="title"/>
+          <label for="title">Set Title field of each image to its original filename</label>
+        </div>
+        <div style="float:right;" class="para">
+          Set Source field of each image to 
+             <input type="text" id="source" value="Booru mass uploader" style="width:200px;" />
+        </div>
+      </div>
+    </fieldset>
+   <div class="para" style="text-align:center;">Selection mode: 
+        <input type="radio" name="selection" id="asFiles" checked="checked">
+          <label for="asFiles">files</label>
+        <input type="radio" name="selection" id="asFolder">
+          <label for="asFolder">folder</label>
+      </div>
+    <div class="para" style="padding:2px 1em;text-align:center;">
+      Images:
+        <input type="file" id="files" multiple="true" accept="image/*" style="width:90%;"/><br>
+        (all files with MIME other than <tt>image/*</tt> or extension other than <tt>jpe?g/gif/png/bmp</tt> will be skipped).
+    </div><br>
+    <p style="text-align:center;margin-top:-1em;margin-bottom:-0.33em;" id="loggedIn"></p> 
+    <button id="submit" onclick="FilesSelected( $('files').files );">Upload!</button>
 
-	<div id="otherSettings" style="display: none;">
-		<div style="float:left;" class="para">
-			<input type="checkbox" id="title"/>
-			<label for="title">Set Title field of each image to its original filename</label>
-		</div>
-		<div style="float:right;" class="para">
-			Set Source field of each image to
-			<input type="text" id="source" value="Booru mass uploader" style="width:200px;"/>
-		</div>
-	</div>
-</fieldset>
-<div class="para" style="text-align:center;">Selection mode:
-	<input type="radio" name="selection" id="asFiles" checked="checked">
-	<label for="asFiles">files</label>
-	<input type="radio" name="selection" id="asFolder">
-	<label for="asFolder">folder</label>
-</div>
-<div class="para" style="padding:2px 1em;text-align:center;">
-	Images:
-	<input type="file" id="files" multiple="true" accept="image/*" style="width:90%;"/><br>
-	(all files with MIME other than <tt>image/*</tt> or extension other than <tt>jpe?g/gif/png/bmp</tt> will be
-	skipped).
-</div>
-<br>
-<p style="text-align:center;margin-top:-1em;margin-bottom:-0.33em;" id="loggedIn"></p>
-<button id="submit" onclick="FilesSelected( $('files').files );">Upload!</button>
+    <h2 id="status"></h2>
+    <div id="progressWr"> <div id="progress" style="width: 0"></div> </div>
+    <div id="log" style="display: none"></div>
 
-<h2 id="status"></h2>
-<div id="progressWr">
-	<div id="progress" style="width: 0"></div>
-</div>
-<div id="log" style="display: none"></div>
-
-</body>
+  </body>
 </html>
