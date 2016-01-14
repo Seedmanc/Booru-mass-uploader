@@ -5,7 +5,7 @@ With the [public Mass Uploader](https://unblock.ibsearch.xxx/mass-upload/) gone,
 
 After installing, [the userscript](https://github.com/Seedmanc/Booru-mass-uploader/raw/gh-pages/booru.mass.uploader.user.js) adds a link to [the mass uploader page](https://github.com/Seedmanc/Booru-mass-uploader/raw/gh-pages/index.html) in the booru's menu.
 
-![screenshot: booru menu](http://puu.sh/lk53S/ad48c303c0.png)
+![screenshot: booru menu](http://imagehost4.online-image-editor.com/oie_upload/images/14165614sj0U5qVwR/cr9Ug9sKzrGi.png)
 
 The link leads to a (supposedly) non-existant location on the booru, `/index.php?page=post&s=mass_upload` and injects the uploader's code there, effectively incorporating its abilities into the booru.
 
