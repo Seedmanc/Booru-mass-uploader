@@ -18,8 +18,8 @@ Interface was somewhat optimized, for the redundant `Set tags based on image fil
 ## New features
 
 * The `Set Title field of each image to its original filename` option:
-** If checked it sets the last part of the filenames such as `tag1 tag2 tag3 tag4 tag5 something_at_location_in_time.jpg` to the Title fields
-** If unchecked it ignores the last part of the filenames such as `tag1 tag2 tag3 tag4 tag5 1.jpg`
+* If checked it sets the last part (next to the `.ext`) of the filenames to the Title fields (for filenames such as `tag1 tag2 tag3 tag4 tag5 something_at_location_in_time.jpg`)
+* If unchecked it ignores the last part of the filenames (for filenames such as `tag1 tag2 tag3 tag4 tag5 1.jpg`, `tag1 tag2 tag3 tag4 tag5 2.jpg`, `tag1 tag2 tag3 tag4 tag5 3.jpg`)
 * Users can set a custom Source field (which previously was hard-coded into PHP to advertise the uploader).
 * There are now 3 upload errors instead of 1: "image already exists", "image was deleted", and "image is too big, too small, or corrupted".
 * Users can upload folders
