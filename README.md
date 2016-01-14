@@ -5,7 +5,7 @@ With the [public Mass Uploader](https://unblock.ibsearch.xxx/mass-upload/) gone,
 
 After installing, [the userscript](https://github.com/Seedmanc/Booru-mass-uploader/raw/gh-pages/booru.mass.uploader.user.js) adds a link to [the mass uploader page](https://github.com/Seedmanc/Booru-mass-uploader/raw/gh-pages/index.html) in the booru's menu:
 
-![screenshot: booru menu](https://anonm.gr/d214.png)
+![screenshot: booru menu](http://web.archive.org/web/20160114170618/https://anonm.gr/up/d214.png)
 
 The link leads to a (supposedly) non-existant location on the booru&mdash;`/index.php?page=post&s=mass_upload`&mdash;and injects the uploader's code there, effectively incorporating its abilities into the booru.
 
@@ -13,11 +13,13 @@ This removes the need to bother with manual cookie retrieval, upload URL managem
 
 ![screenshot: index.html](http://puu.sh/lqkYQ/ca6addbb18.png)
 
-Interface was somewhat optimized, removing the redundant `Set tags based on image file names alone` option, just leave the additional tags field empty.  
+Interface was somewhat optimized, for the redundant `Set tags based on image file names alone` option was removed: just leave the additional tags field empty.  
 
 ## New features
 
-* Users can set the Title field of an image to its original filename: the last part of the filename such as `tag1 tag2 tag3 tag4 tag5 something_at_location_in_time.jpg`
+* The `Set Title field of each image to its original filename` option:
+** If checked it sets the last part of the filenames such as `tag1 tag2 tag3 tag4 tag5 something_at_location_in_time.jpg` to the Title fields
+** If unchecked it ignores the last part of the filenames such as `tag1 tag2 tag3 tag4 tag5 1.jpg`
 * Users can set a custom Source field (which previously was hard-coded into PHP to advertise the uploader).
 * There are now 3 upload errors instead of 1: "image already exists", "image was deleted", and "image is too big, too small, or corrupted".
 * Users can upload folders
