@@ -20,4 +20,7 @@ Interface was somewhat optimized, removing the redundant `Set tags based on imag
 
 Note that so far I have tested it with only a few boorus hosted on the http://booru.org site. I don't own other boorus to test it more and even though I tried adding support for Gelbooru and Safebooru, I haven't tested it there or on other custom-domain boorus. Your feedback is required, with enough of it I might add more support later.
 
-Be sure to check out my other Booru-related userscript: The [Booru Augmentation Project](https://github.com/Seedmanc/Booru-Augmentation-Project)
+## See also
+
+* Be sure to check out my other Booru-related userscript: The [Booru Augmentation Project](https://github.com/Seedmanc/Booru-Augmentation-Project)
+* Usernam's [Booru mass editor userscript](https://github.com/ProximaNova/Booru-mass-editor)
