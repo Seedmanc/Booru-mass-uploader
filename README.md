@@ -5,29 +5,31 @@ With the [public Mass Uploader](https://unblock.ibsearch.xxx/mass-upload/) gone,
 
 After installing, [the userscript](https://github.com/Seedmanc/Booru-mass-uploader/raw/gh-pages/booru.mass.uploader.user.js) adds a link to [the mass uploader page](https://github.com/Seedmanc/Booru-mass-uploader/raw/gh-pages/index.html) in the booru's menu:
 
-![screenshot: booru menu](http://web.archive.org/web/20160114170618/https://anonm.gr/up/d214.png)
+![screenshot: booru menu](http://puu.sh/mvB9F/ea5668b606.png)
 
-The link leads to a (supposedly) non-existant location on the booru&mdash;`/index.php?page=post&s=mass_upload`&mdash;and injects the uploader's code there, effectively incorporating its abilities into the booru.
+The link leads to a (supposedly) non-existant location on the booru &mdash; `/index.php?page=post&s=mass_upload` &mdash; and injects the uploader code there, effectively incorporating its abilities into the booru.
 
 This removes the need to bother with manual cookie retrieval, upload URL management, and, of course, CORS limitation. Additionally it allows to use custom tags from your settings. I also fixed the irrelevant "Firefox version 3.6 to 38" requirement; all I had to do was add the polyfill for that one missing method.
 
-![screenshot: index.html](http://puu.sh/lqkYQ/ca6addbb18.png)
+![screenshot: index.html](http://puu.sh/mvCQq/aab7d13bc0.png)
 
-## Other imporvements
+## Other improvements
 
-* Interface was somewhat optimized, for the redundant `Set tags based on image file names alone` option was removed: just leave the additional tags field empty.  
-* The `Set Title field of each image to its original filename` option was added:
-* If checked it sets the last part of the filenames (next to the `.ext`) to the Title fields (for filenames such as `tag1 tag2 tag3 tag4 tag5 something_at_location_in_time.jpg`).
-* If unchecked it ignores the last part of the filenames (for filenames such as `tag1 tag2 tag3 tag4 tag5 #.jpg`)
+* Interface was somewhat optimized, removing redundant `Set tags based on image file names alone` option. Just leave the additional tags field empty.  
+* Last component of the filename (near the extension) is now ignored when parsing the filename for tags. Original filename can be put there to avoid filename collisions for pictures with identical sets of tags in one folder.
+* The `Set Title field of each image to its original filename` option puts said filename component into the title field when uploading.
 * Users can set a custom Source field (which previously was hard-coded into PHP to advertise the uploader).
-* There are now 3 upload errors: "image already exists", "image was deleted", and "image is too big, too small, or corrupted" (previously there was just 1).
-* Users can upload folders
+* Verbose error reporting in the log. Recognizes the following errors:
+  * `image already exists`, linking to the existing duplicate on the booru
+  * `image was deleted`, when a duplicate of the image in question has been uploaded before, but removed later
+  * `image is too big, too small, or corrupted`, when the booru refuses to accept the image for other reasons
+* Users can upload folders (Chrome only)
 
-If you see a Gelbooru-based site that is not included on [this userscript](https://github.com/Seedmanc/Booru-mass-uploader/raw/gh-pages/booru.mass.uploader.user.js) include it with whatever userscript manager you have.
+If you see a Gelbooru-based site that is not included yet in the header, you can put it there yourself following the pattern of existing `@include` lines.
 
 ## See also
 
 Be sure to check out these Booru-related userscripts:
 
-* My userscripts at the [Booru Augmentation Project](https://github.com/Seedmanc/Booru-Augmentation-Project)
+* My [Booru Augmentation Project](https://github.com/Seedmanc/Booru-Augmentation-Project)
 * Usernam's [Booru mass editor userscript](https://github.com/ProximaNova/Booru-mass-editor)
