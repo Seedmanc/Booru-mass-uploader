@@ -3,9 +3,9 @@ This userscript allows you to mass-upload images to imageboard sites running Gel
 
 With the [public Mass Uploader](https://unblock.ibsearch.xxx/mass-upload/) gone, a need arose for replacement. While many tried to mindlessly replicate the PHP-requiring setup of the old one, I took another approach and simply integrated the uploader into the Booru page itself, eliminating the need to bypass CORS.
 
-After installing, [the userscript](https://github.com/Seedmanc/Booru-mass-uploader/raw/gh-pages/booru.mass.uploader.user.js) adds a link to [the mass uploader page](https://github.com/Seedmanc/Booru-mass-uploader/raw/gh-pages/index.html) in the booru's menu.
+After installing, [the userscript](https://github.com/Seedmanc/Booru-mass-uploader/raw/gh-pages/booru.mass.uploader.user.js) adds a link to [the mass uploader page](https://github.com/Seedmanc/Booru-mass-uploader/raw/gh-pages/index.html) in the booru's menu:
 
-![screenshot: booru menu](http://imagehost4.online-image-editor.com/oie_upload/images/14165614sj0U5qVwR/cr9Ug9sKzrGi.png)
+![screenshot: booru menu](https://anonm.gr/d214.png)
 
 The link leads to a (supposedly) non-existant location on the booru, `/index.php?page=post&s=mass_upload` and injects the uploader's code there, effectively incorporating its abilities into the booru.
 
