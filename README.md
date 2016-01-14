@@ -15,12 +15,16 @@ This removes the need to bother with manual cookie retrieval, upload URL managem
 
 Interface was somewhat optimized, removing the redundant `Set tags based on image file names alone` option, just leave the additional tags field empty.  
 
-  New features include ability to ignore last component of a file name instead of treating it like a tag, which allows to have image's original filename there. This is useful to avoid filename collisions when having images with identical tag sets.  
-  Additonally, you can now set Title field of an image to its original filename as well as provide a custom Source field, which previously was hard-coded into PHP to advertise the uploader.
+## New features
 
-If you see a booru that is not included on the user script add it with whatever userscript manager you have.
+* You can set the Title field of an image to its original filename: the last part of the filename such as `tag1 tag2 tag3 something_at_location_in_time.jpg`
+* Set a custom Source field (which previously was hard-coded into PHP to advertise the uploader).
+
+If you see a Gelbooru-based site that is not included on [this userscript](https://github.com/Seedmanc/Booru-mass-uploader/raw/gh-pages/booru.mass.uploader.user.js) include it with whatever userscript manager you have.
 
 ## See also
 
-* Be sure to check out my other Booru-related userscript: The [Booru Augmentation Project](https://github.com/Seedmanc/Booru-Augmentation-Project)
+Be sure to check out these Booru-related userscripts:
+
+* My userscripts at the [Booru Augmentation Project](https://github.com/Seedmanc/Booru-Augmentation-Project)
 * Usernam's [Booru mass editor userscript](https://github.com/ProximaNova/Booru-mass-editor)
