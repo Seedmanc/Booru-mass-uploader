@@ -17,9 +17,10 @@ Interface was somewhat optimized, removing the redundant `Set tags based on imag
 
 ## New features
 
-* You can set the Title field of an image to its original filename: the last part of the filename such as `tag1 tag2 tag3 tag4 tag5 something_at_location_in_time.jpg`
-* Set a custom Source field (which previously was hard-coded into PHP to advertise the uploader).
+* Users can set the Title field of an image to its original filename: the last part of the filename such as `tag1 tag2 tag3 tag4 tag5 something_at_location_in_time.jpg`
+* Users can set a custom Source field (which previously was hard-coded into PHP to advertise the uploader).
 * There are now 3 upload errors instead of 1: "image already exists", "image was deleted", and "image is too big, too small, or corrupted".
+* Users can upload folders
 
 If you see a Gelbooru-based site that is not included on [this userscript](https://github.com/Seedmanc/Booru-mass-uploader/raw/gh-pages/booru.mass.uploader.user.js) include it with whatever userscript manager you have.
 
