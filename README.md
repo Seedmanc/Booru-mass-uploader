@@ -1,5 +1,5 @@
 # Booru-mass-uploader
-This userscript allows you to mass-upload images to imageboard sites running *booru engines.
+This userscript allows you to mass-upload images to imageboard sites running Gelbooru software.
 
 With the [public Mass Uploader](https://unblock.ibsearch.xxx/mass-upload/) gone, a need arose for replacement. While many tried to mindlessly replicate the PHP-requiring setup of the old one, I took another approach and simply integrated the uploader into the Booru page itself, eliminating the need to bypass CORS.
 
