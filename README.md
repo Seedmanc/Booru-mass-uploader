@@ -7,9 +7,9 @@ After installing, [the userscript](https://github.com/Seedmanc/Booru-mass-upload
 
 ![screenshot: booru menu](https://anonm.gr/d214.png)
 
-The link leads to a (supposedly) non-existant location on the booru, `/index.php?page=post&s=mass_upload` and injects the uploader's code there, effectively incorporating its abilities into the booru.
+The link leads to a (supposedly) non-existant location on the booru&mdash;`/index.php?page=post&s=mass_upload`&mdash;and injects the uploader's code there, effectively incorporating its abilities into the booru.
 
-This removes the need to bother with manual cookie retrieval, upload URL management, and, of course, CORS limitation. Additionally it allows to use custom tags from your settings. I also fixed the irrelevant "Firefox version 3.6 to 40" requirement, all I had to do was adding the polyfill for that one missing method.
+This removes the need to bother with manual cookie retrieval, upload URL management, and, of course, CORS limitation. Additionally it allows to use custom tags from your settings. I also fixed the irrelevant "Firefox version 3.6 to 38" requirement; all I had to do was add the polyfill for that one missing method.
 
 ![screenshot: index.html](http://puu.sh/lqkYQ/ca6addbb18.png)
 
@@ -18,7 +18,7 @@ Interface was somewhat optimized, removing the redundant `Set tags based on imag
   New features include ability to ignore last component of a file name instead of treating it like a tag, which allows to have image's original filename there. This is useful to avoid filename collisions when having images with identical tag sets.  
   Additonally, you can now set Title field of an image to its original filename as well as provide a custom Source field, which previously was hard-coded into PHP to advertise the uploader.
 
-Note that so far I have tested it with only a few boorus hosted on the http://booru.org site. I don't own other boorus to test it more and even though I tried adding support for Gelbooru and Safebooru, I haven't tested it there or on other custom-domain boorus. Your feedback is required, with enough of it I might add more support later.
+If you see a booru that is not included on the user script add it with whatever userscript manager you have.
 
 ## See also
 
