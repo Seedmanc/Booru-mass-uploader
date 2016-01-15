@@ -21,7 +21,7 @@ This removes the need to bother with manual cookie retrieval, upload URL managem
 * Users can set a custom Source field (which previously was hard-coded into PHP to advertise the uploader).
 * Verbose error reporting in the log. Recognizes the following errors:
   * `image already exists`, linking to the existing duplicate on the booru
-  * `image was deleted`, when a duplicate of the image in question has been uploaded before, but removed later
+  * `image was deleted`, when the image was delete by the user that uploaded it or the admin(s)
   * `image is too big, too small, or corrupted`, when the booru refuses to accept the image for other reasons
 * Users can upload folders (Chrome only)
 
