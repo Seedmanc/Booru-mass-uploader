@@ -31,5 +31,4 @@ If you see a Gelbooru-based site that is not included yet in the header, you can
 
 Be sure to check out these Booru-related userscripts:
 
-* My [Booru Augmentation Project](https://github.com/Seedmanc/Booru-Augmentation-Project)
-* Usernam's [Booru mass editor](https://github.com/ProximaNova/Booru-mass-editor)
+* The [Booru Augmentation Project](https://github.com/Seedmanc/Booru-Augmentation-Project)
