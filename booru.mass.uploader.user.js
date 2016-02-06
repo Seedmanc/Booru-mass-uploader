@@ -11,7 +11,9 @@
 // @include     http://pbooru.com/index.php*
 // @include     http://safeponi.com/index.php*
 // you can add any boorus of your choice by following the pattern
+
 // @grant 		none
+// @run-at		document-end
 // @noframes
 // ==/UserScript==
 
@@ -24,14 +26,17 @@ if (~document.location.href.indexOf('s=mass_upload')) {
 
 	xhr.open('GET', 'http://crossorigin.me/http://seedmanc.github.io/Booru-mass-uploader/index.html?r=' + Math.random(), true);
 	xhr.onreadystatechange = function () {
-		var s = document.getElementsByTagName('script');
+		var scripts;
 
 		if (this.readyState != 4 || this.status != 200) {
 			return;
 		}
+
 		document.getElementsByTagName('body')[0].innerHTML = this.responseText;
-		for (var i = 0; i < s.length; i++) {
-			var node = s[i], parent = node.parentElement, d = document.createElement('script');
+		scripts = document.getElementsByTagName('script');
+
+		for (var i = 0; i < scripts.length; i++) {
+			var node = scripts[i], parent = node.parentElement, d = document.createElement('script');
 
 			d.async = node.async;
 			d.src = node.src;

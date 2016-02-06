@@ -10,7 +10,7 @@ if (!XMLHttpRequest.prototype.sendAsBinary) {
 		/* ...or as ArrayBuffer (legacy)...: this.send(ui8Data.buffer); */
 	};
 }
-var settingsToSave = ['tags', 'source'];
+var settingsToSave = ['tags'];
 var checkboxesToSave = ['forceRating', 'ratingAsDefault', 'setSafe', 'setQuest', 'setExplicit', 'forceTags', 'addTags', 'title', 'asFiles', 'asFolder'];
 var myTags = (GetCookie('tags') || '').replace(/%2520/gi, ' ').replace(/%20/gi, ' ').split(/\s+/);
 var upOptions = {
@@ -356,7 +356,7 @@ function RestoreLastSettings() {
 	$each(settingsToSave, function (setting) {
 		var lastValue = GetCookie(cookieBaseName + setting);
 
-		if (lastValue && (!$get(setting) || setting == 'source'))
+		if (lastValue && (!$get(setting)))
 			$set(setting, lastValue);
 	});
 	$each(checkboxesToSave, function (setting) {
