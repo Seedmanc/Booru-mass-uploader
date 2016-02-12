@@ -12,7 +12,7 @@ if (!XMLHttpRequest.prototype.sendAsBinary) {
 }
 var settingsToSave = ['tags'];
 var checkboxesToSave = ['forceRating', 'ratingAsDefault', 'setSafe', 'setQuest', 'setExplicit', 'forceTags', 'addTags', 'title', 'asFiles', 'asFolder'];
-var myTags = (GetCookie('tags') || '').replace(/%2520/gi, ' ').replace(/%20/gi, ' ').split(/\s+/);
+var myTags = (GetCookie('tags') || '').replace(/%2520/gi, ' ').replace(/%20|\+/gi, ' ').split(/\s+/);
 var upOptions = {
 	running: false
 };
