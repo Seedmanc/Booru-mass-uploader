@@ -10,6 +10,7 @@
 // @include     http://xbooru.com/index.php*
 // @include     http://pbooru.com/index.php*
 // @include     http://safeponi.com/index.php*
+// @include		https://moe.dev.myconan.net/*
 // you can add any boorus of your choice by following the pattern
 
 // @grant 		none
@@ -24,7 +25,7 @@ if (window.top != window.self) {
 if (~document.location.href.indexOf('s=mass_upload')) {
 	var xhr = new XMLHttpRequest();
 
-	xhr.open('GET', 'http://crossorigin.me/http://seedmanc.github.io/Booru-mass-uploader/index.html?r=' + Math.random(), true);
+	xhr.open('GET', location.protocol + '//crossorigin.me/http://seedmanc.github.io/Booru-mass-uploader/index.html?r=' + Math.random(), true);
 	xhr.onreadystatechange = function () {
 		var scripts;
 
@@ -46,10 +47,11 @@ if (~document.location.href.indexOf('s=mass_upload')) {
 	};
 	xhr.send();
 
-} else if (~document.location.href.indexOf('?page=')) {
-	var navbar = document.getElementById('navbar') || document.getElementsByClassName('flat-list2')[0];
+} else {
+	var navbar = document.getElementById('navbar') || document.getElementsByClassName('flat-list2')[0] || document.querySelector('#main-menu > ul');
 	var li = document.createElement("li");
 	var a = document.createElement("a");
+	var token = document.querySelector('meta[name="csrf-token"]');
 
 	try {
 		var notice = document.getElementById('notice').previous();
@@ -57,6 +59,15 @@ if (~document.location.href.indexOf('s=mass_upload')) {
 			notice.parentNode.removeChild(notice);
 		}
 	} catch (any) {}
+
+	token = token && token.content;
+	if (token) {
+		localStorage.setItem('auth_token', token);
+	}
+
+	if (!navbar) {
+		throw "can't link the uploader";
+	}
 
 	a.style.fontWeight = 'bold';
 	a.appendChild(document.createTextNode('Mass Upload'));

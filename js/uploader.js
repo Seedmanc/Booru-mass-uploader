@@ -16,6 +16,7 @@ var myTags = (GetCookie('tags') || '').replace(/%2520/gi, ' ').replace(/%20|\+/g
 var upOptions = {
 	running: false
 };
+var current = 'gelbooru';
 
 if (myTags.length) {
 	var tagsArea = '';
@@ -37,12 +38,11 @@ $$('#asFiles,#asFolder').each(function (el) {
 		} else {
 			files.writeAttribute({directory: false, mozdirectory: false, webkitdirectory: false});
 		}
-	}
+	};
 });
 
 RestoreLastSettings();
 UploadOptions();
-
 
 function toggleTags(tag, id, lid) {
 	var temp = new Array(1);
@@ -132,7 +132,7 @@ function UploadOptions() {
 		ticket: GetCookie('pass_hash')
 	};
 	auth.use = auth.userID && auth.ticket;
-	var uploadURL = document.location.protocol + '//' + document.location.hostname + '/index.php?page=post&s=add';
+	var uploadURL = document.location.protocol + '//' + document.location.hostname + boorus[current].uploadPath;
 
 	document.getElementById('loggedIn').textContent = auth.use ? 'You are logged in' : 'You are posting anonymously';
 	return {
@@ -162,7 +162,7 @@ function Log(className, msg) {
 	$('log').appendChild(line);
 }
 
-function EscapeHTML(str) {  //unused so far
+/*function EscapeHTML(str) {  //unused so far
 	var entity = {
 		'&': '&amp;',
 		'<': '&lt;',
@@ -171,7 +171,7 @@ function EscapeHTML(str) {  //unused so far
 	return str.replace(/&|<|>/g, function (ch) {
 		return entity[ch[0]];
 	});
-}
+}*/
 
 function LogSuccess(file) {
 	Log('success', 'Image ' + file.name + ' was successfully uploaded.');
@@ -202,17 +202,18 @@ function SendFiles(files, index) {
 function SendFile(file, callback) {
 	var reqVars = {
 		title:  TitleFor(file),
-		tags:   TagsFor(file),
 		rating: RatingFor(file),
+		source: upOptions.source,
 		submit: 'Upload',
-		source: upOptions.source
+		tags:   TagsFor(file),
+		token:	localStorage.getItem('auth_token')
 	};
 	if (upOptions.auth.use) {
 		reqVars.cookies = 'user_id=' + upOptions.auth.userID + '; ' + 'pass_hash=' + upOptions.auth.ticket;
 	}
 	var xhr = CreateXHRequest();
 	xhr.onreadystatechange = function () {
-		if (this.readyState == 4 && (this.status == 200 || this.status == 304 /*not modified*/ )) {
+		if (this.readyState == 4 && (this.status == 200 || this.status == 302 || this.status == 304 /*not modified*/ )) {
 			if (~this.responseText.indexOf('generation failed')) {
 				LogFailure(file, 'thumbnail generation failed, image might be corrupted even if added');
 			}
@@ -228,7 +229,7 @@ function SendFile(file, callback) {
 				if (!!Number(existId)) {
 					LogFailure(file, 'image already exists <a href="index.php?page=post&s=view&id=' + existId + '" target="_blank">here</a>')
 				} else
-					LogFailure(file, 'image has been deleted')
+					LogFailure(file, 'image has been deleted');
 			}
 			else if (~this.responseText.indexOf('permission')) {
 				LogFailure(file, 'no permissions');
@@ -251,16 +252,18 @@ function SendFile(file, callback) {
 	var postVars = '';
 
 	for (var name in reqVars) {
-		postVars += boundary + EOLN +
-			'Content-Disposition: form-data; name="' + name + '"' + EOLN + EOLN +
-			reqVars[name] + EOLN;
+		if (boorus[current].fields[name]) {
+			postVars += boundary + EOLN +
+				'Content-Disposition: form-data; name="' + boorus[current].fields[name] + '"' + EOLN + EOLN +
+				reqVars[name] + EOLN;
+		}
 	}
 
 	var reader = new FileReader;
 
 	reader.onloadend = function () {
 		var data = boundary + EOLN +
-			'Content-Disposition: form-data; name="upload";' + ' filename="' + file.name + '"' + EOLN +
+			'Content-Disposition: form-data; name="' + boorus[current].fields.file + '";' + ' filename="' + file.name + '"' + EOLN +
 			'Content-Type: application/octet-stream' + EOLN +
 			'Content-Transfer-Encoding: binary' + EOLN + EOLN +
 			reader.result + EOLN +
@@ -332,6 +335,11 @@ function NormTags(tags) {
 			tags = tags.concat(upOptions.tagging.set);
 			tags = mkUniq(tags);
 	}
+
+	if (tags.length < 1) {
+		tags.push('tag_me');
+	}
+
 	return tags.join(' ');
 }
 
