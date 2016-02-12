@@ -220,7 +220,8 @@ function SendFile(file, callback) {
 			// "mage" instead of "image" because first "I" might be capitalized.
 			if (~this.responseText.indexOf('mage added')) {
 				LogSuccess(file);
-			} else if (~this.responseText.indexOf('already exists.')) {
+			}
+			else if (~this.responseText.indexOf('already exists.')) {
 				var existId;
 				try {
 					existId = this.responseText.split('can find it ')[1].split('here')[0].split('&id=')[1].replace('">', '');
@@ -243,7 +244,7 @@ function SendFile(file, callback) {
 			} else
 				LogFailure(file, 'wrong response, check your posting form URL');
 
-			UpdateUpProgress((upOptions.stats.success + upOptions.stats.failed) / upOptions.stats.total);
+			UpdateUpProgress(Math.min(upOptions.stats.success + upOptions.stats.failed, upOptions.stats.total) / upOptions.stats.total);
 			setTimeout(callback, upOptions.delay);
 		}
 	};
@@ -301,7 +302,7 @@ function InfoAbout(file) {
 		fileName = fileName.replace(ext[0], '');
 	}
 	if (!ext) {
-		throw 'File ' + file.name + ' have no extension.';
+		throw 'File ' + file.name + ' has no extension.';
 	} else {
 		ext = ext[1];
 	}
@@ -324,9 +325,9 @@ function NormTags(tags) {
 	tags.pop();
 	if (tags.length >= 2) {
 		tags = mkUniq(tags);
-		if (tags[0] == '') {
-			tags.shift();
-		}
+	}
+	if (tags[0] == '') {
+		tags.shift();
 	}
 	switch (upOptions.tagging.when) {
 		case 'always':
@@ -337,7 +338,7 @@ function NormTags(tags) {
 	}
 
 	if (tags.length < 1) {
-		tags.push('tag_me');
+		tags.push('tagme');
 	}
 
 	return tags.join(' ');
