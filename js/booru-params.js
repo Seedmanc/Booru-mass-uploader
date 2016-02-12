@@ -11,7 +11,7 @@ var boorus = {
 		}
 	},
 	moebooru: {
-		uploadPath: '/post/create',
+		uploadPath: '/post/create.json',
 		fields: {
 			file:	'post[file]',
 			parent: 'post[parent_id]',

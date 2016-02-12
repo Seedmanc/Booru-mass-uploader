@@ -134,7 +134,7 @@ function UploadOptions() {
 	auth.use = auth.userID && auth.ticket;
 	var uploadURL = document.location.protocol + '//' + document.location.hostname + boorus[current].uploadPath;
 
-	document.getElementById('loggedIn').textContent = auth.use ? 'You are logged in' : 'You are posting anonymously';
+	document.getElementById('loggedIn').textContent = auth.use || (localStorage.getItem('auth_token') && GetCookie('login')) ? 'You are logged in' : 'You are posting anonymously';
 	return {
 		delay:     1000,
 		uploadURL: uploadURL,
@@ -213,41 +213,69 @@ function SendFile(file, callback) {
 	}
 	var xhr = CreateXHRequest();
 	xhr.onreadystatechange = function () {
-		if (this.readyState == 4 && (this.status == 200 || this.status == 302 || this.status == 304 /*not modified*/ )) {
-			if (~this.responseText.indexOf('generation failed')) {
-				LogFailure(file, 'thumbnail generation failed, image might be corrupted even if added');
-			}
-			// "mage" instead of "image" because first "I" might be capitalized.
-			if (~this.responseText.indexOf('mage added')) {
-				LogSuccess(file);
-			}
-			else if (~this.responseText.indexOf('already exists.')) {
-				var existId;
-				try {
-					existId = this.responseText.split('can find it ')[1].split('here')[0].split('&id=')[1].replace('">', '');
-				} catch (any) {}
+		if (this.readyState == 4) {
+			if (current == 'gelbooru') {
+				 if (this.status == 200 || this.status == 302 || this.status == 304 /*not modified*/ ) {
+					if (~this.responseText.indexOf('generation failed')) {
+						LogFailure(file, 'thumbnail generation failed, image might be corrupted even if added');
+					}
+					// "mage" instead of "image" because first "I" might be capitalized.
+					if (~this.responseText.indexOf('mage added')) {
+						LogSuccess(file);
+					}
+					else if (~this.responseText.indexOf('already exists.')) {
+						var existId;
+						try {
+							existId = this.responseText.split('can find it ')[1].split('here')[0].split('&id=')[1].replace('">', '');
+						} catch (any) {}
 
-				if (!!Number(existId)) {
-					LogFailure(file, 'image already exists <a href="index.php?page=post&s=view&id=' + existId + '" target="_blank">here</a>')
-				} else
-					LogFailure(file, 'image has been deleted');
+						if (!!Number(existId)) {
+							LogFailure(file, 'image already exists <a href="index.php?page=post&s=view&id=' + existId + '" target="_blank">here</a>')
+						} else
+							LogFailure(file, 'image has been deleted');
+					}
+					else if (~this.responseText.indexOf('permission')) {
+						LogFailure(file, 'no permissions');
+						var msg =
+								'Could not upload this image - the board says that you have no permissions.\nCheck if you are logged in. Stopped.';
+						alert(msg);
+						OnAllUploaded();
+						throw msg;
+					} else if (~this.responseText.indexOf('n error occured')) {
+						LogFailure(file, 'image too big? too small? corrupted?');
+					} else
+						LogFailure(file, 'wrong response, check your posting form URL');
+				} else {
+					 LogFailure(file, xhr.statusCode);
+				 }
+			} else {
+				switch (this.status) {
+					case 200:
+						LogSuccess(file);
+						break;
+					case 423:
+						LogFailure(file, 'image already exists <a href="' + JSON.parse(xhr.response).location + '" target="_blank">' + JSON.parse(xhr.response).post_id + '</a>');
+						break;
+					case 403:
+						LogFailure(file, 'access denied, try logging in. Stopped');
+						OnAllUploaded();
+						throw JSON.parse(xhr.response).reason;
+						break;
+					default:
+						if (JSON.parse(xhr.response).success == true) {
+							LogSuccess(file);
+						}
+						else {
+							LogFailure(file, 'error: ' + JSON.parse(xhr.response).reason);
+						}
+						break;
+				}
 			}
-			else if (~this.responseText.indexOf('permission')) {
-				LogFailure(file, 'no permissions');
-				var msg =
-						'Could not upload this image - the board says that you have no permissions.\nCheck if you are logged in. Stopped.';
-				alert(msg);
-				OnAllUploaded();
-				throw msg;
-			} else if (~this.responseText.indexOf('n error occured')) {
-				LogFailure(file, 'image too big? too small? corrupted?');
-			} else
-				LogFailure(file, 'wrong response, check your posting form URL');
-
 			UpdateUpProgress(Math.min(upOptions.stats.success + upOptions.stats.failed, upOptions.stats.total) / upOptions.stats.total);
 			setTimeout(callback, upOptions.delay);
 		}
 	};
+
 	var boundary = '--bOh3aYae';
 	var EOLN = "\r\n";
 	var postVars = '';
@@ -326,9 +354,7 @@ function NormTags(tags) {
 	if (tags.length >= 2) {
 		tags = mkUniq(tags);
 	}
-	if (tags[0] == '') {
-		tags.shift();
-	}
+
 	switch (upOptions.tagging.when) {
 		case 'always':
 			tags = [];
@@ -337,8 +363,8 @@ function NormTags(tags) {
 			tags = mkUniq(tags);
 	}
 
-	if (tags.length < 1) {
-		tags.push('tagme');
+	if (tags[0] == '') {
+		tags.shift();
 	}
 
 	return tags.join(' ');
