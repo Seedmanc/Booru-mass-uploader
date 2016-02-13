@@ -26,8 +26,8 @@
 			padding: 1em;
 		}
 
-		legend, .bold {
-			font-weight: bold;
+		legend {
+			
 		}
 
 		legend span {
@@ -110,7 +110,7 @@ Select a number of files and they're sent to the website along with the metadata
 the tags retrived from the filenames.</p>
 
 <fieldset style="padding: 2px 1em">
-	<legend>
+	<legend font>
 		For correct upload all files must be named according to the format
 		<span onclick="var el = 'fileNamesTip'; $style(el, 'display') == 'block' ? $hide(el) : $show(el);">
 		  [+/-]
@@ -223,7 +223,7 @@ the tags retrived from the filenames.</p>
 	skipped)
 </div>
 <br>
-<p style="text-align:center;margin-top:-1em;margin-bottom:-0.33em;">You are <span class="bold" id="loggedIn"></span> to a <span class="bold" id="current"></span> site.</p>
+<p style="text-align:center;margin-top:-1em;margin-bottom:-0.33em;">You are <b id="loggedIn"></b> to a <b id="current"></b> site.</p>
 <button id="submit" onclick="FilesSelected( $('files').files );">Upload!</button>
 
 <h2 id="status"></h2>
