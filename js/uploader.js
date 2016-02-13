@@ -12,11 +12,18 @@ if (!XMLHttpRequest.prototype.sendAsBinary) {
 }
 var settingsToSave = ['tags'];
 var checkboxesToSave = ['forceRating', 'ratingAsDefault', 'setSafe', 'setQuest', 'setExplicit', 'forceTags', 'addTags', 'title', 'asFiles', 'asFolder'];
-var myTags = (GetCookie('tags') || '').replace(/%2520/gi, ' ').replace(/%20|\+/gi, ' ').split(/\s+/);
+var myTags = ((GetCookie('tags') || '+') + (GetCookie('my_tags') || '+') + (GetCookie('recent_tags') || '+')).replace(/%2520/gi, ' ').replace(/%20|\++/gi, ' ').trim().split(/\s+/);
 var upOptions = {
 	running: false
 };
-var current = 'gelbooru';
+var current = localStorage.getItem('current') || 'gelbooru';
+var engine = document.getElementById("engine");
+
+engine.selectedIndex = current == 'gelbooru' ? 0 : 1;
+engine.onchange = function(evt) {
+	current = evt.target.value;
+	document.getElementById('current').textContent = current;
+};
 
 if (myTags.length) {
 	var tagsArea = '';
@@ -28,6 +35,7 @@ if (myTags.length) {
 	});
 	$('my-tags').innerHTML = tagsArea;
 }
+document.title = 'Mass uploader';
 
 $$('#asFiles,#asFolder').each(function (el) {
 	var files = $('files');
@@ -134,7 +142,8 @@ function UploadOptions() {
 	auth.use = auth.userID && auth.ticket;
 	var uploadURL = document.location.protocol + '//' + document.location.hostname + boorus[current].uploadPath;
 
-	document.getElementById('loggedIn').textContent = auth.use || (localStorage.getItem('auth_token') && GetCookie('login')) ? 'You are logged in' : 'You are posting anonymously';
+	document.getElementById('loggedIn').textContent = auth.use || (localStorage.getItem('auth_token') && GetCookie('login')) ? 'logged in' : 'posting anonymously';
+	document.getElementById('current').textContent = current;
 	return {
 		delay:     1000,
 		uploadURL: uploadURL,

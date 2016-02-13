@@ -2,7 +2,7 @@
 		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title>Booru mass uploader</title>
+	<title>Mass uploader</title>
 	<meta http-equiv="Cache-Control" content="no-store" />
 	<meta content="text/html" charset="utf-8" http-equiv="Content-Type"/>
 	<style type="text/css">
@@ -26,7 +26,7 @@
 			padding: 1em;
 		}
 
-		legend {
+		legend, .bold {
 			font-weight: bold;
 		}
 
@@ -192,13 +192,21 @@ the tags retrived from the filenames.</p>
 	</legend>
 
 	<div id="otherSettings" style="display: none;">
-		<div style="float:left;" class="para">
-			<input type="checkbox" id="title"/>
-			<label for="title">Set Title field of each image to its original filename</label>
+		<div>
+			<div style="float:left;" class="para">
+				<input type="checkbox" id="title"/>
+				<label for="title">Set Title of each image to its original filename</label>
+			</div>
+			<div style="float:right;" class="para">
+				Set Source field of each image to
+				<input type="text" id="source" value="Booru mass uploader" style="width:200px;"/>
+			</div>
 		</div>
-		<div style="float:right;" class="para">
-			Set Source field of each image to
-			<input type="text" id="source" value="Booru mass uploader" style="width:200px;"/>
+		<div style="text-align:center; padding-top:3px;">
+			Select booru engine: <select id="engine" style="text-align:center; padding-top:3px;">
+			<option value="gelbooru" selected>Gelbooru</option>
+			<option value="moebooru">Moebooru</option>
+		</select>
 		</div>
 	</div>
 </fieldset>
@@ -212,10 +220,10 @@ the tags retrived from the filenames.</p>
 	Images:
 	<input type="file" id="files" multiple="true" accept="image/*" style="width:90%;"/><br>
 	(all files with MIME other than <tt>image/*</tt> or extension other than <tt>jpe?g/gif/png/bmp</tt> will be
-	skipped).
+	skipped)
 </div>
 <br>
-<p style="text-align:center;margin-top:-1em;margin-bottom:-0.33em;" id="loggedIn"></p>
+<p style="text-align:center;margin-top:-1em;margin-bottom:-0.33em;">You are <span class="bold" id="loggedIn"></span> to a <span class="bold" id="current"></span> site.</p>
 <button id="submit" onclick="FilesSelected( $('files').files );">Upload!</button>
 
 <h2 id="status"></h2>
