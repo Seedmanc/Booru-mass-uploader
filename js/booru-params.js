@@ -21,5 +21,15 @@ var boorus = {
 			tags:   'post[tags]',
 			token:	'authenticity_token'
 		}
+	},
+	danbooru: {
+		uploadPath: '/uploads.json',
+		fields: {
+			file:	'upload[file]',
+			parent: 'upload[parent_id]',
+			rating: 'upload[rating]',
+			submit: 'commit',
+			tags:   'upload[tag_string]'
+		}
 	}
 };
