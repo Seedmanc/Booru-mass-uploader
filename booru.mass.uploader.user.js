@@ -53,13 +53,6 @@ if (~document.location.href.indexOf('s=mass_upload')) {
 	var a = document.createElement("a");
 	var token = document.querySelector('meta[name="csrf-token"]');
 
-	try {
-		var notice = document.getElementById('notice').previous();
-		if (notice) {
-			notice.parentNode.removeChild(notice);
-		}
-	} catch (any) {}
-
 	token = token && token.content;
 	if (token) {
 		localStorage.setItem('auth_token', token);
@@ -71,9 +64,16 @@ if (~document.location.href.indexOf('s=mass_upload')) {
 
 	if (document.querySelector('[src*="moe-legacy"]') || document.querySelector('html.action-post')) {
 		localStorage.setItem('current', 'moebooru');
-	} /*else if (~document.documentElement.innerHTML.indexOf('Running Danbooru')) {
+	} else if (~document.documentElement.innerHTML.indexOf('Running Danbooru')) {
 		localStorage.setItem('current', 'danbooru');
-	}*/
+	}
+
+	try {
+		var notice = document.getElementById('notice').previous();
+		if (notice && localStorage.getItem(document.location.host) == 'gelbooru') {
+			notice.parentNode.removeChild(notice);
+		}
+	} catch (any) {}
 
 	a.style.fontWeight = 'bold';
 	a.appendChild(document.createTextNode('Mass Upload'));

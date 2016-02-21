@@ -29,7 +29,8 @@ var boorus = {
 			parent: 'upload[parent_id]',
 			rating: 'upload[rating]',
 			submit: 'commit',
-			tags:   'upload[tag_string]'
+			tags:   'upload[tag_string]',
+			token:	'authenticity_token'
 		}
 	}
 };
