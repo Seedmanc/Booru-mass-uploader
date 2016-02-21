@@ -16,20 +16,26 @@ var myTags = ((GetCookie('tags') || '+') + (GetCookie('my_tags') || '+') + (GetC
 var upOptions = {
 	running: false
 };
-var current = localStorage.getItem('current') || 'gelbooru';
-var engine = document.getElementById("engine");
+var current = localStorage.getItem(document.location.host) || localStorage.getItem('current') || 'gelbooru';
+var engine = $("engine");
 
-engine.selectedIndex = current == 'gelbooru' ? 0 : 1;
-engine.onchange = function(evt) {
-	current = evt.target.value;
-	document.getElementById('current').textContent = current;
+engine.onchange = function() {
+	current = this.value;
+	$('current').textContent = current;
+	if (current != 'gelbooru') {
+		$('title').disable();
+	} else {
+		$('title').enable();
+	}
 };
+engine.selectedIndex = current == 'gelbooru' ? 0 : (current == 'moebooru' ? 1 : 2);
+engine.onchange();
 
 if (myTags.length) {
 	var tagsArea = '';
 
 	$show('mytags');
-	$each(myTags, function (tag) {
+	$each(mkUniq(myTags), function (tag) {
 		tagsArea += '&nbsp;<a style="text-decoration:none;" href="#' + tag + '" id="t_' + tag + '"' +
 			"onclick=\"javascript:toggleTags('" + tag + "','tags','t_" + tag + "');" + 'return false;">' + tag + '</a> ';
 	});
@@ -139,15 +145,18 @@ function UploadOptions() {
 		userID: GetCookie('user_id'),
 		ticket: GetCookie('pass_hash')
 	};
-	auth.use = auth.userID && auth.ticket;
+	auth.use = (auth.userID || GetCookie('login')) && auth.ticket;
 	var uploadURL = document.location.protocol + '//' + document.location.hostname + boorus[current].uploadPath;
 
-	document.getElementById('loggedIn').textContent = auth.use || (localStorage.getItem('auth_token') && GetCookie('login')) ? 'logged in' : 'posting anonymously';
-	document.getElementById('current').textContent = current;
+	$('spinner').hide();
+	$('infobar').show();
+	$('submit').enable();
+	$('loggedIn').textContent = auth.use || (localStorage.getItem('auth_token') && (GetCookie('login') || GetCookie('user_name'))) ? 'logged in' : 'posting anonymously';
+	$('current').textContent = current;
 	return {
 		delay:     1000,
 		uploadURL: uploadURL,
-		title:     document.getElementById('title').checked,
+		title:     $('title').checked,
 		rating:    rating,
 		tagging:   tagging,
 		source:    $get('source'),
@@ -171,18 +180,8 @@ function Log(className, msg) {
 	$('log').appendChild(line);
 }
 
-/*function EscapeHTML(str) {  //unused so far
-	var entity = {
-		'&': '&amp;',
-		'<': '&lt;',
-		'>': '&gt;'
-	};
-	return str.replace(/&|<|>/g, function (ch) {
-		return entity[ch[0]];
-	});
-}*/
-
 function LogSuccess(file) {
+	localStorage.setItem(document.location.host, $('engine').value);
 	Log('success', 'Image ' + file.name + ' was successfully uploaded.');
 	upOptions.stats.success++;
 }
@@ -262,16 +261,36 @@ function SendFile(file, callback) {
 					case 200:
 						LogSuccess(file);
 						break;
+					case 201:
+						if (current == 'danbooru'){
+							var uploadResult = JSON.parse(xhr.response).status;
+
+							if (uploadResult == 'completed') {
+								LogSuccess(file);
+							} else if (~uploadResult.indexOf('error:')) {
+								if (~uploadResult.indexOf('duplicate')) {
+									LogFailure(file, 'image already exists <a href="/posts/' + uploadResult.split('duplicate: ')[1] + '" target="_blank">' + uploadResult.split('duplicate: ')[1] + '</a>');
+								} else {
+									LogFailure(file, uploadResult);
+								}
+							}
+						}
+						break;
 					case 423:
-						LogFailure(file, 'image already exists <a href="' + JSON.parse(xhr.response).location + '" target="_blank">' + JSON.parse(xhr.response).post_id + '</a>');
+						LogFailure(file, 'image already exists <a href="' + JSON.parse(xhr.response).location + '" target="_blank">' + (JSON.parse(xhr.response).post_id || 'here') + '</a>');
 						break;
 					case 403:
 						LogFailure(file, 'access denied, try logging in. Stopped');
 						OnAllUploaded();
 						throw JSON.parse(xhr.response).reason;
 						break;
+					case 404:
+						LogFailure(file, 'API error, try another booru engine. Stopped');
+						OnAllUploaded();
+						throw 404;
+						break;
 					default:
-						if (JSON.parse(xhr.response).success == true) {
+						if (JSON.parse(xhr.response).success === true) {
 							LogSuccess(file);
 						}
 						else {

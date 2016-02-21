@@ -1,16 +1,16 @@
 ﻿// ==UserScript==
 // @name		Booru Mass Uploader
 // @description	Add ability to bulk upload images to your booru
-// @version     1.2
+// @version     1.3
 // @author		Seedmanc
 // @include     http://*.booru.org/index.php*
 // @include 	http://gelbooru.com/index.php*
 // @include     http://safebooru.org/index.php*
 // @include     http://rule34.xxx/index.php*
-// @include     http://xbooru.com/index.php*
-// @include     http://pbooru.com/index.php*
-// @include     http://safeponi.com/index.php*
 // @include		https://moe.dev.myconan.net/*
+// @include		http://behoimi.org/*
+// @include		https://chan.sankakucomplex.com/*
+// @include		http://atfbooru.ninja/*
 // you can add any boorus of your choice by following the pattern
 
 // @grant 		none
@@ -62,22 +62,15 @@ if (~document.location.href.indexOf('s=mass_upload')) {
 		throw "can't link the uploader";
 	}
 
-	if (document.querySelector('[src*="moe-legacy"]') || document.querySelector('html.action-post')) {
-		localStorage.setItem('current', 'moebooru');
-	} else if (~document.documentElement.innerHTML.indexOf('Running Danbooru')) {
-		localStorage.setItem('current', 'danbooru');
-	}
-
-	try {
-		var notice = document.getElementById('notice').previous();
-		if (notice && localStorage.getItem(document.location.host) == 'gelbooru') {
-			notice.parentNode.removeChild(notice);
-		}
-	} catch (any) {}
-
 	a.style.fontWeight = 'bold';
 	a.appendChild(document.createTextNode('Mass Upload'));
 	a.href = document.location.protocol + '//' + document.location.hostname + '/index.php?page=post&s=mass_upload';
 	li.appendChild(a);
 	navbar.appendChild(li);
+
+	if (document.querySelector('[src*="moe-legacy"]') || document.querySelector('html.action-post') || document.querySelector('[href*="/post/upload"]')) {
+		localStorage.setItem('current', 'moebooru');
+	} else if (document.querySelector('[href*="/uploads/new"]') || ~document.documentElement.innerHTML.indexOf('Running Danbooru')) {
+		localStorage.setItem('current', 'danbooru');
+	}
 }
