@@ -19,7 +19,7 @@ var upOptions = {
 var current = localStorage.getItem(document.location.host) || localStorage.getItem('current') || 'gelbooru';
 var engine = $("engine");
 
-engine.onchange = function() {
+engine.onchange = function () {
 	current = this.value;
 	$('current').textContent = current;
 	if (current != 'gelbooru') {
@@ -214,7 +214,7 @@ function SendFile(file, callback) {
 		source: upOptions.source,
 		submit: 'Upload',
 		tags:   TagsFor(file),
-		token:	localStorage.getItem('auth_token')
+		token:  localStorage.getItem('auth_token')
 	};
 	if (upOptions.auth.use) {
 		reqVars.cookies = 'user_id=' + upOptions.auth.userID + '; ' + 'pass_hash=' + upOptions.auth.ticket;
@@ -223,7 +223,7 @@ function SendFile(file, callback) {
 	xhr.onreadystatechange = function () {
 		if (this.readyState == 4) {
 			if (current == 'gelbooru') {
-				 if (this.status == 200 || this.status == 302 || this.status == 304 /*not modified*/ ) {
+				if (this.status == 200 || this.status == 302 || this.status == 304 /*not modified*/) {
 					if (~this.responseText.indexOf('generation failed')) {
 						LogFailure(file, 'thumbnail generation failed, image might be corrupted even if added');
 					}
@@ -239,30 +239,32 @@ function SendFile(file, callback) {
 
 						if (!!Number(existId)) {
 							LogFailure(file, 'image already exists <a href="index.php?page=post&s=view&id=' + existId + '" target="_blank">here</a>')
-						} else
+						} else {
 							LogFailure(file, 'image has been deleted');
+						}
 					}
 					else if (~this.responseText.indexOf('permission')) {
 						LogFailure(file, 'no permissions');
 						var msg =
-								'Could not upload this image - the board says that you have no permissions.\nCheck if you are logged in. Stopped.';
+							    'Could not upload this image - the board says that you have no permissions.\nCheck if you are logged in. Stopped.';
 						alert(msg);
 						OnAllUploaded();
 						throw msg;
 					} else if (~this.responseText.indexOf('n error occured')) {
 						LogFailure(file, 'image too big? too small? corrupted?');
-					} else
+					} else {
 						LogFailure(file, 'wrong response, check your posting form URL');
+					}
 				} else {
-					 LogFailure(file, xhr.statusCode);
-				 }
+					LogFailure(file, xhr.statusCode);
+				}
 			} else {
 				switch (this.status) {
 					case 200:
 						LogSuccess(file);
 						break;
 					case 201:
-						if (current == 'danbooru'){
+						if (current == 'danbooru') {
 							var uploadResult = JSON.parse(xhr.response).status;
 
 							if (uploadResult == 'completed') {
@@ -419,16 +421,18 @@ function RestoreLastSettings() {
 	$each(settingsToSave, function (setting) {
 		var lastValue = GetCookie(cookieBaseName + setting);
 
-		if (lastValue && (!$get(setting)))
+		if (lastValue && (!$get(setting))) {
 			$set(setting, lastValue);
+		}
 	});
 	$each(checkboxesToSave, function (setting) {
 		var lastValue = GetCookie(cookieBaseName + setting);
 
 		if (IsNum(lastValue)) {
 			$(setting).checked = lastValue == '1';
-			if ($(setting).onchange)
+			if ($(setting).onchange) {
 				$(setting).onchange();
+			}
 		}
 	});
 }
