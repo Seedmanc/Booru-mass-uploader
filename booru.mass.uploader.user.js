@@ -62,6 +62,12 @@ if (~document.location.href.indexOf('s=mass_upload')) {
 		localStorage.setItem('auth_token', token);
 	}
 
+	if (document.querySelector('[src*="moe-legacy"]') || document.querySelector('html.action-post') || document.querySelector('[href*="/post/upload"]')) {
+		localStorage.setItem('current', 'moebooru');
+	} else if (document.querySelector('[href*="/uploads/new"]') || ~document.documentElement.innerHTML.indexOf('Running Danbooru')) {
+		localStorage.setItem('current', 'danbooru');
+	}
+	
 	if (!navbar) {
 		throw "can't link the uploader";
 	}
@@ -71,10 +77,4 @@ if (~document.location.href.indexOf('s=mass_upload')) {
 	a.href = document.location.protocol + '//' + document.location.hostname + '/index.php?page=post&s=mass_upload';
 	li.appendChild(a);
 	navbar.appendChild(li);
-
-	if (document.querySelector('[src*="moe-legacy"]') || document.querySelector('html.action-post') || document.querySelector('[href*="/post/upload"]')) {
-		localStorage.setItem('current', 'moebooru');
-	} else if (document.querySelector('[href*="/uploads/new"]') || ~document.documentElement.innerHTML.indexOf('Running Danbooru')) {
-		localStorage.setItem('current', 'danbooru');
-	}
 }
