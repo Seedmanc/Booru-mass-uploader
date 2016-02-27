@@ -6,11 +6,12 @@
 // @include     http://*.booru.org/index.php*
 // @include 	http://gelbooru.com/index.php*
 // @include     http://safebooru.org/index.php*
-// @include     http://rule34.xxx/index.php*
 // @include		https://moe.dev.myconan.net/*
 // @include		http://behoimi.org/*
 // @include		https://chan.sankakucomplex.com/*
 // @include		http://atfbooru.ninja/*
+// @include		http://danbooru.donmai.us/*
+
 // you can add any boorus of your choice by following the pattern
 
 // @grant 		none
@@ -48,7 +49,10 @@ if (~document.location.href.indexOf('s=mass_upload')) {
 	xhr.send();
 
 } else {
-	var navbar = document.getElementById('navbar') || document.getElementsByClassName('flat-list2')[0] || document.querySelector('#main-menu > ul');
+	var navbar = document.getElementById('navbar') ||
+		document.getElementsByClassName('flat-list2')[0] ||
+		document.querySelector('#main-menu > ul') ||
+		document.querySelector('nav > menu');
 	var li = document.createElement("li");
 	var a = document.createElement("a");
 	var token = document.querySelector('meta[name="csrf-token"]');
