@@ -1,4 +1,4 @@
-﻿// ==UserScript==
+// ==UserScript==
 // @name		Booru Mass Uploader
 // @description	Add ability to bulk upload images to your booru
 // @version     1.3
