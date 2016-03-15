@@ -11,7 +11,7 @@ if (!XMLHttpRequest.prototype.sendAsBinary) {
 	};
 }
 var settingsToSave = ['tags'];
-var checkboxesToSave = ['forceRating', 'ratingAsDefault', 'setSafe', 'setQuest', 'setExplicit', 'forceTags', 'addTags', 'title', 'asFiles', 'asFolder'];
+var checkboxesToSave = ['forceRating', 'ratingAsDefault', 'setSafe', 'setQuest', 'setExplicit', 'forceTags', 'addTags', 'title', 'asFiles', 'asFolder', 'onlyErrors'];
 var myTags = ((GetCookie('tags') || '+') + (GetCookie('my_tags') || '+') + (GetCookie('recent_tags') || '+')).replace(/%2520/gi, ' ').replace(/%20|\++/gi, ' ').trim().split(/\s+/);
 var upOptions = {
 	running: false
@@ -182,8 +182,12 @@ function Log(className, msg) {
 
 function LogSuccess(file) {
 	localStorage.setItem(document.location.host, $('engine').value);
-	Log('success', 'Image ' + file.name + ' was successfully uploaded.');
 	upOptions.stats.success++;
+
+	if ($('onlyErrors').checked)
+		return;
+
+	Log('success', 'Image ' + file.name + ' was successfully uploaded.');
 }
 
 function LogFailure(file, reason) {
