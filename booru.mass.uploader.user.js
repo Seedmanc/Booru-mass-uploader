@@ -1,6 +1,7 @@
 // ==UserScript==
 // @name		Booru Mass Uploader
 // @description	Add ability to bulk upload images to your booru
+// @namespace 	https://github.com/Seedmanc/Booru-mass-uploader
 // @version     1.3
 // @author		Seedmanc
 // @include     http://*.booru.org/index.php*
