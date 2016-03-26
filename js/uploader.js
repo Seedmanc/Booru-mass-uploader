@@ -20,6 +20,12 @@ var upOptions = {
 var current = localStorage.getItem(document.location.host) || localStorage.getItem('current') || 'gelbooru';
 var engine = $("engine");
 var bat = [], header = {};
+var move = 'move', slash = '\\', extn = 'bat';
+
+if (!~navigator.appVersion.indexOf("Win")) {
+	move = 'mv'; slash = '/'; extn = 'sh';
+	document.querySelector('#bat b').textContent = '.sh';
+}
 
 engine.onchange = function () {
 	current = this.value;
@@ -66,7 +72,7 @@ document.querySelector('#bat > a').onclick = function () {
 	}
 
 	a.href = window.URL.createObjectURL(new Blob([bat.join('\r\n')], {type: 'text/plain'}));
-	a.download = 'parse errors.bat';
+	a.download = 'parse errors.' + extn;
 
 // Append anchor to body.
 	document.body.appendChild(a);
@@ -222,10 +228,10 @@ function LogFailure(file, reason) {
 
 	errors.some(function (error) {
 		if (~reason.indexOf(error)) {
-			header[error] = 'if not exist "' + error + '" (md "' + error + '\\")';
-			bat.push('move "' + file.name + '" ' + error + '\\' + file.name + '"');
+			header[error] = 'mkdir ' + error;
+			bat.push(move + ' "' + file.name + '" "' + error + slash + file.name + '"');
 			if (error == 'error') {
-				bat.push('echo ' + file.name + '\t' + reason + ' >> ' + error + '\\log.txt');
+				bat.push('echo ' + file.name + '\t' + reason + '  >> ' + error + slash + 'log.txt ');
 			}
 
 			return true;
