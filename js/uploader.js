@@ -11,21 +11,11 @@ if (!XMLHttpRequest.prototype.sendAsBinary) {
 	};
 }
 
-var settingsToSave = ['tags'];
-var checkboxesToSave = ['forceRating', 'ratingAsDefault', 'setSafe', 'setQuest', 'setExplicit', 'forceTags', 'addTags', 'title', 'asFiles', 'asFolder', 'onlyErrors'];
-var myTags = ((GetCookie('tags') || '+') + (GetCookie('my_tags') || '+') + (GetCookie('recent_tags') || '+')).replace(/%2520/gi, ' ').replace(/%20|\++/gi, ' ').trim().split(/\s+/);
 var upOptions = {
 	running: false
 };
 var current = localStorage.getItem(document.location.host) || localStorage.getItem('current') || 'gelbooru';
 var engine = $("engine");
-var bat = [], header = {};
-var move = 'move', slash = '\\', extn = 'bat';
-
-if (!~navigator.appVersion.indexOf("Win")) {
-	move = 'mv'; slash = '/'; extn = 'sh';
-	document.querySelector('#bat b').textContent = '.sh';
-}
 
 engine.onchange = function () {
 	current = this.value;
@@ -39,18 +29,6 @@ engine.onchange = function () {
 engine.selectedIndex = current == 'gelbooru' ? 0 : (current == 'moebooru' ? 1 : 2);
 engine.onchange();
 
-if (myTags.length) {
-	var tagsArea = '';
-
-	$show('mytags');
-	$each(mkUniq(myTags), function (tag) {
-		tagsArea += '&nbsp;<a style="text-decoration:none;" href="#' + tag + '" id="t_' + tag + '"' +
-			"onclick=\"javascript:toggleTags('" + tag + "', 't_" + tag + "');" + 'return false;">' + tag + '</a> ';
-	});
-	$('my-tags').innerHTML = tagsArea;
-}
-document.title = 'Mass uploader';
-
 $$('#asFiles,#asFolder').each(function (el) {
 	var files = $('files');
 
@@ -63,43 +41,8 @@ $$('#asFiles,#asFolder').each(function (el) {
 	};
 });
 
-// batch faulty images sorting
-document.querySelector('#bat > a').onclick = function () {
-	var a = window.document.createElement('a');
-
-	for (line in header) {
-		bat.unshift(header[line]);
-	}
-
-	a.href = window.URL.createObjectURL(new Blob([bat.join('\r\n')], {type: 'text/plain'}));
-	a.download = 'parse errors.' + extn;
-
-// Append anchor to body.
-	document.body.appendChild(a);
-	a.click();
-
-// Remove anchor from body
-	document.body.removeChild(a);
-};
-
 RestoreLastSettings();
 UploadOptions();
-
-function toggleTags(tag, lid) {
-	var temp = new Array(1);
-	var tagBox = $('tags');
-	var tags = tagBox.value.split(" ");
-
-	temp[0] = tag;
-	if (tags.include(tag)) {
-		tagBox.value = tags.without(tag).join(" ").trim() + ' ';
-		$(lid).innerHTML = tag + " ";
-	} else {
-		tagBox.value = tags.concat(temp).join(" ").trim() + ' ';
-		$(lid).innerHTML = "<b>" + tag + "</b> ";
-	}
-	return false;
-}
 
 function FilesSelected(selFiles) {
 	bat = [];
@@ -110,6 +53,7 @@ function FilesSelected(selFiles) {
 		return;
 	}
 	upOptions = UploadOptions();
+
 	if (upOptions.auth.use && isNaN(upOptions.auth.userID)) {
 		alert('Wrong user ID - it must be a number.');
 		return;
@@ -119,6 +63,7 @@ function FilesSelected(selFiles) {
 		return;
 	}
 	upOptions.running = true;
+
 	try {
 		var files = [];
 		$each(selFiles, function (file) {
@@ -224,23 +169,9 @@ function LogSuccess(file) {
 function LogFailure(file, reason) {
 	Log('error', 'Couldn\'t upload ' + file.name + ': ' + reason + '.');
 
-	var errors = ['corrupted', 'deleted', 'exists', 'error'];
-
-	errors.some(function (error) {
-		if (~reason.indexOf(error)) {
-			header[error] = 'mkdir ' + error;
-			bat.push(move + ' "' + file.name + '" "' + error + slash + file.name + '"');
-			if (error == 'error') {
-				bat.push('echo ' + file.name + '\t' + reason + '  >> ' + error + slash + 'log.txt ');
-			}
-
-			return true;
-		}
-	});
+	batch(file, reason);
 
 	upOptions.stats.failed++;
-
-	$('bat').show();
 }
 
 function SendFiles(files, index) {
@@ -447,62 +378,4 @@ function NormTags(tags) {
 	}
 
 	return tags.join(' ');
-}
-
-function mkUniq(arr) {
-	var to = {};
-
-	for (var v = 0; v < arr.length; v++) {
-		if (isANSI(arr[v])) {
-			to[arr[v].toLowerCase()] = true
-		}
-		else {
-			to[encodeURI(arr[v].toLowerCase())] = true;
-		}
-	}
-
-	return Object.keys(to).sort();
-}
-
-function RestoreLastSettings() {
-	var cookieBaseName = 'last@BMU:';
-
-	$each(settingsToSave, function (setting) {
-		var lastValue = GetCookie(cookieBaseName + setting);
-
-		if (lastValue && (!$get(setting))) {
-			$set(setting, lastValue);
-		}
-	});
-	$each(checkboxesToSave, function (setting) {
-		var lastValue = GetCookie(cookieBaseName + setting);
-
-		if (IsNum(lastValue)) {
-			$(setting).checked = lastValue == '1';
-			if ($(setting).onchange) {
-				$(setting).onchange();
-			}
-		}
-	});
-}
-
-function SaveLastSettings() {
-	var cookieBaseName = 'last@BMU:';
-
-	$each(settingsToSave, function (setting) {
-		SetCookie(cookieBaseName + setting, $get(setting), 7 * 24 * 3600);
-	});
-	$each(checkboxesToSave, function (setting) {
-		SetCookie(cookieBaseName + setting, $(setting).checked ? '1' : '0', 7 * 24 * 3600);
-	});
-}
-
-function isANSI(s) {
-	var is = true;
-
-	s = s.split('');
-	s.each(function (v) {
-		is = is && (/[\u0000-\u007e]/.test(v));
-	});
-	return is;
 }
