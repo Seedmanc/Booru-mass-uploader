@@ -57,6 +57,10 @@
 			cursor: pointer;
 		}
 
+		#bat {
+			padding-left: 35px;
+		}
+
 		#status {
 			margin: 0;
 			text-align: center;
@@ -213,7 +217,7 @@
 			</div>
 			<div style="float:right;" class="para">
 				Set Source field of each image to
-				<input type="text" id="source" value="Booru mass uploader" style="width:200px;"/>
+				<input type="text" id="source" value="Booru Мass Uploader" style="width:200px;"/>
 			</div>
 		</div>
 		<div style="text-align:center; padding-top:3px;">
@@ -233,7 +237,7 @@
 	<input type="radio" name="selection" id="asFiles" checked="checked">
 	<label for="asFiles">files</label>
 	<input type="radio" name="selection" id="asFolder">
-	<label for="asFolder">folder (Chrome only?)</label>
+	<label for="asFolder">folder (chrome only)</label>
 </div>
 <div class="para" style="padding:2px 1em;text-align:center;">
 	Images:
@@ -242,7 +246,7 @@
 	skipped)
 </div>
 <br>
-<img src="https://seedmanc.github.io/Booru-mass-uploader/spinner.gif" id="spinner"/>
+<img src="https://seedmanc.github.io/Booru-mass-uploader/spinner.gif" id="spinner" alt="loading"/>
 <p style="display: none;" id="infobar">You are <b id="loggedIn"></b> to a <b id="current"></b> site.</p>
 <button disabled="" id="submit" onclick="FilesSelected( $('files').files );">Upload!</button>
 
@@ -250,7 +254,7 @@
 <div id="progressWr">
 	<div id="progress" style="width: 0"></div>
 </div>
+<div id="bat" style="display: none;"><a href="#">Download <b>.bat</b> error log</a></div>
 <div id="log" style="display: none"></div>
-
 </body>
 </html>

@@ -10,6 +10,7 @@ if (!XMLHttpRequest.prototype.sendAsBinary) {
 		/* ...or as ArrayBuffer (legacy)...: this.send(ui8Data.buffer); */
 	};
 }
+
 var settingsToSave = ['tags'];
 var checkboxesToSave = ['forceRating', 'ratingAsDefault', 'setSafe', 'setQuest', 'setExplicit', 'forceTags', 'addTags', 'title', 'asFiles', 'asFolder', 'onlyErrors'];
 var myTags = ((GetCookie('tags') || '+') + (GetCookie('my_tags') || '+') + (GetCookie('recent_tags') || '+')).replace(/%2520/gi, ' ').replace(/%20|\++/gi, ' ').trim().split(/\s+/);
@@ -18,6 +19,7 @@ var upOptions = {
 };
 var current = localStorage.getItem(document.location.host) || localStorage.getItem('current') || 'gelbooru';
 var engine = $("engine");
+var bat = [], header = {};
 
 engine.onchange = function () {
 	current = this.value;
@@ -37,7 +39,7 @@ if (myTags.length) {
 	$show('mytags');
 	$each(mkUniq(myTags), function (tag) {
 		tagsArea += '&nbsp;<a style="text-decoration:none;" href="#' + tag + '" id="t_' + tag + '"' +
-			"onclick=\"javascript:toggleTags('" + tag + "','tags','t_" + tag + "');" + 'return false;">' + tag + '</a> ';
+			"onclick=\"javascript:toggleTags('" + tag + "', 't_" + tag + "');" + 'return false;">' + tag + '</a> ';
 	});
 	$('my-tags').innerHTML = tagsArea;
 }
@@ -55,10 +57,29 @@ $$('#asFiles,#asFolder').each(function (el) {
 	};
 });
 
+// batch faulty images sorting
+document.querySelector('#bat > a').onclick = function () {
+	var a = window.document.createElement('a');
+
+	for (line in header) {
+		bat.unshift(header[line]);
+	}
+
+	a.href = window.URL.createObjectURL(new Blob([bat.join('\r\n')], {type: 'text/plain'}));
+	a.download = 'parse errors.bat';
+
+// Append anchor to body.
+	document.body.appendChild(a);
+	a.click();
+
+// Remove anchor from body
+	document.body.removeChild(a);
+};
+
 RestoreLastSettings();
 UploadOptions();
 
-function toggleTags(tag, id, lid) {
+function toggleTags(tag, lid) {
 	var temp = new Array(1);
 	var tagBox = $('tags');
 	var tags = tagBox.value.split(" ");
@@ -75,6 +96,10 @@ function toggleTags(tag, id, lid) {
 }
 
 function FilesSelected(selFiles) {
+	bat = [];
+	header = {};
+	$('bat').hide();
+
 	if (upOptions.running) {
 		return;
 	}
@@ -128,7 +153,6 @@ function OnAllUploaded() {
 		var image = new Image();
 		image.src = baseCtrUpdURL + ourBooru[1] + '&rand=' + Math.random();
 	}
-	$('files').files = [];
 	$('files').value = '';
 }
 
@@ -184,15 +208,33 @@ function LogSuccess(file) {
 	localStorage.setItem(document.location.host, $('engine').value);
 	upOptions.stats.success++;
 
-	if ($('onlyErrors').checked)
+	if ($('onlyErrors').checked) {
 		return;
+	}
 
 	Log('success', 'Image ' + file.name + ' was successfully uploaded.');
 }
 
 function LogFailure(file, reason) {
 	Log('error', 'Couldn\'t upload ' + file.name + ': ' + reason + '.');
+
+	var errors = ['corrupted', 'deleted', 'exists', 'error'];
+
+	errors.some(function (error) {
+		if (~reason.indexOf(error)) {
+			header[error] = 'if not exist "' + error + '" (md "' + error + '\\")';
+			bat.push('move "' + file.name + '" ' + error + '\\' + file.name + '"');
+			if (error == 'error') {
+				bat.push('echo ' + file.name + '\t' + reason + ' >> ' + error + '\\log.txt');
+			}
+
+			return true;
+		}
+	});
+
 	upOptions.stats.failed++;
+
+	$('bat').show();
 }
 
 function SendFiles(files, index) {
@@ -248,19 +290,16 @@ function SendFile(file, callback) {
 						}
 					}
 					else if (~this.responseText.indexOf('permission')) {
-						LogFailure(file, 'no permissions');
-						var msg =
-							    'Could not upload this image - the board says that you have no permissions.\nCheck if you are logged in. Stopped.';
-						alert(msg);
+						LogFailure(file, 'error, access denied. Try logging in. Stopped');
 						OnAllUploaded();
-						throw msg;
+						throw 403;
 					} else if (~this.responseText.indexOf('n error occured')) {
 						LogFailure(file, 'image too big? too small? corrupted?');
 					} else {
-						LogFailure(file, 'wrong response, check your posting form URL');
+						LogFailure(file, 'error, wrong response. Check your posting form URL');
 					}
 				} else {
-					LogFailure(file, xhr.statusCode);
+					LogFailure(file, 'error, ' + xhr.statusCode + ' ' + xhr.statusText);
 				}
 			} else {
 				switch (this.status) {
@@ -277,7 +316,7 @@ function SendFile(file, callback) {
 								if (~uploadResult.indexOf('duplicate')) {
 									LogFailure(file, 'image already exists <a href="/posts/' + uploadResult.split('duplicate: ')[1] + '" target="_blank">' + uploadResult.split('duplicate: ')[1] + '</a>');
 								} else {
-									LogFailure(file, uploadResult);
+									LogFailure(file, 'error, ' + uploadResult);
 								}
 							}
 						}
@@ -286,7 +325,7 @@ function SendFile(file, callback) {
 						LogFailure(file, 'image already exists <a href="' + JSON.parse(xhr.response).location + '" target="_blank">' + (JSON.parse(xhr.response).post_id || 'here') + '</a>');
 						break;
 					case 403:
-						LogFailure(file, 'access denied, try logging in. Stopped');
+						LogFailure(file, 'error, access denied. Try logging in. Stopped');
 						OnAllUploaded();
 						throw JSON.parse(xhr.response).reason;
 						break;
@@ -300,7 +339,7 @@ function SendFile(file, callback) {
 							LogSuccess(file);
 						}
 						else {
-							LogFailure(file, 'error: ' + JSON.parse(xhr.response).reason);
+							LogFailure(file, 'error, ' + JSON.parse(xhr.response).reason);
 						}
 						break;
 				}
