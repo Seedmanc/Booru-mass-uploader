@@ -35,12 +35,12 @@ $$('#bat > a')[0].onclick = function () {
 	for (line in header) {
 		bat.unshift(header[line]);
 	}
-	blob = new Blob([bat.join('\r\n')], {type: 'text/plain'});
+	blob = new Blob([bat.join('\r\n')], {type: 'application/octet-stream'});
+	a = window.document.createElement('a');
+	a.download = 'parse errors.' + extn;
 
 	if (window.URL && window.URL.createObjectURL) {
-		a = window.document.createElement('a');
 		a.href = window.URL.createObjectURL(blob);
-		a.download = 'parse errors.' + extn;
 
 		document.body.appendChild(a);
 		a.click();
@@ -49,8 +49,10 @@ $$('#bat > a')[0].onclick = function () {
 		var reader = new window.FileReader();
 		reader.readAsDataURL(blob);
 		reader.onloadend = function () {
-			base64data = reader.result.replace("data:;base64,", "");
-			document.location.href = base64data;
+			a.href = reader.result;
+			document.body.appendChild(a);
+			a.click();
+			document.body.removeChild(a);
 		};
 	}
 
