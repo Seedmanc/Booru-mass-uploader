@@ -29,6 +29,8 @@ engine.onchange = function () {
 engine.selectedIndex = current == 'gelbooru' ? 0 : (current == 'moebooru' ? 1 : 2);
 engine.onchange();
 
+hitSync();
+
 $$('#asFiles,#asFolder').each(function (el) {
 	var files = $('files');
 
@@ -95,6 +97,8 @@ function OnAllUploaded() {
 		upOptions.stats.total + ' images total.';
 	var ourBooru = upOptions.uploadURL.match(/^http:\/\/([\w\d-]+)\.booru\.org\//i);
 
+	succesStore();
+
 	upOptions.running = false;
 	Log('info end', msg);
 	$set('status', '');
@@ -156,7 +160,12 @@ function Log(className, msg) {
 }
 
 function LogSuccess(file) {
-	localStorage.setItem(document.location.host, $('engine').value);
+
+	if (localStorage.getItem(document.location.host) != engine.value) {
+		storEngine();
+	}
+	localStorage.setItem(document.location.host, engine.value);
+
 	upOptions.stats.success++;
 
 	if ($('onlyErrors').checked) {
