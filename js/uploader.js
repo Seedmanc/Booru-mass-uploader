@@ -281,11 +281,18 @@ function SendFile(file, callback) {
 						throw 404;
 						break;
 					default:
-						if (JSON.parse(xhr.response).success === true) {
-							LogSuccess(file);
-						}
-						else {
-							LogFailure(file, 'error, ' + JSON.parse(xhr.response).reason);
+						var error;
+						try {
+							error = JSON.parse(xhr.response);
+							if (error.success === true) {
+								LogSuccess(file);
+							}
+							else {
+								LogFailure(file, 'error, ' + error.reason);
+							}
+						} catch(any) {
+							console.log(xhr.response);
+							LogFailure(file, 'error, see console for server response');
 						}
 						break;
 				}
