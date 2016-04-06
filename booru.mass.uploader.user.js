@@ -18,36 +18,54 @@
 // @grant 		none
 // @run-at		document-end
 // @noframes
+
+// @require  	https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js
 // ==/UserScript==
 
 if (window.top != window.self) {
 	throw 'no iframes';
 }
 
+var corses = ['www.whateverorigin.org/get?url=', 'crossorigin.me/'];
+
+function onSuccess(response) {
+	var scripts;
+
+	document.getElementsByTagName('body')[0].innerHTML = response;
+	scripts = document.getElementsByTagName('script');
+
+	for (var i = 0; i < scripts.length; i++) {
+		var node = scripts[i], parent = node.parentElement, d = document.createElement('script');
+
+		d.async = node.async;
+		d.src = node.src;
+		parent.insertBefore(d, node);
+		parent.removeChild(node);
+	}
+}
+
+function tryCors(idx) {
+
+	idx = idx || 0;
+
+	if (!corses[idx]) {
+		document.write('Ran out of CORS engines, try later');
+		return;
+	}
+
+	$.getJSON(location.protocol + '//' + corses[idx] + 'http://seedmanc.github.io/Booru-mass-uploader/index.html' + '&callback=?')
+		.done(function (response) {
+			onSuccess(response.contents || response);
+		})
+		.fail(function (response) {
+			console.log(response);
+			tryCors(idx + 1);
+		})
+}
+
 if (~document.location.href.indexOf('s=mass_upload')) {
-	var xhr = new XMLHttpRequest();
 
-	xhr.open('GET', location.protocol + '//crossorigin.me/http://seedmanc.github.io/Booru-mass-uploader/index.html', true);
-	xhr.onreadystatechange = function () {
-		var scripts;
-
-		if (this.readyState != 4 || this.status != 200) {
-			return;
-		}
-
-		document.getElementsByTagName('body')[0].innerHTML = this.responseText;
-		scripts = document.getElementsByTagName('script');
-
-		for (var i = 0; i < scripts.length; i++) {
-			var node = scripts[i], parent = node.parentElement, d = document.createElement('script');
-
-			d.async = node.async;
-			d.src = node.src;
-			parent.insertBefore(d, node);
-			parent.removeChild(node);
-		}
-	};
-	xhr.send();
+	tryCors();
 
 } else {
 	var navbar = document.getElementById('navbar') ||
@@ -68,7 +86,7 @@ if (~document.location.href.indexOf('s=mass_upload')) {
 	} else if (document.querySelector('[href*="/uploads/new"]') || ~document.documentElement.innerHTML.indexOf('Running Danbooru')) {
 		localStorage.setItem('current', 'danbooru');
 	}
-	
+
 	if (!navbar) {
 		throw "can't link the uploader";
 	}
