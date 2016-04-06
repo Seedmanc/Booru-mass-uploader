@@ -2,7 +2,7 @@
 // @name		Booru Mass Uploader
 // @description	Add ability to bulk upload images to your booru
 // @namespace 	https://github.com/Seedmanc/Booru-mass-uploader
-// @version     1.3
+// @version     1.3.1
 // @author		Seedmanc
 // @include     http://*.booru.org/index.php*
 // @include 	http://gelbooru.com/index.php*
@@ -53,37 +53,37 @@ function tryCors(idx) {
 		return;
 	}
 
-	$.getJSON(location.protocol + '//' + corses[idx] + 'http://seedmanc.github.io/Booru-mass-uploader/index.html' + '&callback=?')
+	(idx ? $.getJSON : $.get)(location.protocol + '//' + corses[idx] + 'http://seedmanc.github.io/Booru-mass-uploader/index.html' + (idx ? '' : '&callback=?'))
 		.done(function (response) {
 			onSuccess(response.contents || response);
 		})
 		.fail(function (response) {
 			console.log(response);
 			tryCors(idx + 1);
-		})
+		});
 }
 
 if (~document.location.href.indexOf('s=mass_upload')) {
-
+	document.write('<img src="https://seedmanc.github.io/Booru-mass-uploader/spinner.gif"/>');
 	tryCors();
 
 } else {
-	var navbar = document.getElementById('navbar') ||
-		document.getElementsByClassName('flat-list2')[0] ||
-		document.querySelector('#main-menu > ul') ||
-		document.querySelector('nav > menu');
+	var navbar = $('#navbar')[0] ||
+		$('.flat-list2')[0] ||
+		$('#main-menu > ul')[0] ||
+		$('nav > menu')[0];
 	var li = document.createElement("li");
 	var a = document.createElement("a");
-	var token = document.querySelector('meta[name="csrf-token"]');
+	var token = $('meta[name="csrf-token"]')[0];
 
 	token = token && token.content;
 	if (token) {
 		localStorage.setItem('auth_token', token);
 	}
 
-	if (document.querySelector('[src*="moe-legacy"]') || document.querySelector('html.action-post') || document.querySelector('[href*="/post/upload"]')) {
+	if ($('[src*="moe-legacy"]').length || $('html.action-post').length || $('[href*="/post/upload"]').length) {
 		localStorage.setItem('current', 'moebooru');
-	} else if (document.querySelector('[href*="/uploads/new"]') || ~document.documentElement.innerHTML.indexOf('Running Danbooru')) {
+	} else if ($('[href*="/uploads/new"]').length || ~document.documentElement.innerHTML.indexOf('Running Danbooru')) {
 		localStorage.setItem('current', 'danbooru');
 	}
 
