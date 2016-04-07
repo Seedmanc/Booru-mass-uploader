@@ -58,8 +58,12 @@ function tryCors(idx) {
 			onSuccess(response.contents || response);
 		})
 		.fail(function (response) {
-			console.log(response);
-			tryCors(idx + 1);
+			if (response.status == 200 && response.readyState == 4) {
+				onSuccess(response.responseText);
+			} else {
+				console.log(response);
+				tryCors(idx + 1);
+			}
 		});
 }
 
