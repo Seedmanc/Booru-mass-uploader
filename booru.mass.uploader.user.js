@@ -2,7 +2,7 @@
 // @name		Booru Mass Uploader
 // @description	Add ability to bulk upload images to your booru
 // @namespace 	https://github.com/Seedmanc/Booru-mass-uploader
-// @version     1.3.1
+// @version     1.3.2
 // @author		Seedmanc
 // @include     http://*.booru.org/index.php*
 // @include     http://rule34.xxx/index.php*
@@ -54,7 +54,7 @@ function tryCors(idx) {
 		return;
 	}
 
-	(idx ? $.getJSON : $.get)(location.protocol + '//' + corses[idx] + 'http://seedmanc.github.io/Booru-mass-uploader/index.html' + (idx ? '' : '&callback=?'))
+	(idx ? $.get : $.getJSON)(location.protocol + '//' + corses[idx] + 'http://seedmanc.github.io/Booru-mass-uploader/index.html' + (idx ? '' : '&callback=?'))
 		.done(function (response) {
 			onSuccess(response.contents || response);
 		})
