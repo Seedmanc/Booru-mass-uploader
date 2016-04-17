@@ -156,40 +156,35 @@
 
 	<div id="fileNamesTip" style="display: none; margin: 1em">
 		<p>
-			Example filename: <q>q nagisa muted_color tagme Filename.jpg</q>, where:
+			Example filename: <q>q <b>nagisa muted_color tagme</b> <u>Filename</u>.jpg</q>, where:
 		</p>
 		<ol>
-			<li> <q>q </q> is the image's rating:
+			<li> <q>q </q> is the image rating:
 				<abbr title="Check http://*.booru.org/help/ratings.php for what these mean.">
 				<q>s </q> = Safe, <q>q </q> = Questionable, and <q>e </q> = Explicit</abbr>;
 				this part is optional.
-				<span id="moreInfo0H" style="color: blue; display: inline;"
+				<span id="moreInfo0H" style="cursor: hand; color: blue; display: inline;"
 				onclick="document.getElementById('moreInfo0H').style.display = 'none';
 				document.getElementById('moreInfo0').style.display = 'inline';">+</span>
-				<span id="moreInfo0" style="display: none;">The next section gives the options
-				of setting the images' ratings based on the button selected or the filenames
-				and/or the button selected. (The ratings of the images can be set by forcing all
-				images in an upload session to have a certain rating regardless of the filenames
-				or by the first character and space of the filenames (in this case, if said first
-				part is not found then it will set the rating(s) to the radio button's value).)</span>
+				<span id="moreInfo0" style="display: none;"><br>The next section allows to set image ratings based on the button selected or the filenames
+				and/or the button selected. The ratings of can be set either by forcing all
+				images in an upload session to have the same rating regardless of the filenames
+				or by the first filename element with fallback to options.</span>
 			</li>
-			<li> Spaces seperate tags. Here there are 3 tags: <q>nagisa</q>, <q>muted_color</q>,
-				&amp; <q>tagme</q>.
-				<span id="moreInfo1H" style="color: blue; display: inline;"
+			<li> <b>Tags</b? separated by spaces. Here are 3 of them: <q>nagisa</q>, <q>muted_color</q> and <q>tagme</q>.
+				<span id="moreInfo1H" style="cursor:hand; color: blue; display: inline;"
 				onclick="document.getElementById('moreInfo1H').style.display = 'none';
 				document.getElementById('moreInfo1').style.display = 'inline';">+</span>
-				<span id="moreInfo1" style="display: none;">The
-				tag <q>tagme</q> will be added if there is less than
-				5 tags so it is not needed in this case.</span>
+				<span id="moreInfo1" style="display: none;"><br>Tags should be in ANSI format, use <q>_</q> for spaces between words of a single tag.
+				The <q>tagme</q> tag might be added by some boorus if there are under ~5 tags.</span>
 			</li>
-			<li> Tags can be in any Unicode character (except <q> </q>, use <q>_</q> for spaces).
+			<li> 
 			</li>
-			<li> The filename part can be set to the title feild or not, here it is "Filename".
-				<span id="moreInfo2H" style="color: blue; display: inline;"
+			<li> The <u>filename</u> is either ignored or used as image title on Gelbooru, here it is "Filename".
+				<span id="moreInfo2H" style="cursor:hand; color: blue; display: inline;"
 				onclick="document.getElementById('moreInfo2H').style.display = 'none';
 				document.getElementById('moreInfo2').style.display = 'inline';">+</span>
-				<span id="moreInfo2" style="display: none;">Keep it if tells a breif story about
-				the image such as "X_went_to_Y" or it can be Googled to find the file's source.
+				<span id="moreInfo2" style="display: none;"><br>Keep it if describes the image well or can be Googled to find the source.
 				Don't keep it if the filename are numbered like "q ascii 1.jpg", "q ascii 2.jpg",
 				"q ascii 3.jpg"	to avoid duplicate filenames.</span>
 			</li>
