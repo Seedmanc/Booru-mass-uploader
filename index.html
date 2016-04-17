@@ -168,13 +168,14 @@
 				<q>s </q> = Safe, <q>q </q> = Questionable, and <q>e </q> = Explicit</abbr>.
 			</li>
 			<li> Spaces seperate tags. Here there are 3 tags: <q>nagisa</q>, <q>muted_color</q>,
-				&amp; <q>tagme</q></li>.
+				&amp; <q>tagme</q>.
 				<span id="moreInfo1H" style="color: blue; display: inline;"
 				onclick="document.getElementById('moreInfo1H').style.display = 'none';
 				document.getElementById('moreInfo1').style.display = 'inline';">+</span>
 				<span id="moreInfo1" style="display: none;">The
 				tag <q>tagme</q> will be added if there is less than
 				5 tags so it is not needed in this case.</span>
+			</li>
 			<li> Tags can be in any Unicode character (except <q> </q>, use <q>_</q> for spaces).
 			</li>
 			<li> The filename part can be set to the title feild or not, here it is "Filename".
@@ -184,16 +185,13 @@
 				<span id="moreInfo2" style="display: none;">Keep it if tells a breif story about
 				the image such as "X_went_to_Y" or it can be Googled to find the file's source.
 				Don't keep it if the filename are numbered like "q ascii 1.jpg", "q ascii 2.jpg",
-				"q ascii 3.jpg"	to avoid duplicate filenames</span>.
+				"q ascii 3.jpg"	to avoid duplicate filenames.</span>
 			</li>
 		</ol>
 
-		<p>The behaviour of the uploader when no rating character was found or was wrong is defined by the options
-		below.</p>
-		<p>According to those options some parts of file name pattern can be ignored, e.g. if rating is
-		selected as <q>Force Safe</q> then rating letter won't be used (i.e. ignored even if present).
-		If you have both Rating &amp; Tags options set to <q>Force</q> then names are not used at all
-		and pictures can have any file names.</p>
+		<p>The ratings of the images can be set by forcing all images in an upload session to have a certain
+		rating regardless of the filenames or by the first character and space of the filenames
+		(if that first part is not found then it will set the ratings to the radio button's value).</p>
 	</div>
 </fieldset>
 
