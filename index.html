@@ -156,12 +156,13 @@
 
 	<div id="fileNamesTip" style="display: none; margin: 1em">
 		<p>
-			Example file name: <q>q nagisa muted_color tagme Filename.jpg</q>, where:
+			Example filename: <q>q nagisa muted_color tagme Filename.jpg</q>, where:
 		</p>
 		<ol>
-			<li> <q>q </q> is the image's rating (optional, see below):
+			<li> <q>q </q> is the image's rating:
 				<abbr title="Check http://*.booru.org/help/ratings.php for what these mean.">
-				<q>s </q> = Safe, <q>q </q> = Questionable, and <q>e </q> = Explicit</abbr>.
+				<q>s </q> = Safe, <q>q </q> = Questionable, and <q>e </q> = Explicit</abbr>;
+				this part is optional.
 				<span id="moreInfo0H" style="color: blue; display: inline;"
 				onclick="document.getElementById('moreInfo0H').style.display = 'none';
 				document.getElementById('moreInfo0').style.display = 'inline';">+</span>
@@ -201,9 +202,9 @@
 
 	<div class="para">
 		<input type="radio" name="rating-when" id="forceRating" checked="checked"/>
-		<label for="forceRating"><strong>Force</strong> all ratings regardless of file name.</label>
+		<label for="forceRating"><strong>Force</strong> all ratings regardless of filename.</label>
 		<input type="radio" name="rating-when" id="ratingAsDefault"/>
-		<label for="ratingAsDefault">Only set rating if failed to determine it from the file name.</label>
+		<label for="ratingAsDefault">Only set rating if failed to determine it from the filename.</label>
 	</div>
 
 	<div class="para">
@@ -220,11 +221,11 @@
 	<legend>Tagging</legend>
 
 	<input type="radio" name="tag-when" id="forceTags"/>
-	<label for="forceTags">Ignore file names, <strong>force</strong> tags of all images.</label>
+	<label for="forceTags">Ignore filenames, <strong>force</strong> tags of all images.</label>
 	<br/>
 
 	<input type="radio" name="tag-when" id="addTags" checked="checked"/>
-	<label for="addTags">In addition to tags from image file names also add these tags to each of them.</label>
+	<label for="addTags">In addition to tags from image filenames also add these tags to each of them.</label>
 	<br/>
 
 	<div id="tagsWr">
@@ -276,8 +277,7 @@
 <div class="para" style="padding:2px 1em;text-align:center;">
 	Images:
 	<input type="file" id="files" multiple="true" accept="image/*" style="width:90%;"/><br>
-	(all files with MIME other than <tt>image/*</tt> or extension other than <tt>jpe?g/gif/png/bmp</tt> will be
-	skipped)
+	(All files with extension other than <tt>jpg/jpeg/gif/png/bmp</tt> will be skipped.)
 </div>
 <br>
 <img src="https://seedmanc.github.io/Booru-mass-uploader/spinner.gif" id="spinner" alt="loading"/>
