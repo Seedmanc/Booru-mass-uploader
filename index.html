@@ -152,7 +152,7 @@
 
 <fieldset style="padding: 2px 1em">
 	<legend>
-		For correct upload all files must be named according to the format
+		Filename syntax for correct uploads
 		<span onclick="var el = 'fileNamesTip'; $style(el, 'display') == 'block' ? $hide(el) : $show(el);">
 		  [+/-]
 		</span>
@@ -160,18 +160,22 @@
 
 	<div id="fileNamesTip" style="display: none; margin: 1em">
 		<p>
-			Example file name: <q>q nagisa floor tagme Filename.jpg</q>, where:
+
+			Example file name: <q>q nagisa muted_color tagme Filename.jpg</q>, where:
+
 		</p>
-		<ul>
-			<li><q>q</q> is the image's rating (Safe, Questionable, Explicit),</li>
-			<li> then space - don't forget about it!</li>
-			<li> then go all tags for this image. Here they are 3:
-				<q>nagisa</q>, <q>floor</q> &amp; <q>tagme</q>.
+		<ol>
+			<li> <q>q</q> is the image's rating&mdash;
+				<abbr title="Check http://*.booru.org/help/ratings.php for what these mean">
+				<q>s</q> = Safe, <q>q</q> = Questionable, and <q>e</q> = Explicit</abbr>.
 			</li>
-			<li> finally, goes the original filename, which is ignored, but can be used to avoid filename collisions
-				when having identical tag sets.
+			<li> Spaces seperate tags.</li>
+			<li> Tags can be in any Unicode character (except <q> </q>, use <q>_</q> for spaces)
+				here there are 3 tags: <q>nagisa</q>, <q>muted_color</q>, &amp; <q>tagme</q>.
 			</li>
-		</ul>
+			<li> The filename part can be set to the title feild or not, here it is "Filename". (<span id="yesNoT" style="color: blue; display: none;" onclick="document.getElementById('yesNoT').style.display = 'none'; document.getElementById('yesNo').style.display = 'inline';">[Examples of when to keep it or not]</span><span id="yesNo" style="display: inline;">Keep it if tells a breif story about the image such as "X_went_to_Y" or it can be Googled to find the file's source. Don't keep it if the filename are numbered like "q ascii 1.jpg", "q ascii 2.jpg", "q ascii 3.jpg" to avoid duplicate filenames</span>).
+			</li>
+		</ol>
 
 		<p>The behaviour of the uploader when no rating character was found or was wrong is defined by the options
 			below.</p>
