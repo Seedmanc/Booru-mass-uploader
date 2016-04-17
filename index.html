@@ -168,19 +168,23 @@
 				<q>s </q> = Safe, <q>q </q> = Questionable, and <q>e </q> = Explicit</abbr>.
 			</li>
 			<li> Spaces seperate tags. Here there are 3 tags: <q>nagisa</q>, <q>muted_color</q>,
-				&amp; <q>tagme</q></li>; The tag <q>tagme</q> will be added if there is less than
-				are less than 5 tags so it is not needed in this case.
+				&amp; <q>tagme</q></li>.
+				<span id="moreInfo1H" style="color: blue; display: inline;"
+				onclick="document.getElementById('moreInfo1H').style.display = 'none';
+				document.getElementById('moreInfo1').style.display = 'inline';">+</span>
+				<span id="moreInfo1" style="display: none;">The
+				tag <q>tagme</q> will be added if there is less than
+				5 tags so it is not needed in this case.</span>
 			<li> Tags can be in any Unicode character (except <q> </q>, use <q>_</q> for spaces).
 			</li>
 			<li> The filename part can be set to the title feild or not, here it is "Filename".
-				(<span id="yesNoH" style="color: blue; display: inline;"
-				onclick="document.getElementById('yesNoH').style.display = 'none';
-				document.getElementById('yesNo').style.display = 'inline';">[Examples
-				of when to keep it or not]</span>
-				<span id="yesNo" style="display: none;">Keep it if tells a breif story about
+				<span id="moreInfo2H" style="color: blue; display: inline;"
+				onclick="document.getElementById('moreInfo2H').style.display = 'none';
+				document.getElementById('moreInfo2').style.display = 'inline';">+</span>
+				<span id="moreInfo2" style="display: none;">Keep it if tells a breif story about
 				the image such as "X_went_to_Y" or it can be Googled to find the file's source.
 				Don't keep it if the filename are numbered like "q ascii 1.jpg", "q ascii 2.jpg",
-				"q ascii 3.jpg"	to avoid duplicate filenames</span>).
+				"q ascii 3.jpg"	to avoid duplicate filenames</span>.
 			</li>
 		</ol>
 
