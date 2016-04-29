@@ -17,7 +17,7 @@
 		}
 
 		p.intro, q {
-			font-style: italic;
+			font-weight: bold;
 		}
 
 		fieldset {
@@ -131,20 +131,9 @@
 	<script type="text/javascript" src="https://seedmanc.github.io/Booru-mass-uploader/js/uploader.js"></script>
 </head>
 <body>
-<h1>Booru Mass-Uploader 
- <a href="#" style="text-decoration:none; font-size:20px; vertical-align:middle; opacity:0.75;" onclick=
-    "if (document.body.style.width == '66%') {
-         document.body.style.width = '95%';
-         document.getElementById('source').style.width = '500px';
-     } else {
-         document.body.style.width = '66%';
-         document.getElementById('source').style.width = '200px';
-     };"
- >&harr;</a>
-</h1>
-<p class="intro">This script allows you to mass-upload images to imageboard sites running *booru software.
-	Select a number of files and they're sent to the website along with the metadata you include such as
-	the tags retrived from the filenames.</p>
+<h1>You need to <a href="https://github.com/Seedmanc/Booru-mass-uploader/raw/gh-pages/booru.mass.uploader.user.js">update</a>
+	<span style="font-size:15px; text-decoration: line-through;"> to Win10</span></h1>
+<p class="intro">Support for the old version will be dropped by next release. The new version finally fixes the white screen/HTTPS unavailability/FF loading issues for good.</p>
 
 <fieldset style="padding: 2px 1em">
 	<legend>
@@ -276,7 +265,7 @@
 <br>
 <img src="https://seedmanc.github.io/Booru-mass-uploader/spinner.gif" id="spinner" alt="loading"/>
 <p style="display: none;" id="infobar">You are <b id="loggedIn"></b> to a <b id="current"></b> site.</p>
-<button disabled="" id="submit" onclick="FilesSelected( $('files').files );">Upload!</button>
+<button disabled="" id="submit" onclick="FilesSelected($('files').files );">Upload!</button>
 
 <h2 id="status"></h2>
 <div id="progressWr">
