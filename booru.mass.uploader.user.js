@@ -11,7 +11,7 @@
 // @include		https://moe.dev.myconan.net/*
 // @include		http://behoimi.org/*
 // @include		https://chan.sankakucomplex.com/*
-// @include		http://atfbooru.ninja/*
+// @include		http*://*atfbooru.ninja/*
 // @include		http://danbooru.donmai.us/*
 // @include		http://eikonos.org/*
 
