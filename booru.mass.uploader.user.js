@@ -6,7 +6,7 @@
 // @author		Seedmanc
 // @include     http://*.booru.org/index.php*
 // @include     http://rule34.xxx/index.php*
-// @include 	http://gelbooru.com/index.php*
+// @include 	https://gelbooru.com/index.php*
 // @include     http://safebooru.org/index.php*
 // @include		https://moe.dev.myconan.net/*
 // @include		http://behoimi.org/*
