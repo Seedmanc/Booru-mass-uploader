@@ -28,6 +28,7 @@ var boorus = {
 			file:   'upload[file]',
 			parent: 'upload[parent_id]',
 			rating: 'upload[rating]',
+			source: 'upload[source]',
 			submit: 'commit',
 			tags:   'upload[tag_string]',
 			token:  'authenticity_token'
