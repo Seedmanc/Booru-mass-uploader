@@ -253,7 +253,7 @@ document.documentElement.innerHTML='\
 	<input type="radio" name="selection" id="asFiles" checked="checked">\
 	<label for="asFiles">files</label>\
 	<input type="radio" name="selection" id="asFolder">\
-	<label for="asFolder">folder (chrome only)</label>\
+	<label for="asFolder">folder</label>\
 </div>\
 <div class="para" style="padding:2px 1em;text-align:center;">\
 	Images:\

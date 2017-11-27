@@ -45,6 +45,10 @@ function activateScripts(scripts, i) {
 if (~document.location.href.indexOf('s=mass_upload')) {
 	var script = document.createElement('script');
 
+	if (/https:\/\/\w+\.booru\.org\//i.test(document.location.href)) {
+		document.location.href = document.location.href.replace('https:','http:');
+	}   //booru.org does not support https uploading
+
 	document.body.innerHTML = '<img src="https://seedmanc.github.io/Booru-mass-uploader/spinner.gif"/>';
 	script.src = 'https://seedmanc.github.io/Booru-mass-uploader/js/index.html.js';
 	script.onload = function () {
