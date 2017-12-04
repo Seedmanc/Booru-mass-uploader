@@ -325,7 +325,7 @@ function SendFile(file, callback) {
 			postVars + boundary + '--';
 		xhr.open('POST', upOptions.uploadURL);
 		xhr.setRequestHeader('Content-Type', 'multipart/form-data; boundary=' + boundary.substr(2));
-		xhr.setRequestHeader('Content-Length', data.length);
+		//xhr.setRequestHeader('Content-Length', data.length);
 		xhr.sendAsBinary(data);
 	};
 	reader.readAsBinaryString(file);
