@@ -78,13 +78,13 @@ if (~document.location.href.indexOf('s=mass_upload')) {
 		localStorage.setItem('current', 'danbooru');
 	}
 
-	if (!navbar) {
-		throw "can't link the uploader";
+	if (navbar) {
+		li.appendChild(a);
+		navbar.appendChild(li);
+	} else {
+		a.style.display='block';
+		a.style.margin='auto';
+		a.style.width='105px';
+		document.body.insertBefore(a, document.body.firstChild);
 	}
-
-	a.style.fontWeight = 'bold';
-	a.appendChild(document.createTextNode('Mass Upload'));
-	a.href = document.location.protocol + '//' + document.location.hostname + '/index.php?page=post&s=mass_upload';
-	li.appendChild(a);
-	navbar.appendChild(li);
 }
