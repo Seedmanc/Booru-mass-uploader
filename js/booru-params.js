@@ -33,5 +33,11 @@ var boorus = {
 			tags:   'upload[tag_string]',
 			token:  'authenticity_token'
 		}
+	},
+	szurubooru: {
+		uploadPath: '/api/uploads',
+		fields:     {
+			file:   'content'
+		}
 	}
 };
