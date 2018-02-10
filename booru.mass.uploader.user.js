@@ -2,7 +2,7 @@
 // @name		Booru Mass Uploader
 // @description	Add ability to bulk upload images to your booru
 // @namespace 	https://github.com/Seedmanc/Booru-mass-uploader
-// @version     1.3.3
+// @version     1.3.4
 // @author		Seedmanc
 // @include     http://*.booru.org/index.php*
 // @include     http://rule34.xxx/index.php*
@@ -13,7 +13,6 @@
 // @include		https://chan.sankakucomplex.com/*
 // @include		http*://*atfbooru.ninja/*
 // @include		http://danbooru.donmai.us/*
-// @include		http://eikonos.org/*
 
 // you can add any boorus of your choice by following the pattern
 
@@ -77,6 +76,10 @@ if (~document.location.href.indexOf('s=mass_upload')) {
 	} else if (document.querySelector('[href*="/uploads/new"]') || ~document.documentElement.innerHTML.indexOf('Running Danbooru')) {
 		localStorage.setItem('current', 'danbooru');
 	}
+	
+	a.style.fontWeight = 'bold';
+	a.appendChild(document.createTextNode('Mass Upload'));
+	a.href = document.location.protocol + '//' + document.location.hostname + '/index.php?page=post&s=mass_upload';
 
 	if (navbar) {
 		li.appendChild(a);
