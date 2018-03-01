@@ -13,6 +13,10 @@
 // @include		https://chan.sankakucomplex.com/*
 // @include		http*://*atfbooru.ninja/*
 // @include		http://danbooru.donmai.us/*
+// @exclude		*.png
+// @exclude		*.jp*g
+// @exclude		*.gif
+// @exclude		*.webm
 
 // you can add any boorus of your choice by following the pattern
 
