@@ -129,7 +129,7 @@ document.documentElement.innerHTML='\
 	<script type="text/javascript" src="http://localhost:8080/js/uploader.js"></script>\
 </head>\
 <body>\
-<h1>Booru Mass-Uploader<span style="font-size:14px;"> v1.3.3</span></h1>\
+<h1>Booru Mass-Uploader<span style="font-size:14px;"> v1.4.0</span></h1>\
 <p class="intro">This script allows you to mass-upload images to imageboard sites running *booru software.\
 	Select a number of files and they\'re sent to the website along with the metadata you include such as\
 	the tags retrived from the filenames.</p>\

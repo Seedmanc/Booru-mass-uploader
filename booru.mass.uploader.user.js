@@ -2,7 +2,7 @@
 // @name		Booru Mass Uploader
 // @description	Add ability to bulk upload images to your booru
 // @namespace 	https://github.com/Seedmanc/Booru-mass-uploader
-// @version     1.3.4
+// @version     1.4.0
 // @author		Seedmanc
 // @include     http://*.booru.org/index.php*
 // @include     http://rule34.xxx/index.php*
@@ -80,7 +80,7 @@ if (~document.location.href.indexOf('s=mass_upload')) {
 	} else if (document.querySelector('[href*="/uploads/new"]') || ~document.documentElement.innerHTML.indexOf('Running Danbooru')) {
 		localStorage.setItem('current', 'danbooru');
 	}
-	
+
 	a.style.fontWeight = 'bold';
 	a.appendChild(document.createTextNode('Mass Upload'));
 	a.href = document.location.protocol + '//' + document.location.hostname + '/index.php?page=post&s=mass_upload';
