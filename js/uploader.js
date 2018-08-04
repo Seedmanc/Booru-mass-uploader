@@ -351,7 +351,7 @@ function RatingFor(file) {
 
 function TagsFor(file) {
     if (upOptions.tagging.when == 'sidecar')
-        return tagStorage[file.name]
+        return tagStorage[file.name] || ''
     else
         return NormTags(InfoAbout(file)[1]);
 }
