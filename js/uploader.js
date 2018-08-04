@@ -447,6 +447,8 @@ function onFileSelect(files) {
         $set('selectStatus', 'Couldn\'t find sidecar matches for '+unmatchedImages.length+' image(s).')
 
     var matchedSidecars = Object.keys(tagStorage).map(function(key) {return tagStorage[key]});
+    if (!matchedSidecars.length) return;
+
     try {
         function readNext(idx) {
             var reader = new FileReader();
