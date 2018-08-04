@@ -16,6 +16,7 @@ var upOptions = {
 };
 var current = localStorage.getItem(document.location.host) || localStorage.getItem('current') || 'gelbooru';
 var engine = $("engine");
+var tagStorage = {};
 
 engine.onchange = function () {
 	current = this.value;
@@ -87,6 +88,9 @@ function FilesSelected(selFiles) {
 function IsUploadable(file) {
 	return (typeof file.type == 'string' ? file.type.substr(0, 6) == 'image/' : true) && /(jpe?g|gif|png|bmp)$/i.test(file.name);
 }
+function IsSidecar(file) {
+	return (typeof file.type == 'string' ? file.type == 'text/plain' : true) && /\.txt$/i.test(file.name);
+}
 
 function OnFirstUpload(files) {
 	SaveLastSettings();
@@ -120,7 +124,7 @@ function UploadOptions() {
 		set:  $('setSafe').checked ? 's' : $('setQuest').checked ? 'q' : 'e'
 	};
 	var tagging = {
-		when: $('forceTags').checked ? 'always' : 'add',
+		when: $getRadio('tag-when'),
 		set:  $get('tags').toLowerCase().split(/\s+/)
 	};
 	var auth = {
@@ -346,7 +350,10 @@ function RatingFor(file) {
 }
 
 function TagsFor(file) {
-	return NormTags(InfoAbout(file)[1]);
+	if (upOptions.tagging.when == 'sidecar')
+		return tagStorage[file.name]
+	 else
+		return NormTags(InfoAbout(file)[1]);
 }
 
 function TitleFor(file) {
@@ -388,7 +395,7 @@ function NormTags(tags) {
 	}
 
 	switch (upOptions.tagging.when) {
-		case 'always':
+		case 'force':
 			tags = [];
 		case 'add':
 			tags = tags.concat(upOptions.tagging.set);
@@ -400,4 +407,64 @@ function NormTags(tags) {
 	}
 
 	return tags.join(' ');
+}
+
+function onSidecarChange() {
+
+	if ($getRadio('tag-when') == 'sidecar') {
+        $('tags').disable();
+        $('files').accept = 'image/*,text/plain';
+	}
+	else {
+        $('tags').enable();
+        $('files').accept = 'image/*';
+	}
+    $set('selectStatus','(All files with MIME types other than <tt>image/*</tt> and\n\textension other than <tt>jpg/jpeg/gif/png/bmp</tt> will be skipped)');
+}
+
+function onFileSelect(files) {
+    $set('selectStatus','(All files with MIME types other than <tt>image/*</tt> and\n\textension other than <tt>jpg/jpeg/gif/png/bmp</tt> will be skipped)');
+	if ($getRadio('tag-when') != 'sidecar') return;
+
+	tagStorage = {};
+
+	files = [].slice.apply(files);
+	var images = files.filter(IsUploadable);
+	var sidecars = files.filter(IsSidecar);
+
+	var unmatchedImages = [];
+
+	images.forEach(function(img) {
+		var sidecar = sidecars.filter(function(file) {return !!~file.name.indexOf(img.name)})[0];
+
+		if (sidecar)
+			tagStorage[img.name] = sidecar
+		else
+			unmatchedImages.push(img.name);
+	});
+
+	if (unmatchedImages.length)
+		$set('selectStatus', 'Couldn\'t find sidecar matches for '+unmatchedImages.length+' image(s).')
+
+	var matchedSidecars = Object.keys(tagStorage).map(function(key) {return tagStorage[key]});
+try {
+	function readNext(idx) {
+        var reader = new FileReader();
+
+        reader.onload = function(){
+            // By lines
+            var lines = this.result.split('\n').map(function(line) {return line.trim().replace(/ /g, '_');});
+            tagStorage[matchedSidecars[idx].name.replace('.txt','')] = lines.join(' ');
+
+			if (idx < matchedSidecars.length-1)
+				readNext(idx+1);
+        };
+        reader.readAsText(matchedSidecars[idx]);
+	}
+
+	readNext(0);
+} catch (err) {
+	console.error(err);
+    $set('selectStatus', 'Error reading sidecar files, see console.')
+}
 }

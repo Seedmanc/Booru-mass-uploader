@@ -489,6 +489,13 @@ function $get(e) {
     }
 }
 
+function $getRadio(name) {
+    var checked = $$('input[name="'+name+'"]:checked');
+    checked = checked && checked[0];
+
+    return checked && checked.value;
+}
+
 function $set(e, t) {
     e = $(e);
     if (!DebugAssert(e)) return;

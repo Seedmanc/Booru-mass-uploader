@@ -201,12 +201,16 @@ document.documentElement.innerHTML='\
 <fieldset>\
 	<legend>Tagging</legend>\
 \
-	<input type="radio" name="tag-when" id="forceTags"/>\
+    <input type="radio" name="tag-when" id="sidecarTags" onchange="onSidecarChange(event)" value="sidecar"/>\
+    <label for="sidecarTags">Ignore filenames, use <strong>sidecar .txt</strong> files as sources of tags for each image.</label>\
+<br/>\
+\
+	<input type="radio" name="tag-when" id="forceTags" checked="checked" onchange="onSidecarChange(event)" value="force"/>\
 	<label for="forceTags">Ignore filenames, <strong>force</strong> tags of all images.</label>\
 	<br/>\
 \
-	<input type="radio" name="tag-when" id="addTags" checked="checked"/>\
-	<label for="addTags">In addition to tags from image filenames also add these tags to each of them.</label>\
+	<input type="radio" name="tag-when" id="addTags" onchange="onSidecarChange(event)" value="add"/>\
+	<label for="addTags">Use tags from <b>filenames</b> and add these tags to each image:</label>\
 	<br/>\
 \
 	<div id="tagsWr">\
@@ -257,9 +261,8 @@ document.documentElement.innerHTML='\
 </div>\
 <div class="para" style="padding:2px 1em;text-align:center;">\
 	Images:\
-	<input type="file" id="files" multiple="true" accept="image/*" style="width:90%;" onchange="$(\'submit\').enable();"/><br>\
-	(All files with MIME types other than <tt>image/*</tt> and\
-	extension other than <tt>jpg/jpeg/gif/png</tt> will be skipped)\
+	<input type="file" id="files" multiple="true" accept="image/*" style="width:90%;" onchange="onFileSelect(event.target.files)"/><br>\
+	<span id="selectStatus"></span>\
 </div>\
 <br>\
 <img src="http://localhost:8080/spinner.gif" id="spinner" alt="loading"/>\
