@@ -46,6 +46,9 @@ $$('#asFiles,#asFolder').each(function (el) {
 RestoreLastSettings();
 UploadOptions();
 
+
+
+
 function FilesSelected(selFiles) {
 	bat = [];
 	header = {};
@@ -130,8 +133,12 @@ function UploadOptions() {
 	$('spinner').hide();
 	$('infobar').show();
 	$('submit').enable();
-	$('loggedIn').textContent = auth.use || (localStorage.getItem('auth_token') && (GetCookie('login') || GetCookie('user_name'))) ? 'logged in' : 'posting anonymously';
+	$('loggedIn').textContent = auth.use ||
+		(localStorage.getItem('auth_token') && (GetCookie('login') || GetCookie('user_name'))) ?
+			'logged in' :
+			'posting anonymously';
 	$('current').textContent = current;
+
 	return {
 		delay:     1000,
 		uploadURL: uploadURL,

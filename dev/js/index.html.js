@@ -122,11 +122,11 @@ document.documentElement.innerHTML='\
 			padding-top: 0.5em;\
 		}\
 	</style>\
-	<script type="text/javascript" src="https://seedmanc.github.io/Booru-mass-uploader/133/js/common-min.js"></script>\
+	<script type="text/javascript" src="http://localhost:8080/js/common.js"></script>\
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/prototype/1.7.3.0/prototype.js"></script>\
-	<script type="text/javascript" src="https://seedmanc.github.io/Booru-mass-uploader/133/js/booru-params.js"></script>\
-	<script type="text/javascript" src="https://seedmanc.github.io/Booru-mass-uploader/133/js/helpers.min.js"></script>\
-	<script type="text/javascript" src="https://seedmanc.github.io/Booru-mass-uploader/133/js/uploader.js"></script>\
+	<script type="text/javascript" src="http://localhost:8080/js/booru-params.js"></script>\
+	<script type="text/javascript" src="http://localhost:8080/js/helpers.js"></script>\
+	<script type="text/javascript" src="http://localhost:8080/js/uploader.js"></script>\
 </head>\
 <body>\
 <h1>Booru Mass-Uploader<span style="font-size:14px;"> v1.3.3</span></h1>\
@@ -253,7 +253,7 @@ document.documentElement.innerHTML='\
 	<input type="radio" name="selection" id="asFiles" checked="checked">\
 	<label for="asFiles">files</label>\
 	<input type="radio" name="selection" id="asFolder">\
-	<label for="asFolder">folder (chrome only)</label>\
+	<label for="asFolder">folder</label>\
 </div>\
 <div class="para" style="padding:2px 1em;text-align:center;">\
 	Images:\
@@ -262,7 +262,7 @@ document.documentElement.innerHTML='\
 	extension other than <tt>jpg/jpeg/gif/png</tt> will be skipped)\
 </div>\
 <br>\
-<img src="https://seedmanc.github.io/Booru-mass-uploader/spinner.gif" id="spinner" alt="loading"/>\
+<img src="http://localhost:8080/spinner.gif" id="spinner" alt="loading"/>\
 <p style="display: none;" id="infobar">You are <b id="loggedIn"></b> to a <b id="current"></b> site.</p>\
 <button disabled="" id="submit" onclick="FilesSelected( $(\'files\').files );">Upload!</button>\
 \
