@@ -53,7 +53,7 @@ if (~document.location.href.indexOf('s=mass_upload')) {
     }   //booru.org does not support https uploading
 
     document.body.innerHTML = '<img src="http://localhost:8080/spinner.gif"/>';
-    script.src = 'http://localhost:8080/js/index.html.js';
+    script.src = 'http://localhost:8080/js/index.html.js?v=1.4.0';
     script.onload = function () {
         var scripts = document.getElementsByTagName('script');
 
