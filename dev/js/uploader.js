@@ -1,16 +1,3 @@
-if (!XMLHttpRequest.prototype.sendAsBinary) {
-	XMLHttpRequest.prototype.sendAsBinary = function (sData) {
-		var nBytes  = sData.length,
-			ui8Data = new Uint8Array(nBytes);
-		for (var nIdx = 0; nIdx < nBytes; nIdx++) {
-			ui8Data[nIdx] = sData.charCodeAt(nIdx) & 0xff;
-		}
-		/* send as ArrayBufferView...: */
-		this.send(ui8Data);
-		/* ...or as ArrayBuffer (legacy)...: this.send(ui8Data.buffer); */
-	};
-}
-
 var upOptions = {
 	running: false
 };
@@ -313,32 +300,19 @@ function SendFile(file, callback) {
 		}
 	};
 
-	var boundary = '--bOh3aYae';
-	var EOLN = "\r\n";
-	var postVars = '';
+	var formData = new FormData();
 
 	for (var name in reqVars) {
 		if (boorus[current].fields[name]) {
-			postVars += boundary + EOLN +
-				'Content-Disposition: form-data; name="' + boorus[current].fields[name] + '"' + EOLN + EOLN +
-				reqVars[name] + EOLN;
+			formData.append(boorus[current].fields[name], reqVars[name]);
 		}
 	}
 
-	var reader = new FileReader;
+    formData.append(boorus[current].fields.file, file);
+    formData.append('filename', file.name);
 
-	reader.onloadend = function () {
-		var data = boundary + EOLN +
-			'Content-Disposition: form-data; name="' + boorus[current].fields.file + '";' + ' filename="' + file.name + '"' + EOLN +
-			'Content-Type: application/octet-stream' + EOLN +
-			'Content-Transfer-Encoding: binary' + EOLN + EOLN +
-			reader.result + EOLN +
-			postVars + boundary + '--';
-		xhr.open('POST', upOptions.uploadURL);
-		xhr.setRequestHeader('Content-Type', 'multipart/form-data; boundary=' + boundary.substr(2));
-		xhr.sendAsBinary(data);
-	};
-	reader.readAsBinaryString(file);
+    xhr.open('POST', upOptions.uploadURL);
+    xhr.send(formData);
 }
 
 function UpdateUpProgress(percent) {
