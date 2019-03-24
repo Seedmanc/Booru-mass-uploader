@@ -122,14 +122,14 @@ document.documentElement.innerHTML='\
 			padding-top: 0.5em;\
 		}\
 	</style>\
-	<script type="text/javascript" src="https://seedmanc.github.io/Booru-mass-uploader/js/common-min.js?v=1.4.0"></script>\
+	<script type="text/javascript" src="https://seedmanc.github.io/Booru-mass-uploader/js/common-min.js?v=1.4.3"></script>\
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/prototype/1.7.3.0/prototype.js"></script>\
-	<script type="text/javascript" src="https://seedmanc.github.io/Booru-mass-uploader/js/booru-params.js?v=1.4.0"></script>\
-	<script type="text/javascript" src="https://seedmanc.github.io/Booru-mass-uploader/js/helpers.min.js?v=1.4.1"></script>\
-	<script type="text/javascript" src="https://seedmanc.github.io/Booru-mass-uploader/js/uploader.js?v=1.4.1"></script>\
+	<script type="text/javascript" src="https://seedmanc.github.io/Booru-mass-uploader/js/booru-params.js?v=1.4.3"></script>\
+	<script type="text/javascript" src="https://seedmanc.github.io/Booru-mass-uploader/js/helpers.min.js?v=1.4.3"></script>\
+	<script type="text/javascript" src="https://seedmanc.github.io/Booru-mass-uploader/js/uploader.js?v=1.4.3"></script>\
 </head>\
 <body>\
-<h1>Booru Mass-Uploader<span style="font-size:14px;"> v1.4.2</span></h1>\
+<h1>Booru Mass-Uploader<span style="font-size:14px;"> v1.4.3</span></h1>\
 <p class="intro">This script allows you to mass-upload images to imageboard sites running *booru software.\
 	Select a number of files and they\'re sent to the website along with the metadata you include such as\
 	the tags retrived from the filenames.</p>\
