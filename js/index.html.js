@@ -175,6 +175,10 @@ document.documentElement.innerHTML='\
 				"q ascii 3.jpg"	to avoid duplicate filenames.</span>\
 			</li>\
 		</ol>\
+              	<p>\
+			Example of a sidecar text file:<ul><li>Filename: Filename.jpg.txt</li><li>Contents:<br><code>8288girls<br>blue_plastic_funnel\
+                        <br>emoji_on_mylar_balloon</code><br>OR<br><code>extreme presbyphonia<br>laptop in landfill<br>moldy arachnid</code></li></ul>\
+		</p>\
 	</div>\
 </fieldset>\
 \
@@ -202,7 +206,8 @@ document.documentElement.innerHTML='\
 	<legend>Tagging</legend>\
 \
     <input type="radio" name="tag-when" id="sidecarTags" onchange="onSidecarChange(event)" value="sidecar"/>\
-    <label for="sidecarTags">Ignore filenames, use <strong>sidecar .txt</strong> files as sources of tags for each image.</label>\
+    <label for="sidecarTags">Ignore filenames, use <strong>sidecar</strong> files as sources of tags for each \
+    image (see above at &sect;Filename syntax).</label>\
 <br/>\
 \
 	<input type="radio" name="tag-when" id="forceTags" checked="checked" onchange="onSidecarChange(event)" value="force"/>\
