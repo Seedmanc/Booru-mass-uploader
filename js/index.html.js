@@ -176,8 +176,14 @@ document.documentElement.innerHTML='\
 			</li>\
 		</ol>\
               	<p>\
-			Example of a sidecar text file:<ul><li>Filename: Filename.jpg.txt</li><li>Contents:<br><code>8288girls<br>blue_plastic_funnel\
-                        <br>emoji_on_mylar_balloon</code><br>OR<br><code>extreme presbyphonia<br>laptop in landfill<br>moldy arachnid</code></li></ul>\
+			Using sidecar text files:<ul><li>The filename must be the image\'s filename plus ".txt": Filename.jpg.txt</li>\
+                        <li>Example of acceptable contents:<br><code>8288girls<br>blue_plastic_funnel<br>emoji_on_mylar_balloon</code>\
+                        <br>OR<br><code>extreme presbyphonia<br>laptop in landfill<br>moldy arachnid</code><br>OR<br>\
+                        <code>source:https://thecheeseballsadventures.wordpress.com/tag/the-office/<br>utz_cheese_balls<br>bespectacled \
+                        human<br>jar<br>holding_a jar<br></code></li><li>Plaintext data specifications: Tags must be separated by \
+                        newline characters. Each tag can have space(s), underscore(s), or a combination of both and still work out. \
+                        The line with the text "source:http..." results in "http..." being put into the source field of the post in \
+                        Danbooru software, but this might not work with boorus which are not running some version of Danbooru.</li></ul>\
 		</p>\
 	</div>\
 </fieldset>\
