@@ -122,14 +122,14 @@ document.documentElement.innerHTML='\
 			padding-top: 0.5em;\
 		}\
 	</style>\
-	<script type="text/javascript" src="http://localhost:8080/js/common.js?v=1.4.0"></script>\
+	<script type="text/javascript" src="https://seedmanc.github.io/Booru-mass-uploader/js/common-min.js?v=1.4.3"></script>\
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/prototype/1.7.3.0/prototype.js"></script>\
-	<script type="text/javascript" src="http://localhost:8080/js/booru-params.js?v=1.4.0"></script>\
-	<script type="text/javascript" src="http://localhost:8080/js/helpers.js?v=1.4.0"></script>\
-	<script type="text/javascript" src="http://localhost:8080/js/uploader.js?v=1.4.0"></script>\
+	<script type="text/javascript" src="https://seedmanc.github.io/Booru-mass-uploader/js/booru-params.js?v=1.4.3"></script>\
+	<script type="text/javascript" src="https://seedmanc.github.io/Booru-mass-uploader/js/helpers.min.js?v=1.4.3"></script>\
+	<script type="text/javascript" src="https://seedmanc.github.io/Booru-mass-uploader/js/uploader.js?v=1.4.3"></script>\
 </head>\
 <body>\
-<h1>Booru Mass-Uploader<span style="font-size:14px;"> v1.4.0</span></h1>\
+<h1>Booru Mass-Uploader<span style="font-size:14px;"> v1.4.3</span></h1>\
 <p class="intro">This script allows you to mass-upload images to imageboard sites running *booru software.\
 	Select a number of files and they\'re sent to the website along with the metadata you include such as\
 	the tags retrived from the filenames.</p>\
@@ -175,6 +175,16 @@ document.documentElement.innerHTML='\
 				"q ascii 3.jpg"	to avoid duplicate filenames.</span>\
 			</li>\
 		</ol>\
+              	<p>\
+			Using sidecar text files:<ul><li>The filename must be the image\'s filename plus ".txt": Filename.jpg.txt</li>\
+                        <li>Example of acceptable contents:<br><code>8288girls<br>blue_plastic_funnel<br>emoji_on_mylar_balloon</code>\
+                        <br>OR<br><code>extreme presbyphonia<br>laptop in landfill<br>moldy arachnid</code><br>OR<br>\
+                        <code>source:https://thecheeseballsadventures.wordpress.com/tag/the-office/<br>utz_cheese_balls<br>bespectacled \
+                        human<br>jar<br>holding_a jar<br></code></li><li>Plaintext data specifications: Tags must be separated by \
+                        newline characters. Each tag can have space(s), underscore(s), or a combination of both and still work out. \
+                        The line with the text "source:http..." results in "http..." being put into the source field of the post in \
+                        Danbooru software, but this might not work with boorus which are not running some version of Danbooru.</li></ul>\
+		</p>\
 	</div>\
 </fieldset>\
 \
@@ -202,7 +212,8 @@ document.documentElement.innerHTML='\
 	<legend>Tagging</legend>\
 \
     <input type="radio" name="tag-when" id="sidecarTags" onchange="onSidecarChange(event)" value="sidecar"/>\
-    <label for="sidecarTags">Ignore filenames, use <strong>sidecar .txt</strong> files as sources of tags for each image.</label>\
+    <label for="sidecarTags">Ignore filenames, use <strong>sidecar</strong> files as sources of tags for each \
+    image (see above at &sect;Filename syntax).</label>\
 <br/>\
 \
 	<input type="radio" name="tag-when" id="forceTags" checked="checked" onchange="onSidecarChange(event)" value="force"/>\
@@ -265,7 +276,7 @@ document.documentElement.innerHTML='\
 	<span id="selectStatus"></span>\
 </div>\
 <br>\
-<img src="http://localhost:8080/spinner.gif" id="spinner" alt="loading"/>\
+<img src="https://seedmanc.github.io/Booru-mass-uploader/spinner.gif" id="spinner" alt="loading"/>\
 <p style="display: none;" id="infobar">You are <b id="loggedIn"></b> to a <b id="current"></b> site.</p>\
 <button disabled="" id="submit" onclick="FilesSelected( $(\'files\').files );">Upload!</button>\
 \
