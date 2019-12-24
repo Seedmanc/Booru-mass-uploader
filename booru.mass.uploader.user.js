@@ -12,7 +12,7 @@
 // @include		http://behoimi.org/*
 // @include		https://chan.sankakucomplex.com/*
 // @include		http*://*allthefallen.moe/*
-// @include		http://danbooru.donmai.us/*
+// @include		http*://danbooru.donmai.us/*
 // @exclude		*.png
 // @exclude		*.jp*g
 // @exclude		*.gif
