@@ -325,7 +325,7 @@ function RatingFor(file) {
 
 function TagsFor(file) {
     if (upOptions.tagging.when == 'sidecar')
-        return tagStorage[file.name] || ''
+        return NormTags((tagStorage[file.name] || '')+' ')
     else
         return NormTags(InfoAbout(file)[1]);
 }
@@ -372,6 +372,7 @@ function NormTags(tags) {
         case 'force':
             tags = [];
         case 'add':
+        case 'sidecar':
             tags = tags.concat(upOptions.tagging.set);
             tags = mkUniq(tags);
     }
@@ -386,7 +387,6 @@ function NormTags(tags) {
 function onSidecarChange() {
 
     if ($getRadio('tag-when') == 'sidecar') {
-        $('tags').disable();
         $('files').accept = 'image/*,text/plain';
     }
     else {
