@@ -2,7 +2,7 @@
 // @name		Booru Mass Uploader
 // @description	Add ability to bulk upload images to your booru
 // @namespace 	https://github.com/Seedmanc/Booru-mass-uploader
-// @version     1.4.3
+// @version     1.4.4
 // @author		Seedmanc
 // @include     http*://*.booru.org/index.php*
 // @include     http://rule34.xxx/index.php*
@@ -49,7 +49,7 @@ if (~document.location.href.indexOf('s=mass_upload')) {
 	var script = document.createElement('script');
 
 	document.body.innerHTML = '<img src="https://seedmanc.github.io/Booru-mass-uploader/spinner.gif"/>';
-	script.src = 'https://seedmanc.github.io/Booru-mass-uploader/js/index.html.js?v=1.4.3';
+	script.src = 'https://seedmanc.github.io/Booru-mass-uploader/js/index.html.js?v=1.4.4';
 	script.onload = function () {
 		var scripts = document.getElementsByTagName('script');
 
