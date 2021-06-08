@@ -126,10 +126,10 @@ document.documentElement.innerHTML='\
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/prototype/1.7.3.0/prototype.js"></script>\
 	<script type="text/javascript" src="https://seedmanc.github.io/Booru-mass-uploader/js/booru-params.js?v=1.4.4"></script>\
 	<script type="text/javascript" src="https://seedmanc.github.io/Booru-mass-uploader/js/helpers.min.js?v=1.4.5"></script>\
-	<script type="text/javascript" src="https://seedmanc.github.io/Booru-mass-uploader/js/uploader.js?v=1.4.4"></script>\
+	<script type="text/javascript" src="https://seedmanc.github.io/Booru-mass-uploader/js/uploader.js?v=1.4.6"></script>\
 </head>\
 <body>\
-<h1>Booru Mass-Uploader<span style="font-size:14px;"> v1.4.5</span></h1>\
+<h1>Booru Mass-Uploader<span style="font-size:14px;"> v1.4.6</span></h1>\
 <p class="intro">This script allows you to mass-upload images to imageboard sites running *booru software.\
 	Select a number of files and they\'re sent to the website along with the metadata you include such as\
 	the tags retrived from the filenames.</p>\
@@ -272,7 +272,7 @@ document.documentElement.innerHTML='\
 </div>\
 <div class="para" style="padding:2px 1em;text-align:center;">\
 	Images:\
-	<input type="file" id="files" multiple="true" accept="image/*,video/*" style="width:90%;" onchange="onFileSelect(event.target.files)"/><br>\
+	<input type="file" id="files" multiple="true" accept="image/*, video/*" style="width:90%;" onchange="onFileSelect(event.target.files)"/><br>\
 	<span id="selectStatus"></span>\
 </div>\
 <br>\
