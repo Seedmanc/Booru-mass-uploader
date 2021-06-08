@@ -272,7 +272,7 @@ document.documentElement.innerHTML='\
 </div>\
 <div class="para" style="padding:2px 1em;text-align:center;">\
 	Images:\
-	<input type="file" id="files" multiple="true" accept="image/*" style="width:90%;" onchange="onFileSelect(event.target.files)"/><br>\
+	<input type="file" id="files" multiple="true" accept="image/*,video/*" style="width:90%;" onchange="onFileSelect(event.target.files)"/><br>\
 	<span id="selectStatus"></span>\
 </div>\
 <br>\
