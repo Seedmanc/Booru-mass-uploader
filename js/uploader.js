@@ -73,7 +73,7 @@ function FilesSelected(selFiles) {
 }
 
 function IsUploadable(file) {
-    return (typeof file.type == 'string' ? file.type.substr(0, 6) == 'image/' : true) && /(jpe?g|gif|png|bmp)$/i.test(file.name);
+    return (typeof file.type == 'string' ? (file.type.substr(0, 6) == 'image/' || file.type.substr(0, 6) == 'video/') : true) && /(jpe?g|gif|png|bmp|webm|mp4)$/i.test(file.name);
 }
 function IsSidecar(file) {
     return (typeof file.type == 'string' ? file.type == 'text/plain' : true) && /\.txt$/i.test(file.name);
@@ -393,11 +393,11 @@ function onSidecarChange() {
         $('tags').enable();
         $('files').accept = 'image/*';
     }
-    $set('selectStatus','(All files with MIME types other than <tt>image/*</tt> and\n\textension other than <tt>jpg/jpeg/gif/png/bmp</tt> will be skipped)');
+    $set('selectStatus','(All files with MIME types other than <tt>image/*, video/*</tt> and\n\textension other than <tt>jpe?g/jpeg/gif/png/bmp/webm/mp4</tt> will be skipped)');
 }
 
 function onFileSelect(files) {
-    $set('selectStatus','(All files with MIME types other than <tt>image/*</tt> and\n\textension other than <tt>jpg/jpeg/gif/png/bmp</tt> will be skipped)');
+    $set('selectStatus','(All files with MIME types other than <tt>image/*, video/*</tt> and\n\textension other than <tt>jpg/jpeg/gif/png/bmp/webm/mp4</tt> will be skipped)');
     if ($getRadio('tag-when') != 'sidecar') return;
 
     tagStorage = {};
