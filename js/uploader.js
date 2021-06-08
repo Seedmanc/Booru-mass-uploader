@@ -387,13 +387,13 @@ function NormTags(tags) {
 function onSidecarChange() {
 
     if ($getRadio('tag-when') == 'sidecar') {
-        $('files').accept = 'image/*,text/plain';
+        $('files').accept = 'image/*,video/*,text/plain';
     }
     else {
         $('tags').enable();
-        $('files').accept = 'image/*';
+        $('files').accept = 'image/*,video/*';
     }
-    $set('selectStatus','(All files with MIME types other than <tt>image/*, video/*</tt> and\n\textension other than <tt>jpe?g/jpeg/gif/png/bmp/webm/mp4</tt> will be skipped)');
+    $set('selectStatus','(All files with MIME types other than <tt>image/*, video/*</tt> and\n\textension other than <tt>jpg/jpeg/gif/png/bmp/webm/mp4</tt> will be skipped)');
 }
 
 function onFileSelect(files) {
